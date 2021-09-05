@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -17,12 +18,15 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     Button btnsign;
     private static final int RC_SIGN_IN = 1;
+    private static final int RC_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
+    private EditText edtuser;
+    private EditText edtpass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        //Instanciamos campos de entrada y listener
+        edtuser = findViewById(R.id.edtUser);
+            edtuser.setOnFocusChangeListener(this);
+        edtpass = findViewById(R.id.edtPass);
+            edtpass.setOnFocusChangeListener(this);
     }
 
     //Método de que invoca el Intent para pantalla de iniciar sesión
@@ -81,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    //Método que registra la finalización de otra actividad (cuando cierra el login)
+    //Método que registra la finalización de otra actividad (cuando cierra el modal login)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -95,31 +104,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("DEBUGME ", "firebaseAuthWithGoogle:" + account.getEmail());
                 //firebaseAuthWithGoogle(account.getIdToken());
                 //Lógica
+                Intent intent = new Intent(this, StartActivity.class);
+                startActivity(intent);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w("DEBUGME ", "Google sign in failed", e);
+                Log.d("DEBUGME ", "Google sign in failed", e);
             }
         }
     }
 
-//    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-//        Log.d("DEBUGME ", "handleSignInResult");
-//        try {
-//            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-//
-//            // Signed in successfully, show authenticated UI.
-//            //updateUI(account);
-//            Toast.makeText(this, account.getEmail(), Toast.LENGTH_LONG);
-//            Log.d("DEBUGME ", "login handler correcto?");
-//        } catch (ApiException e) {
-//            // The ApiException status code indicates the detailed failure reason.
-//            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-//            Log.d("DEBUGME", "signInResult:failed code=" + e.getStatusCode());
-//            //updateUI(null);
-//            Toast.makeText(this, "Error de login", Toast.LENGTH_LONG);
-//        }
-//    }
-
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        EditText edt = (EditText) view;
+        Toast.makeText(this, String.valueOf(edt.getId()), Toast.LENGTH_LONG).show();
+        switch (edt.getId()){
+            case R.id.edtUser:
+                if (edt.getText().toString().equals(getResources().getString(R.string.edtuser_text))){
+                    edt.setText("");
+                }
+                break;
+            case R.id.edtPass:
+                edt.setText("");
+                break;
+        }
+    }
 
 
 

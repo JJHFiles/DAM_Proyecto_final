@@ -7,46 +7,75 @@
     android:forceDarkAllowed="false"
     tools:context=".LoginActivity">
 
-    <EditText
-        android:id="@+id/txtvUser"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+    <ImageView
+        android:id="@+id/imgvLogo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="Escribe tu correo electrónico"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/txtvUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txtvuser_text"
+        app:layout_constraintBottom_toTopOf="@+id/edtUser"
+        app:layout_constraintStart_toStartOf="@+id/edtUser" />
+
     <EditText
-        android:id="@+id/txtvPass"
+        android:id="@+id/edtUser"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="Escribe tu contraseña"
+        android:inputType="textWebEmailAddress"
+        android:text="@string/edtuser_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtvUser" />
+        app:layout_constraintTop_toBottomOf="@+id/imgvLogo" />
+
+    <TextView
+        android:id="@+id/txtvPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txtvpass_text"
+        app:layout_constraintBottom_toTopOf="@+id/edtPass"
+        app:layout_constraintStart_toStartOf="@+id/edtPass" />
+
+    <EditText
+        android:id="@+id/edtPass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:inputType="textPassword"
+        android:text="@string/edtpass_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtUser" />
 
     <Button
-        android:id="@+id/btnSign"
+        android:id="@+id/btnSignin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/round_button"
-        android:text="Iniciar sesión"
+        android:text="@string/btnsignin_text"
         android:textColor="@color/black"
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtvPass" />
+        app:layout_constraintTop_toBottomOf="@+id/edtPass" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btnSignGoogle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -54,7 +83,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/round_button"
-        android:text="Inicia con Google"
+        android:text="@string/btnsigngoogle"
         android:textColor="@color/black"
         android:textSize="16dp"
         app:backgroundTint="@null"
@@ -64,6 +93,21 @@
         app:iconTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSign" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSignin" />
+
+    <Button
+        android:id="@+id/btnSignup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/round_button"
+        android:text="@string/btnsignup_text"
+        android:textColor="@color/black"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
