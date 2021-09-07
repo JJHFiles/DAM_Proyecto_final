@@ -1,0 +1,24 @@
+com/example/dam_proyecto_final/ui/main/PageViewModel.java
+ com.example.dam_proyecto_final.ui.main.PageViewModel
+ com.example.dam_proyecto_final.ui.main.PageViewModel$1
+com/example/dam_proyecto_final/MainActivity.java
+ com.example.dam_proyecto_final.MainActivity
+com/example/dam_proyecto_final/BuildConfig.java
+ com.example.dam_proyecto_final.BuildConfig
+com/example/dam_proyecto_final/databinding/ActivityMainBinding.java
+ com.example.dam_proyecto_final.databinding.ActivityMainBinding
+com/example/dam_proyecto_final/databinding/ActivityStartBinding.java
+ com.example.dam_proyecto_final.databinding.ActivityStartBinding
+com/example/dam_proyecto_final/databinding/FragmentStartBinding.java
+ com.example.dam_proyecto_final.databinding.FragmentStartBinding
+com/example/dam_proyecto_final/LoginActivity.java
+ com.example.dam_proyecto_final.LoginActivity
+com/example/dam_proyecto_final/ui/main/PlaceholderFragment.java
+ com.example.dam_proyecto_final.ui.main.PlaceholderFragment
+ com.example.dam_proyecto_final.ui.main.PlaceholderFragment$1
+com/example/dam_proyecto_final/databinding/ActivityLoginBinding.java
+ com.example.dam_proyecto_final.databinding.ActivityLoginBinding
+com/example/dam_proyecto_final/StartActivity.java
+ com.example.dam_proyecto_final.StartActivity
+com/example/dam_proyecto_final/ui/main/SectionsPagerAdapter.java
+ com.example.dam_proyecto_final.ui.main.SectionsPagerAdapter
