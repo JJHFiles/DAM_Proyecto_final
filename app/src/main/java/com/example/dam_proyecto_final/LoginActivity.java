@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnsign = findViewById(R.id.btnSignGoogle);
         btnsign.setOnClickListener(this);
 
-        ////
+        //////
 
         //Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
