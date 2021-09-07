@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText edtuser;
     private EditText edtpass;
+//    private TextView txtvdebug;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +51,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+
         //Instanciamos campos de entrada y listener
         edtuser = findViewById(R.id.edtUser);
             edtuser.setOnFocusChangeListener(this);
         edtpass = findViewById(R.id.edtPass);
             edtpass.setOnFocusChangeListener(this);
+
+        //DEBUG
+//        txtvdebug = findViewById(R.id.txtvdebug);
     }
 
     //Método de que invoca el Intent para pantalla de iniciar sesión
@@ -106,9 +112,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //Lógica
                 Intent intent = new Intent(this, StartActivity.class);
                 startActivity(intent);
+                //Toast.makeText(this, "Iniciado", Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.d("DEBUGME ", "Google sign in failed", e);
+                //Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                //txtvdebug.setText(e.getMessage());
             }
         }
     }
