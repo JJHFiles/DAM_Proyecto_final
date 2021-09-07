@@ -26,8 +26,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
+
     private EditText edtuser;
     private EditText edtpass;
+
+
 //    private TextView txtvdebug;
 
     @Override
