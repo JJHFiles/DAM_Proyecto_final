@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText edtpass;
 
 
-//    private TextView txtvdebug;
+//    private TextView txtvdebug;//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
