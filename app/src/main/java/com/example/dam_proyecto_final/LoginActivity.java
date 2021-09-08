@@ -1,7 +1,5 @@
 package com.example.dam_proyecto_final;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,27 +9,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.dam_proyecto_final.HomeGroup.StartActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
-    Button btnsign;
-    private static final int RC_SIGN_IN = 1;
-    private static final int RC_LOGIN_STR = 1;
+    private Button btnsignGoogle, btnSignin;
+    private TextView txtvUserEmail, txtvPass;
+    private EditText edtUserEmail, edtPass;
+
+    private static final int RC_SIGN_IN = 1,C_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
-
-    private EditText edtuser;
-    private EditText edtpass;
-
-
-//    private TextView txtvdebug;//
+    private EditText edtuser,edtpass;
+//    private TextView txtvdebug;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +39,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d("DEBUGME ", "metodo onCreate");
 
         //Instanciamos botón de login y establecemos el listener
-        btnsign = findViewById(R.id.btnSignGoogle);
-        btnsign.setOnClickListener(this);
+        btnsignGoogle = findViewById(R.id.btnSignGoogle);
+        btnsignGoogle.setOnClickListener(this);
+        btnSignin = findViewById(R.id.btnSignin);
+        btnSignin.setOnClickListener(this);
 
-        //////
+        txtvUserEmail = findViewById(R.id.txtvUserEmail);
+        txtvPass = findViewById(R.id.txtvPass);
+
+        edtUserEmail = findViewById(R.id.edtUserEmail);
+        edtPass = findViewById(R.id.edtPass);
+
+
+        //
 
         //Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -57,19 +64,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         //Instanciamos campos de entrada y listener
-        edtuser = findViewById(R.id.edtUser);
-            edtuser.setOnFocusChangeListener(this);
+        edtuser = findViewById(R.id.edtUserEmail);
+        edtuser.setOnFocusChangeListener(this);
+        edtuser.setOnFocusChangeListener(this);
         edtpass = findViewById(R.id.edtPass);
-            edtpass.setOnFocusChangeListener(this);
+        edtpass.setOnFocusChangeListener(this);
 
         //DEBUG
 //        txtvdebug = findViewById(R.id.txtvdebug);
-    }
-
-    //Método de que invoca el Intent para pantalla de iniciar sesión
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
 
@@ -80,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // the GoogleSignInAccount will be non-null.
         Log.d("DEBUGME ", "metodo on start");
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null){
+        if (account != null) {
             Toast.makeText(this, account.getEmail(), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "No se ha iniciado", Toast.LENGTH_LONG).show();
@@ -95,6 +97,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Si el bóton es el de login
         switch (view.getId()) {
             case R.id.btnSignGoogle:
+                googleSignIn();
+                break;
+            case R.id.btnSignin:
+                txtvUserEmail.setVisibility(View.VISIBLE);
+                txtvPass.setVisibility(View.VISIBLE);
+                edtUserEmail.setVisibility(View.VISIBLE);
+                edtPass.setVisibility(View.VISIBLE);
                 signIn();
                 break;
         }
@@ -130,9 +139,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onFocusChange(View view, boolean b) {
         EditText edt = (EditText) view;
         Toast.makeText(this, String.valueOf(edt.getId()), Toast.LENGTH_LONG).show();
-        switch (edt.getId()){
-            case R.id.edtUser:
-                if (edt.getText().toString().equals(getResources().getString(R.string.edtuser_text))){
+        switch (edt.getId()) {
+            case R.id.edtUserEmail:
+                if (edt.getText().toString().equals(getResources().getString(R.string.edtuser_text))) {
                     edt.setText("");
                 }
                 break;
@@ -142,6 +151,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //Método de que invoca el Intent para pantalla de iniciar sesión con Google
+    private void googleSignIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    //Método de que invoca el Intent para pantalla de iniciar sesión usuarios No-Google
+    private void signIn() {
+
+        Intent signInIntent = new Intent(getApplicationContext(), StartActivity.class);
+        signInIntent.putExtra("email", "jjhuerga@gmail.com");
+        startActivity(signInIntent);
+    }
 
 
 }//End Class

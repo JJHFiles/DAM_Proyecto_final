@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DAM_Proyecto_final">
         <activity
-            android:name=".StartActivity"
+            android:name=".HomeGroup.StartActivity"
             android:label="@string/title_activity_start"
             android:theme="@style/Theme.DAM_Proyecto_final.NoActionBar">
 
@@ -22,7 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
