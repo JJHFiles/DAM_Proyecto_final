@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.example.dam_proyecto_final.LocalDb.LocalDb;
 import com.example.dam_proyecto_final.SavedData;
 
 public class PageViewModel extends ViewModel {
@@ -21,6 +22,7 @@ public class PageViewModel extends ViewModel {
 
         @Override
         public String apply(Integer input) {
+          //  LocalDb ldb = new LocalDb(getApplicationContext(), "sqlitedb", null, 1);
 
             return "Hello World " /*+ preferencias.getString("savedData", "no tiene todavía email establecido")*/ + input;
         }

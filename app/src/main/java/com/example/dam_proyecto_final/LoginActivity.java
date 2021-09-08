@@ -1,6 +1,5 @@
 package com.example.dam_proyecto_final;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dam_proyecto_final.HomeGroup.StartActivity;
+import com.example.dam_proyecto_final.LocalDb.LocalDb;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
 
     private EditText edtuser, edtpass;
-//    private TextView txtvdebug;
+    //    private TextView txtvdebug;
     private SharedPreferences preferences;
 
     @Override
@@ -180,9 +180,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signInIntent.putExtra("pass", "1234");
          */
 
-      //  sharedreferences();
+        //  sharedreferences();
+
+        localDb();
+
 
         startActivity(signInIntent);
+    }
+
+    private void localDb() {
+
+        LocalDb ldb = new LocalDb(getApplicationContext(), "sqlitedb", null, 1);
+
+        ldb.insertNewProfile("jjhuerga@gmail.com","1234",System.currentTimeMillis()+"");
+        ldb.viewProfile();
     }
 
     private void sharedreferences() {
