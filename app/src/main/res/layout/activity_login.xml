@@ -35,7 +35,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:inputType="textWebEmailAddress"
-        android:text="@string/edtuser_text"
+        android:text="@string/edtuseremail_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgvLogo"

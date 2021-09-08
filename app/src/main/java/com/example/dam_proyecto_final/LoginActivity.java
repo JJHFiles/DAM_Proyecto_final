@@ -1,6 +1,8 @@
 package com.example.dam_proyecto_final;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,15 +23,17 @@ import com.google.android.gms.tasks.Task;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
+
     private Button btnsignGoogle, btnSignin;
     private TextView txtvUserEmail, txtvPass;
     private EditText edtUserEmail, edtPass;
 
-    private static final int RC_SIGN_IN = 1,C_LOGIN_STR = 1;
+    private static final int RC_SIGN_IN = 1, C_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private EditText edtuser,edtpass;
+    private EditText edtuser, edtpass;
 //    private TextView txtvdebug;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,23 +95,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    //Método de click que invoca al login
-    @Override
-    public void onClick(View view) {
-        //Si el bóton es el de login
-        switch (view.getId()) {
-            case R.id.btnSignGoogle:
-                googleSignIn();
-                break;
-            case R.id.btnSignin:
-                txtvUserEmail.setVisibility(View.VISIBLE);
-                txtvPass.setVisibility(View.VISIBLE);
-                edtUserEmail.setVisibility(View.VISIBLE);
-                edtPass.setVisibility(View.VISIBLE);
-                signIn();
-                break;
-        }
-    }
 
     //Método que registra la finalización de otra actividad (cuando cierra el modal login)
     @Override
@@ -135,18 +122,44 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //Método de click que invoca al login
+    @Override
+    public void onClick(View view) {
+        //Si el bóton es el de login
+        switch (view.getId()) {
+            case R.id.btnSignGoogle:
+                googleSignIn();
+                break;
+            case R.id.btnSignin:
+                txtvUserEmail.setVisibility(View.VISIBLE);
+                txtvPass.setVisibility(View.VISIBLE);
+                edtUserEmail.setVisibility(View.VISIBLE);
+                edtPass.setVisibility(View.VISIBLE);
+
+                // Validacion de Email y password
+                if (edtUserEmail.getText().toString().contains("@")
+                        && edtUserEmail.getText().toString().contains(".")
+                        && !edtPass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
+                        && edtPass.getText().toString().length() >= Integer.parseInt(getResources().getString(R.string.min_pass_leng))) //4
+                {
+                    signIn();
+                }
+                break;
+        }
+    }
+
     @Override
     public void onFocusChange(View view, boolean b) {
         EditText edt = (EditText) view;
         Toast.makeText(this, String.valueOf(edt.getId()), Toast.LENGTH_LONG).show();
         switch (edt.getId()) {
             case R.id.edtUserEmail:
-                if (edt.getText().toString().equals(getResources().getString(R.string.edtuser_text))) {
+                if (edt.getText().toString().equals(getResources().getString(R.string.edtuseremail_text))) {
                     edt.setText("");
                 }
                 break;
             case R.id.edtPass:
-                edt.setText("");
+                edt.setText(null);
                 break;
         }
     }
@@ -161,8 +174,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void signIn() {
 
         Intent signInIntent = new Intent(getApplicationContext(), StartActivity.class);
+
+        /* solo para el caso en que se le enviaran valores
         signInIntent.putExtra("email", "jjhuerga@gmail.com");
+        signInIntent.putExtra("pass", "1234");
+         */
+
+      //  sharedreferences();
+
         startActivity(signInIntent);
+    }
+
+    private void sharedreferences() {
+        SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("email", "jjhuerga@gmail.com");
+        editor.putString("pass", "1234");
+        editor.commit();
+
     }
 
 
