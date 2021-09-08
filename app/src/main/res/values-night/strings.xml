@@ -12,4 +12,7 @@
     <string name="tab_text_1">Grupos</string>
     <string name="tab_text_2">Actividad</string>
     <string name="tab_text_3">Perfil</string>
+    <string name="page_group">Grupos</string>
+    <string name="page_activity">Actividad</string>
+    <string name="page_profile">Perfil</string>
 </resources>
