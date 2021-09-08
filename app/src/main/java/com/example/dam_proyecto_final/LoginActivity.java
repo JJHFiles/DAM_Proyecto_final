@@ -1,4 +1,4 @@
-package com.example.dam_proyecto_final.Login;
+package com.example.dam_proyecto_final;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dam_proyecto_final.R;
-import com.example.dam_proyecto_final.StartActivity;
+import com.example.dam_proyecto_final.HomeGroup.StartActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,16 +21,14 @@ import com.google.android.gms.tasks.Task;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
-    Button btnsignGoogle, btnSignin;
-    TextView txtvUserEmail, txtvPass;
-    EditText edtUserEmail, edtPass;
+    private Button btnsignGoogle, btnSignin;
+    private TextView txtvUserEmail, txtvPass;
+    private EditText edtUserEmail, edtPass;
 
-    private static final int RC_SIGN_IN = 1;
-    private static final int RC_LOGIN_STR = 1;
+    private static final int RC_SIGN_IN = 1,C_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private EditText edtuser;
-    private EditText edtpass;
+    private EditText edtuser,edtpass;
 //    private TextView txtvdebug;
 
     @Override
@@ -162,8 +159,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //Método de que invoca el Intent para pantalla de iniciar sesión usuarios No-Google
     private void signIn() {
-        //  Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        //  startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        Intent signInIntent = new Intent(getApplicationContext(), StartActivity.class);
+        signInIntent.putExtra("email", "jjhuerga@gmail.com");
+        startActivity(signInIntent);
     }
 
 

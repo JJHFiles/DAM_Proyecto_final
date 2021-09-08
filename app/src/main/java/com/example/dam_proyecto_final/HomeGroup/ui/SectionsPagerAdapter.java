@@ -1,4 +1,4 @@
-package com.example.dam_proyecto_final.ui.GroupHome;
+package com.example.dam_proyecto_final.HomeGroup.ui;
 
 import android.content.Context;
 
@@ -29,7 +29,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1);
+        return com.example.dam_proyecto_final.HomeGroup.ui.PlaceholderFragment.newInstance(position + 1);
     }
 
     @Nullable

@@ -1,4 +1,4 @@
-package com.example.dam_proyecto_final.ui.GroupHome;
+package com.example.dam_proyecto_final.HomeGroup.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,8 +21,8 @@ public class PlaceholderFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private PageViewModel pageViewModel;
-    private FragmentStartBinding binding;
+    private com.example.dam_proyecto_final.HomeGroup.ui.PageViewModel pageViewModel;
+    private com.example.dam_proyecto_final.databinding.FragmentStartBinding binding;
 
     public static PlaceholderFragment newInstance(int index) {
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -35,7 +35,7 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageViewModel = new ViewModelProvider(this).get(PageViewModel.class);
+        pageViewModel = new ViewModelProvider(this).get(com.example.dam_proyecto_final.HomeGroup.ui.PageViewModel.class);
         int index = 1;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -48,7 +48,7 @@ public class PlaceholderFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        binding = FragmentStartBinding.inflate(inflater, container, false);
+        binding = com.example.dam_proyecto_final.databinding.FragmentStartBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.sectionLabel;
