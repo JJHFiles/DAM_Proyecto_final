@@ -7,7 +7,7 @@
     <string name="btnsignup_text">Registrarse</string>
     <string name="txtvpass_text">Password</string>
     <string name="edtuser_text">Escribe tu correo electrónico</string>
-    <string name="txtvuser_text">Usuario</string>
+    <string name="txtvuseremail_text">Usuario</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="tab_text_1">Grupos</string>
     <string name="tab_text_2">Actividad</string>

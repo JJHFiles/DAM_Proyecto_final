@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:forceDarkAllowed="false"
-    tools:context=".LoginActivity">
+    tools:context=".Login.LoginActivity">
 
     <ImageView
         android:id="@+id/imgvLogo"
@@ -19,15 +19,16 @@
 
 
     <TextView
-        android:id="@+id/txtvUser"
+        android:id="@+id/txtvUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txtvuser_text"
-        app:layout_constraintBottom_toTopOf="@+id/edtUser"
-        app:layout_constraintStart_toStartOf="@+id/edtUser" />
+        android:text="@string/txtvuseremail_text"
+        app:layout_constraintBottom_toTopOf="@+id/edtUserEmail"
+        app:layout_constraintStart_toStartOf="@+id/edtUserEmail"
+        android:visibility="invisible"/>
 
     <EditText
-        android:id="@+id/edtUser"
+        android:id="@+id/edtUserEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -37,7 +38,8 @@
         android:text="@string/edtuser_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgvLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/imgvLogo"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/txtvPass"
@@ -45,7 +47,8 @@
         android:layout_height="wrap_content"
         android:text="@string/txtvpass_text"
         app:layout_constraintBottom_toTopOf="@+id/edtPass"
-        app:layout_constraintStart_toStartOf="@+id/edtPass" />
+        app:layout_constraintStart_toStartOf="@+id/edtPass"
+        android:visibility="invisible"/>
 
     <EditText
         android:id="@+id/edtPass"
@@ -58,7 +61,8 @@
         android:text="@string/edtpass_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtUser" />
+        app:layout_constraintTop_toBottomOf="@+id/edtUserEmail"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/btnSignin"

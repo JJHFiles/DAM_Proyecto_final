@@ -1,4 +1,4 @@
-package com.example.dam_proyecto_final.ui.main;
+package com.example.dam_proyecto_final.ui.GroupHome;
 
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;

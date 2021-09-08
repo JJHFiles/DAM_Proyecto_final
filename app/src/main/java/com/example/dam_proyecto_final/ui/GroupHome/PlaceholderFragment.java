@@ -1,4 +1,4 @@
-package com.example.dam_proyecto_final.ui.main;
+package com.example.dam_proyecto_final.ui.GroupHome;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.databinding.FragmentStartBinding;
 
 /**
