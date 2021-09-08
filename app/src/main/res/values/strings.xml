@@ -5,10 +5,11 @@
     <string name="btnsigngoogle">Inicia con Google</string>
     <string name="btnsignup_text">Registrarse</string>
     <string name="txtvpass_text">Password</string>
-    <string name="edtuser_text">Escribe tu correo electrónico</string>
+    <string name="edtuseremail_text">Escribe tu correo electrónico</string>
     <string name="txtvuseremail_text">Email</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="tab_text_1">Grupos</string>
     <string name="tab_text_2">Actividad</string>
     <string name="tab_text_3">Perfil</string>
+    <string name="min_pass_leng">4</string>
 </resources>

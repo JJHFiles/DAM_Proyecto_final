@@ -11,10 +11,20 @@ import com.google.android.material.tabs.TabLayout;
 
 public class StartActivity extends AppCompatActivity {
 
+    private String email = "", pass = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+/* Para en caso de recibir un putExtra
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null) {
+            String email = bundle.getString("email");
+            String pass = bundle.getString("pass");
+        }
+*/
         ActivityStartBinding binding = ActivityStartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
