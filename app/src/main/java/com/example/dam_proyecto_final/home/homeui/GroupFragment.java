@@ -1,12 +1,10 @@
-package com.example.dam_proyecto_final.homeui;
+package com.example.dam_proyecto_final.home.homeui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.dam_proyecto_final.R;
-import com.example.dam_proyecto_final.StartActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +28,9 @@ public class GroupFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private TextView txtvGF;
+
+    private TextView txtv;
+
     private String email="vacio";
     private String pass="vacio";
 
@@ -74,13 +73,11 @@ public class GroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_group, container, false);
 
-
-        txtvGF= view.findViewById(R.id.txtvGF);
-        txtvGF.setText(email +" - "+ pass);
+        txtv = view.findViewById(R.id.txtv);
+        txtv.setText(email +" - "+ pass);
 
         return view;
     }

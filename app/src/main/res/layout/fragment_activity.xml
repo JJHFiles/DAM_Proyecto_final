@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".homeui.ActivityFragment">
+    tools:context=".home.homeui.ActivityFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/txtv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="ActivityFragment"

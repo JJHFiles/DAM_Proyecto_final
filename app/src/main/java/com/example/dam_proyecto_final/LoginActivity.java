@@ -1,17 +1,19 @@
 package com.example.dam_proyecto_final;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dam_proyecto_final.home.HomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,23 +21,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.util.regex.Pattern;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
 
     private Button btnsignGoogle, btnSignin;
-  /*  private TextView txtvUserEmail, txtvPass;
-    private EditText edtUserEmail, edtPass;
-*/
+
     private static final int RC_SIGN_IN = 1, C_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private EditText edtuser, edtpass;
+    private EditText edtuserEmail, edtpass;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Chequea si el usuario ya existe en el dispositivo
+        checkSharedPreferences();
 
         Log.d("DEBUGME ", "metodo onCreate");
 
@@ -60,11 +65,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
         //Instanciamos campos de entrada y listener
-        edtuser = findViewById(R.id.edtUserEmail);
-        edtuser.setOnFocusChangeListener(this);
-        edtuser.setOnFocusChangeListener(this);
+        edtuserEmail = findViewById(R.id.edtUserEmail);
+        edtuserEmail.setOnFocusChangeListener(this);
         edtpass = findViewById(R.id.edtPass);
         edtpass.setOnFocusChangeListener(this);
 
@@ -81,12 +84,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d("DEBUGME ", "metodo on start");
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
-            Toast.makeText(this, account.getEmail(), Toast.LENGTH_LONG).show();
+            //   Toast.makeText(this, account.getEmail(), Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "No se ha iniciado", Toast.LENGTH_LONG).show();
+            //   Toast.makeText(this, "No se ha iniciado", Toast.LENGTH_LONG).show();
         }
-
-
     }
 
 
@@ -104,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("DEBUGME ", "firebaseAuthWithGoogle:" + account.getEmail());
                 //firebaseAuthWithGoogle(account.getIdToken());
                 //Lógica
-                Intent intent = new Intent(this, StartActivity.class);
+                Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 //Toast.makeText(this, "Iniciado", Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
@@ -124,19 +125,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btnSignGoogle:
                 googleSignIn();
                 break;
-            case R.id.btnSignin:
 
-                //TODO Regex
-                // Validacion de Email y password
-             /*   if (edtUserEmail.getText().toString().contains("@")
-                        && edtUserEmail.getText().toString().contains(".")
-                        && !edtPass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
-                        && edtPass.getText().toString().length() >= Integer.parseInt(String.valueOf(getResources().getInteger(R.integer.min_pass_length)))) //4
+            case R.id.btnSignin:
+                        if (Patterns.EMAIL_ADDRESS.matcher(edtuserEmail.getText().toString()).matches()
+                        && !edtpass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
+                        && edtpass.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4
                 {
-                */
-                signIn();
-                /*    }*/
+                    createSharedPreferences();
+                    signIn();
+                }
                 break;
+
             case R.id.btnSignup:
                 // Comprobar si existe el usuaro
                 break;
@@ -146,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onFocusChange(View view, boolean b) {
         EditText edt = (EditText) view;
-        Toast.makeText(this, String.valueOf(edt.getId()), Toast.LENGTH_LONG).show();
+        //  Toast.makeText(this, String.valueOf(edt.getId()), Toast.LENGTH_LONG).show();
         switch (edt.getId()) {
             case R.id.edtUserEmail:
                 if (edt.getText().toString().equals(getResources().getString(R.string.edtuseremail_text))) {
@@ -159,6 +158,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    // Chequea si ya existe el usuario creado
+    private void checkSharedPreferences() {
+        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
+        if (preferencias.getString("email", "vacio").equals("vacio")) {
+            // TODO leer string de resources o eliminar el toast
+            Toast.makeText(this, "Usuario NO registrado en el dispositivo", Toast.LENGTH_LONG).show();
+        } else {
+            signIn();
+        }
+    }
+
+    private void createSharedPreferences() {
+        SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("email", edtuserEmail.getText().toString());
+        editor.putString("pass", edtpass.getText().toString());
+        editor.commit();
+    }
+
+    // Utilidad de desarrollo, solo para tester
+    private void deleteAllSharedPreferences() {
+        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
+        preferencias.edit().clear().commit();
+    }
+
     //Método de que invoca el Intent para pantalla de iniciar sesión con Google
     private void googleSignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -167,22 +191,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //Método de que invoca el Intent para pantalla de iniciar sesión usuarios No-Google
     private void signIn() {
-
-        Intent signInIntent = new Intent(getApplicationContext(), StartActivity.class);
-
-        mySharedPreferences();
-
+        Intent signInIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        //  createSharedPreferences();
         startActivity(signInIntent);
     }
-
-    private void mySharedPreferences() {
-        SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("email", "jjhuerga@gmail.com");
-        editor.putString("pass", "1234");
-        editor.commit();
-
-    }
-
 
 }//End Class

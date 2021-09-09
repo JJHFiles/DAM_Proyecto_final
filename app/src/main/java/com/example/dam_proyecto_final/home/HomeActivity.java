@@ -1,4 +1,4 @@
-package com.example.dam_proyecto_final;
+package com.example.dam_proyecto_final.home;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -7,22 +7,23 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.dam_proyecto_final.homeui.ActivityFragment;
-import com.example.dam_proyecto_final.homeui.GroupFragment;
-import com.example.dam_proyecto_final.homeui.ProfileFragment;
+import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.home.homeui.ActivityFragment;
+import com.example.dam_proyecto_final.home.homeui.GroupFragment;
+import com.example.dam_proyecto_final.home.homeui.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import org.jetbrains.annotations.NotNull;
 
-public class StartActivity extends FragmentActivity implements NavigationBarView.OnItemSelectedListener {
+public class HomeActivity extends FragmentActivity implements NavigationBarView.OnItemSelectedListener {
 
     static private BottomNavigationView bottom_navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_home);
 
         //Lectura de datos drecibidos desde el el login
 

@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".homeui.GroupFragment">
+    tools:context=".home.homeui.GroupFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/txtvGF"
+        android:id="@+id/txtv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="GroupFragment" />
