@@ -1,14 +1,11 @@
 package com.example.dam_proyecto_final;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
-
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.example.dam_proyecto_final.homeui.ActivityFragment;
 import com.example.dam_proyecto_final.homeui.GroupFragment;
@@ -20,12 +17,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class StartActivity extends FragmentActivity implements NavigationBarView.OnItemSelectedListener {
 
-    BottomNavigationView bottom_navigation;
+    static private BottomNavigationView bottom_navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_start);
+
+        //Lectura de datos drecibidos desde el el login
 
         bottom_navigation = findViewById(R.id.bottom_navigation);
         bottom_navigation.setOnItemSelectedListener(this);
@@ -38,10 +37,10 @@ public class StartActivity extends FragmentActivity implements NavigationBarView
                 .commit();
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.page_group:

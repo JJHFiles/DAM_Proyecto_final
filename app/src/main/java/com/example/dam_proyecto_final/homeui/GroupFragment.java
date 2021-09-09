@@ -1,14 +1,20 @@
 package com.example.dam_proyecto_final.homeui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.StartActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +31,9 @@ public class GroupFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView txtvGF;
+    private String email="vacio";
+    private String pass="vacio";
 
     public GroupFragment() {
         // Required empty public constructor
@@ -51,16 +60,36 @@ public class GroupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        readSharedPreferences();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_group, container, false);
+        View view = inflater.inflate(R.layout.fragment_group, container, false);
+
+
+        txtvGF= view.findViewById(R.id.txtvGF);
+        txtvGF.setText(email +" - "+ pass);
+
+        return view;
+    }
+
+    private void readSharedPreferences(){
+
+        SharedPreferences preferencias;
+        preferencias = getActivity().getSharedPreferences("savedData", Context.MODE_PRIVATE);
+        email= preferencias.getString("email","vacio");
+        pass= preferencias.getString("pass","vacio");
     }
 }

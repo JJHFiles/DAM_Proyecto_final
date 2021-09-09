@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dam_proyecto_final.LocalDb.LocalDb;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -24,15 +23,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private Button btnsignGoogle, btnSignin;
-    private TextView txtvUserEmail, txtvPass;
+  /*  private TextView txtvUserEmail, txtvPass;
     private EditText edtUserEmail, edtPass;
-
+*/
     private static final int RC_SIGN_IN = 1, C_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
     private EditText edtuser, edtpass;
-    //    private TextView txtvdebug;
-    private SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +44,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnsignGoogle.setOnClickListener(this);
         btnSignin = findViewById(R.id.btnSignin);
         btnSignin.setOnClickListener(this);
-
+/*
         txtvUserEmail = findViewById(R.id.txtvUserEmail);
         txtvPass = findViewById(R.id.txtvPass);
 
         edtUserEmail = findViewById(R.id.edtUserEmail);
         edtPass = findViewById(R.id.edtPass);
-
-
-        //
-
+*/
         //Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -130,19 +125,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 googleSignIn();
                 break;
             case R.id.btnSignin:
-                txtvUserEmail.setVisibility(View.VISIBLE);
-                txtvPass.setVisibility(View.VISIBLE);
-                edtUserEmail.setVisibility(View.VISIBLE);
-                edtPass.setVisibility(View.VISIBLE);
 
+                //TODO Regex
                 // Validacion de Email y password
-                if (edtUserEmail.getText().toString().contains("@")
+             /*   if (edtUserEmail.getText().toString().contains("@")
                         && edtUserEmail.getText().toString().contains(".")
                         && !edtPass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
-                        && edtPass.getText().toString().length() >= Integer.parseInt(getResources().getString(R.string.min_pass_leng))) //4
+                        && edtPass.getText().toString().length() >= Integer.parseInt(String.valueOf(getResources().getInteger(R.integer.min_pass_length)))) //4
                 {
-                    signIn();
-                }
+                */
+                signIn();
+                /*    }*/
+                break;
+            case R.id.btnSignup:
+                // Comprobar si existe el usuaro
                 break;
         }
     }
@@ -174,28 +170,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Intent signInIntent = new Intent(getApplicationContext(), StartActivity.class);
 
-        /* solo para el caso en que se le enviaran valores
-        signInIntent.putExtra("email", "jjhuerga@gmail.com");
-        signInIntent.putExtra("pass", "1234");
-         */
-
-        //  sharedreferences();
-
-        localDb();
-
+        mySharedPreferences();
 
         startActivity(signInIntent);
     }
 
-    private void localDb() {
-
-        LocalDb ldb = new LocalDb(getApplicationContext(), "sqlitedb", null, 1);
-
-        ldb.insertNewProfile("jjhuerga@gmail.com","1234",System.currentTimeMillis()+"");
-        ldb.viewProfile();
-    }
-
-    private void sharedreferences() {
+    private void mySharedPreferences() {
         SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("email", "jjhuerga@gmail.com");

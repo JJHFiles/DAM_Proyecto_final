@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/DAM_Proyecto_final.iml" filepath="$PROJECT_DIR$/.idea/DAM_Proyecto_final.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DAM_Proyecto_final.iml" filepath="$PROJECT_DIR$/.idea/modules/DAM_Proyecto_final.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DAM_Proyecto_final.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DAM_Proyecto_final.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Proyectos.DAM_Proyecto_final.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Proyectos.DAM_Proyecto_final.app.iml" />
     </modules>
   </component>
 </project>

@@ -11,7 +11,6 @@
     <string name="tab_text_1">Grupos</string>
     <string name="tab_text_2">Actividad</string>
     <string name="tab_text_3">Perfil</string>
-    <string name="min_pass_leng">4</string>
     <string name="title_activity_login2">LoginActivity2</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

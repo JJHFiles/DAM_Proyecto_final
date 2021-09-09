@@ -23,9 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txtvuseremail_text"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/edtUserEmail"
-        app:layout_constraintStart_toStartOf="@+id/edtUserEmail"
-        android:visibility="invisible"/>
+        app:layout_constraintStart_toStartOf="@+id/edtUserEmail" />
 
     <EditText
         android:id="@+id/edtUserEmail"
@@ -36,19 +36,19 @@
         android:layout_marginEnd="16dp"
         android:inputType="textWebEmailAddress"
         android:text="@string/edtuseremail_text"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgvLogo"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toBottomOf="@+id/imgvLogo" />
 
     <TextView
         android:id="@+id/txtvPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txtvpass_text"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/edtPass"
-        app:layout_constraintStart_toStartOf="@+id/edtPass"
-        android:visibility="invisible"/>
+        app:layout_constraintStart_toStartOf="@+id/edtPass" />
 
     <EditText
         android:id="@+id/edtPass"
@@ -59,10 +59,10 @@
         android:layout_marginEnd="16dp"
         android:inputType="textPassword"
         android:text="@string/edtpass_text"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtUserEmail"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toBottomOf="@+id/edtUserEmail" />
 
     <Button
         android:id="@+id/btnSignin"
