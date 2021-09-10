@@ -49,7 +49,7 @@
         android:background="@drawable/round_button"
         android:text="@string/btnCancel"
         android:textColor="@color/black"
-        android:backgroundTint="#ACACAC"
+        android:backgroundTint="#BCBCBC"
         app:backgroundTint="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtInput" />
