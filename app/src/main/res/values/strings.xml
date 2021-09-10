@@ -12,6 +12,24 @@
     <string name="tab_text_2">Actividad</string>
     <string name="tab_text_3">Perfil</string>
     <string name="title_activity_login2">LoginActivity2</string>
+    <string name="txtvTitle">Introduce tus datos</string>
+    <string name="txtvQuestion_name">¿Cómo te llamas?</string>
+    <string name="txtvQuestion_email">¿Cual es tu email?</string>
+    <string name="txtvQuestion_passFirst">Introduzca tu contraseña</string>
+    <string name="txtvQuestion_passSecond">Vuelva a inroducir su contraseña</string>
+    <string name="edtInput_name">Nombre</string>
+    <string name="edtInput_email">Email</string>
+    <string name="edtInput_pass">Contraseña</string>
+    <string name="btnCancel">Cancelar</string>
+    <string name="btnContinue_Continue">Continuar</string>
+    <string name="btnContinue_Finalize">Finalizar</string>
+    <string name="pass_NotEquals">Las contraseñas no coinciden</string>
+    <string name="email_NoMatch">Formato de correo electrónico incorrecto</string>
+    <string name="password_failure">Debe introducir una contraseña de como mínimo 4 caracteres y sin espacios en blanco</string>
+    <string name="name_empty">Debe introducir su nombre</string>
+    <string name="sharedPreferences_empty">Usuario NO registrado en el dispositivo</string>
+    <string name="login_failure">Usuario o contraseña incorrecta, pruebe de nuevo</string>
+
     <string name="separator_text">o</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -24,6 +42,4 @@
     <string name="page_group">Grupos</string>
     <string name="page_activity">Actividad</string>
     <string name="page_profile">Perfil</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-</resources>
+  </resources>

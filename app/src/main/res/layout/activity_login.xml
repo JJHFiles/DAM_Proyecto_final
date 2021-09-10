@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edtUserEmail" />
 
     <Button
-        android:id="@+id/btnSignin"
+        android:id="@+id/btnSignIn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -99,10 +99,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignin" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
 
     <Button
-        android:id="@+id/btnSignup"
+        android:id="@+id/btnSignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -126,7 +126,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/btnSignGoogle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignin"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn"
         app:layout_constraintVertical_bias="0.014"/>
 
     <LinearLayout
@@ -140,7 +140,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/btnSignGoogle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignin"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn"
         app:layout_constraintVertical_bias="0.014"/>
 
     <TextView
@@ -153,7 +153,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnSignGoogle"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout1"
         app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignin"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn"
         app:layout_constraintVertical_bias="0.555" />
 
 

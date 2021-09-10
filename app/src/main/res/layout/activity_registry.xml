@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:forceDarkAllowed="false"
+    tools:context=".Registry.RegistryActivity">
+
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:layout_width="363dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/txtvTitle"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtvQuestion"
+        android:layout_width="363dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/txtvQuestion_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtvTitle" />
+
+    <EditText
+        android:id="@+id/edtInput"
+        android:layout_width="363dp"
+        android:layout_height="57dp"
+        android:hint="@string/edtInput_name"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtvQuestion" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="177dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="52dp"
+        android:background="@drawable/round_button"
+        android:text="@string/btnCancel"
+        android:textColor="@color/black"
+        android:backgroundTint="#ACACAC"
+        app:backgroundTint="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtInput" />
+
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="180dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_button"
+        android:text="@string/btnContinue_Continue"
+        android:textColor="@color/white"
+        android:backgroundTint="#048BF3"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toEndOf="@+id/btnCancel"
+        app:layout_constraintTop_toBottomOf="@+id/edtInput"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
