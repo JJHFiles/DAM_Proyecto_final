@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         // Chequea si el usuario ya existe en el dispositivo
-        //deleteAllSharedPreferences();
+        deleteAllSharedPreferences();
         checkSharedPreferences();
 
         Log.d("DEBUGME ", "metodo onCreate");

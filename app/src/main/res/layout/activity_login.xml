@@ -23,9 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txtvuseremail_text"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/edtUserEmail"
-        app:layout_constraintStart_toStartOf="@+id/edtUserEmail"
-        android:visibility="invisible"/>
+        app:layout_constraintStart_toStartOf="@+id/edtUserEmail" />
 
     <EditText
         android:id="@+id/edtUserEmail"
@@ -36,19 +36,19 @@
         android:layout_marginEnd="16dp"
         android:inputType="textWebEmailAddress"
         android:text="@string/edtuseremail_text"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgvLogo"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toBottomOf="@+id/imgvLogo" />
 
     <TextView
         android:id="@+id/txtvPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txtvpass_text"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/edtPass"
-        app:layout_constraintStart_toStartOf="@+id/edtPass"
-        android:visibility="invisible"/>
+        app:layout_constraintStart_toStartOf="@+id/edtPass" />
 
     <EditText
         android:id="@+id/edtPass"
@@ -59,10 +59,10 @@
         android:layout_marginEnd="16dp"
         android:inputType="textPassword"
         android:text="@string/edtpass_text"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtUserEmail"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toBottomOf="@+id/edtUserEmail" />
 
     <Button
         android:id="@+id/btnSignin"
@@ -79,12 +79,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtPass" />
 
+
     <Button
         android:id="@+id/btnSignGoogle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/round_button"
         android:text="@string/btnsigngoogle"
@@ -96,6 +97,7 @@
         app:iconSize="24dp"
         app:iconTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSignin" />
 
@@ -114,15 +116,55 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="150dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:background="#000000"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/btnSignGoogle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignin"
+        app:layout_constraintVertical_bias="0.014"/>
 
-<!--    <TextView-->
-<!--        android:id="@+id/txtvdebug"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:text="TextView"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/btnSignGoogle" />-->
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="150dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:background="#000000"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/btnSignGoogle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignin"
+        app:layout_constraintVertical_bias="0.014"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="27dp"
+        android:layout_height="22dp"
+        android:gravity="center"
+        android:text="@string/separator_text"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/btnSignGoogle"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout1"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignin"
+        app:layout_constraintVertical_bias="0.555" />
+
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/txtvdebug"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:text="TextView"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/btnSignGoogle" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
