@@ -49,9 +49,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Instanciamos botón de login y establecemos el listener
         btnsignGoogle = findViewById(R.id.btnSignGoogle);
         btnsignGoogle.setOnClickListener(this);
-        btnSignIn = findViewById(R.id.btnSignIn);
+        btnSignIn = findViewById(R.id.btnSignin);
         btnSignIn.setOnClickListener(this);
-        btnSignUp = findViewById(R.id.btnSignUp);
+        btnSignUp = findViewById(R.id.btnSignup);
         btnSignUp.setOnClickListener(this);
 /*
         txtvUserEmail = findViewById(R.id.txtvUserEmail);
@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 googleSignIn();
                 break;
 
-            case R.id.btnSignIn:
+            case R.id.btnSignin:
                 if (Patterns.EMAIL_ADDRESS.matcher(edtuserEmail.getText().toString()).matches()
                         && !edtPass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
                         && edtPass.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4
@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
 
-            case R.id.btnSignUp:
+            case R.id.btnSignup:
                 Intent registryIntent = new Intent(getApplicationContext(), RegistryActivity.class);
                 startActivity(registryIntent);
                 break;
