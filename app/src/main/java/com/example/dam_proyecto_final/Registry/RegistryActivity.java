@@ -42,15 +42,8 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         btnCancel.setOnClickListener(this);
         btnContinue.setOnClickListener(this);
 
-
     }
 
-    // Controla el retroceso de la flecha del ActionBar
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return false;
-    }
 
     @Override
     public void onClick(View v) {
@@ -58,15 +51,8 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
 
             case R.id.btnCancel:
-                // Se reinician los pasos y el nombre del boton Continuar por si estamba en el step 3
-                step = 0;
-                btnContinue.setText(R.string.btnContinue_Continue);
-                txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_name));
-                edtInput.setHint(getResources().getString(R.string.edtInput_name));
-
-
-                // Se vuelve  la ventana login
-                onSupportNavigateUp();
+                // Cierra la actividad y vuelve  la ventana login
+                finish();
                 break;
 
             case R.id.btnContinue:
@@ -86,7 +72,6 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                         }else{
                             Toast.makeText(this, R.string.name_empty, Toast.LENGTH_LONG).show();
-
                         }
                         break;
 
@@ -140,7 +125,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         editor.putString("name", name);
         editor.putString("email", email);
         editor.putString("pass", pass);
-        editor.commit();
+        editor.apply();
     }
 
     //Método de que invoca el Intent para pantalla de iniciar sesión usuarios No-Google
@@ -148,5 +133,43 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         Intent signInIntent = new Intent(getApplicationContext(), HomeActivity.class);
         //  createSharedPreferences();
         startActivity(signInIntent);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    // Retrocede a la opc anterior dentro de la misma actividad
+    @Override
+    public void onBackPressed() {
+     step--;
+        switch (step) {
+            case -1:
+                // Cierra la actividad y vuelve  la ventana login
+                finish();
+                break;
+            case 0:
+                btnContinue.setText(R.string.btnContinue_Continue);
+                txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_name));
+                edtInput.setText("");
+                edtInput.setHint(getResources().getString(R.string.edtInput_name));
+                break;
+
+            case 1:
+                btnContinue.setText(R.string.btnContinue_Continue);
+                txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
+                edtInput.setText("");
+                edtInput.setHint(getResources().getString(R.string.edtInput_email));
+                break;
+
+            case 2:
+                btnContinue.setText(R.string.btnContinue_Continue);
+                txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
+                edtInput.setText("");
+                edtInput.setHint(getResources().getString(R.string.edtInput_pass));
+                break;
+        }
     }
 }
