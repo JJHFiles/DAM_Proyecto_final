@@ -135,6 +135,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         startActivity(signInIntent);
     }
 
+    // Método que controla el click en la flecha ActionBar
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
