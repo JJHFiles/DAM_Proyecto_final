@@ -13,8 +13,7 @@
         android:background="@color/design_default_color_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -54,13 +53,14 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <!--    Mis datos-->
     <LinearLayout
-        android:id="@+id/btnprfmydata"
+        android:id="@+id/lytmydata"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="24dp"
         android:orientation="horizontal"
-        android:gravity="bottom"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/prfbanner">
 
         <ImageView
@@ -72,7 +72,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:textSize="22dp"
+            android:textSize="18dp"
             android:textStyle="bold"
             android:layout_weight="3"
             android:text="Mis datos" />
@@ -91,19 +91,22 @@
         android:layout_marginEnd="24dp"
 
         android:background="#8D000000"
-        app:layout_constraintBottom_toTopOf="@+id/btnprfchangepsw"
+
+        app:layout_constraintBottom_toTopOf="@+id/lytchangepsw"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnprfmydata" />
+        app:layout_constraintTop_toBottomOf="@+id/lytmydata" />
 
+
+    <!--    Cambiar password-->
     <LinearLayout
-        android:id="@+id/btnprfchangepsw"
+        android:id="@+id/lytchangepsw"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
-        android:gravity="bottom"
+        android:layout_height="24dp"
+        android:layout_marginTop="24dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/btnprfmydata">
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/lytmydata">
 
         <ImageView
             android:layout_width="0dp"
@@ -114,10 +117,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textSize="18dp"
+            android:textStyle="bold"
             android:layout_weight="3"
-            android:text="Mis datos"
-            android:textSize="22dp"
-            android:textStyle="bold" />
+            android:text="Cambiar password" />
 
         <ImageView
             android:layout_width="0dp"
@@ -126,6 +129,49 @@
             android:src="@drawable/ic_arrow" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
 
+        android:background="#8D000000"
+
+        app:layout_constraintBottom_toTopOf="@+id/lytsignoff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lytchangepsw" />
+
+
+    <!--    Cambiar password-->
+    <LinearLayout
+        android:id="@+id/lytsignoff"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/lytchangepsw">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/page_profile" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="3"
+            android:text="Cerrar sesión" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_arrow" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
