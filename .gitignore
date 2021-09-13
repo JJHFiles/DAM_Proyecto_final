@@ -47,3 +47,6 @@ captures/
 
 ### Android Patch ###
 gen-external-apklibs
+
+# Lock Files
+*.lock
