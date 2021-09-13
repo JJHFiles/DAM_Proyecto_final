@@ -51,3 +51,10 @@ gen-external-apklibs
 
 # Lock Files
 *.lock
+
+#Automate in
+/.idea/gradle.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/runConfigurations.xml
+/.idea/vcs.xml
