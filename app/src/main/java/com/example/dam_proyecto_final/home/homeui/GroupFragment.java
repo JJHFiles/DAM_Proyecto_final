@@ -76,8 +76,10 @@ public class GroupFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_group, container, false);
 
-        txtv = view.findViewById(R.id.txtv);
-        txtv.setText(email +" - "+ pass);
+
+
+//        txtv = view.findViewById(R.id.txtv);
+//        txtv.setText(email +" - "+ pass);
 
         return view;
     }

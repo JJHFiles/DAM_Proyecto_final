@@ -1,4 +1,4 @@
-package com.example.dam_proyecto_final.Registry;
+package com.example.dam_proyecto_final.registry;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

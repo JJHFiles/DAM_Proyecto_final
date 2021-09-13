@@ -1,5 +1,6 @@
 package com.example.dam_proyecto_final.home.homeui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -138,6 +139,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Intent intent = new Intent(context, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+
                 break;
         }
     }

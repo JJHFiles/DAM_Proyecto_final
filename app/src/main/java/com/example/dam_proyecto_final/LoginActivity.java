@@ -3,6 +3,7 @@ package com.example.dam_proyecto_final;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -13,7 +14,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dam_proyecto_final.Registry.RegistryActivity;
+import com.example.dam_proyecto_final.ddbb.GenericConnection;
+import com.example.dam_proyecto_final.home.model.User;
+import com.example.dam_proyecto_final.registry.RegistryActivity;
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -22,6 +25,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
 
@@ -29,6 +40,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private static final int RC_SIGN_IN = 1, C_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
+
+    private Connection con;
+
+    private User user;
 
     private EditText edtuserEmail, edtPass;
 
@@ -46,13 +61,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Log.d("DEBUGME ", "metodo onCreate");
 
-        //Instanciamos botón de login y establecemos el listener
+        //Instanciamos botones establecemos el listeners
         btnsignGoogle = findViewById(R.id.btnSignGoogle);
-        btnsignGoogle.setOnClickListener(this);
+            btnsignGoogle.setOnClickListener(this);
         btnSignIn = findViewById(R.id.btnSignin);
-        btnSignIn.setOnClickListener(this);
+            btnSignIn.setOnClickListener(this);
         btnSignUp = findViewById(R.id.btnSignup);
-        btnSignUp.setOnClickListener(this);
+            btnSignUp.setOnClickListener(this);
 /*
         txtvUserEmail = findViewById(R.id.txtvUserEmail);
         txtvPass = findViewById(R.id.txtvPass);
@@ -75,8 +90,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edtPass = findViewById(R.id.edtPass);
         edtPass.setOnFocusChangeListener(this);
 
-        //DEBUG
-//        txtvdebug = findViewById(R.id.txtvdebug);
     }
 
 
@@ -95,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    //Método que registra la finalización de otra actividad (cuando cierra el modal login)
+    //Método que registra la finalización de otra actividad (cuando cierra el modal login de G)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -107,11 +120,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d("DEBUGME ", "firebaseAuthWithGoogle:" + account.getEmail());
-                //firebaseAuthWithGoogle(account.getIdToken());
-                //Lógica
+
+                //TODO Comprobar si el usuario que inicia lo tenemos registrado en BBDD, si no es así registrarlo como nuevo usuario sin password
+                //
+
+                //Iniciamos sesión
                 Intent intent = new Intent(this, HomeActivity.class);
+                //TODO crear instancia de user y pasarla como bundle
                 startActivity(intent);
-                //Toast.makeText(this, "Iniciado", Toast.LENGTH_LONG).show();
+
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.d("DEBUGME ", "Google sign in failed", e);
@@ -120,6 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
+
 
     //Método de click que invoca al login
     @Override
@@ -149,6 +167,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //Método de que invoca el Intent para pantalla de iniciar sesión con Google
+    private void googleSignIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    //Metodo de limpieza de los EditText tras hacerlos foco
     @Override
     public void onFocusChange(View view, boolean b) {
         EditText edt = (EditText) view;
@@ -190,12 +215,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
         preferencias.edit().clear().apply();
         Toast.makeText(this, "Shared Preferences eliminadas", Toast.LENGTH_LONG).show();
-    }
-
-    //Método de que invoca el Intent para pantalla de iniciar sesión con Google
-    private void googleSignIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     //Método de que invoca el Intent para pantalla de iniciar sesión usuarios No-Google
