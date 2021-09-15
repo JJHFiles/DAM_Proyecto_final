@@ -1,15 +1,10 @@
-package com.example.dam_proyecto_final.ddbb;
+package com.example.dam_proyecto_final.web_api;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-
-import com.example.dam_proyecto_final.R;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class GenericConnection  extends AsyncTask<Void, Integer, String> {
 

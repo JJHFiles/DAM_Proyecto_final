@@ -3,7 +3,6 @@ package com.example.dam_proyecto_final;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dam_proyecto_final.ddbb.GenericConnection;
 import com.example.dam_proyecto_final.home.model.User;
 import com.example.dam_proyecto_final.registry.RegistryActivity;
 import com.example.dam_proyecto_final.home.HomeActivity;
@@ -26,12 +24,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
@@ -48,7 +40,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText edtuserEmail, edtPass;
 
     private String email = "", pass = "";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +59,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             btnSignIn.setOnClickListener(this);
         btnSignUp = findViewById(R.id.btnSignup);
             btnSignUp.setOnClickListener(this);
+
+
 /*
         txtvUserEmail = findViewById(R.id.txtvUserEmail);
         txtvPass = findViewById(R.id.txtvPass);
@@ -89,7 +82,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edtuserEmail.setOnFocusChangeListener(this);
         edtPass = findViewById(R.id.edtPass);
         edtPass.setOnFocusChangeListener(this);
-
     }
 
 
@@ -164,6 +156,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent registryIntent = new Intent(getApplicationContext(), RegistryActivity.class);
                 startActivity(registryIntent);
                 break;
+
         }
     }
 

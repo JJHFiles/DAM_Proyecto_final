@@ -29,7 +29,6 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registry);
 
-
         pass=getResources().getString(R.string.edtpass_text);
 
         //Muestra flecha de retroceso del ActionBar
@@ -109,6 +108,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                     case 3:
                         if (edtInput.getText().toString().equals(pass)) {
                             createSharedPreferences();
+                            //register()
                             signIn();
                         } else {
                             Toast.makeText(this, R.string.pass_NotEquals, Toast.LENGTH_LONG).show();
@@ -173,4 +173,6 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
+
+
 }
