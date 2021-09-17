@@ -2,17 +2,18 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/button"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:forceDarkAllowed="false"
+    android:forceDarkAllowed="true"
     tools:context=".LoginActivity">
 
     <ImageView
         android:id="@+id/imgvLogo"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/logo"
         android:layout_marginTop="32dp"
+        android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -127,7 +128,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnSignGoogle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSignin"
-        app:layout_constraintVertical_bias="0.014"/>
+        app:layout_constraintVertical_bias="0.014" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -141,7 +142,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnSignGoogle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSignin"
-        app:layout_constraintVertical_bias="0.014"/>
+        app:layout_constraintVertical_bias="0.014" />
 
     <TextView
         android:id="@+id/textView"
@@ -155,6 +156,18 @@
         app:layout_constraintStart_toEndOf="@+id/linearLayout2"
         app:layout_constraintTop_toBottomOf="@+id/btnSignin"
         app:layout_constraintVertical_bias="0.555" />
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/txtvUserEmail"
+        app:layout_constraintEnd_toStartOf="@+id/imgvLogo"
+        app:layout_constraintHorizontal_bias="0.258"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
