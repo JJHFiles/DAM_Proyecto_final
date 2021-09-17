@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.dam_proyecto_final.home.model.User;
 import com.example.dam_proyecto_final.registry.RegistryActivity;
 import com.example.dam_proyecto_final.home.HomeActivity;
+import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -114,7 +115,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("DEBUGME ", "firebaseAuthWithGoogle:" + account.getEmail());
 
                 //TODO Comprobar si el usuario que inicia lo tenemos registrado en BBDD, si no es así registrarlo como nuevo usuario sin password
-                //
+                int result = WebApiRequest.userInsertG(this, account.getEmail(), account.getDisplayName());
+                if (result == -100){
+                    Log.d("DEBUGME", "Login fallido, error en la petición");
+//                    Toast.makeText(this, "Login fallido, error en la petición", Toast.LENGTH_LONG).show();
+                } else if (result == -1){
+                    Log.d("DEBUGME", "Login correcto, usuario ya registrado");
+//                    Toast.makeText(this, "Login correcto, usuario ya registrado", Toast.LENGTH_LONG).show();
+                } else if (result == 1){
+                    Log.d("DEBUGME", "Login correcto, usuario registrado");
+//                    Toast.makeText(this, "Login correcto, usuario registrado", Toast.LENGTH_LONG).show();
+                }
 
                 //Iniciamos sesión
                 Intent intent = new Intent(this, HomeActivity.class);
