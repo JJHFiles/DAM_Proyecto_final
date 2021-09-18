@@ -1,7 +1,7 @@
 package com.example.dam_proyecto_final.web_api;
 
-import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -10,13 +10,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.android.volley.toolbox.Volley.newRequestQueue;
 
 public class MySqlQuery {
 
@@ -25,48 +22,56 @@ public class MySqlQuery {
     private String email = "";
     private String password = "";
     private String user = "";
-    private String date_singup = "";
+    private String date_signup = "";
 
     private RequestQueue requestQueue;
 
-    private static final String url1 = "http://192.168.1.23/crud/user_insert.php";
+    private static final String URL1 = "http://192.168.1.23/crud/user_insert.php";
 
-    public MySqlQuery(Context cont) {
-        context = cont;
+    private int result = -100;
 
+
+
+    public MySqlQuery(Context context) {
+        this.context = context;
+        requestQueue = Volley.newRequestQueue(context);
 
     }
 
-    public void init() {
+    public void insertUser(String email, String password, String user, String date_signup) {
 
-      requestQueue = newRequestQueue(context);
         StringRequest sr = new StringRequest(
                 Request.Method.POST,
-                url1,
+                URL1,
                 new Response.Listener<String>() {
-
+                    @Override
                     public void onResponse(String response) {
-                        Toast.makeText(context, "Response= " + response, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "onResponse= " + response, Toast.LENGTH_LONG).show();
+                        Log.d("DEBUGME", "onResponse: " + response);
+                        result = Integer.parseInt(response);
+
 
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "ERROR= " + error, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "onErrorResponse= " + error.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("DEBUGME", "onErrorResponse: " + error.getMessage());
                     }
-                }) {
+                }
+        ) {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap();
                 params.put("email", email);
                 params.put("password", password);
                 params.put("name", user);
-                params.put("date_singup", date_singup);
-
+                params.put("date_signup", date_signup);
                 return params;
             }
+
 
             @Override
             public Map<String, String> getHeaders() {
@@ -75,46 +80,22 @@ public class MySqlQuery {
                 return params;
             }
         };
-        Toast.makeText(context, "FIN", Toast.LENGTH_LONG).show();
 
         requestQueue.add(sr);
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getDate_singup() {
-        return date_singup;
-    }
-
-    // Guarda la fecha y hora actual
-    public void setDate_singup() {
-
-        date_singup = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+/*
+        if (result == -100){
+            Log.d("DEBUGME ", "userInsertG: " + " error al obtener resultados");
+            return result;
+        } else {
+            return result;
+        }
+*/
 
     }
 
+
+    public int getResult() {
+        return result;
+    }
 
 }

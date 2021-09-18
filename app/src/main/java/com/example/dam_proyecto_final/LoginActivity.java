@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -11,32 +12,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.LongDef;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.home.model.User;
 import com.example.dam_proyecto_final.registry.RegistryActivity;
+import com.example.dam_proyecto_final.web_api.MySqlQuery;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import static java.lang.Thread.sleep;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
+    private Button btn;
 
     private Button btnsignGoogle, btnSignIn, btnSignUp;
 
@@ -44,13 +42,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
 
 
-
     private User user;
 
-    private EditText edtuserEmail, edtPass;
+    private EditText edtuserEmail, edtUserPass;
 
     private String userEmail = "", userPass = "";
 
+    private MySqlQuery query;
+    private final int timeOut=1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +93,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Instanciamos campos de entrada y listener
         edtuserEmail = findViewById(R.id.edtUserEmail);
         edtuserEmail.setOnFocusChangeListener(this);
-        edtPass = findViewById(R.id.edtPass);
-        edtPass.setOnFocusChangeListener(this);
+        edtUserPass = findViewById(R.id.edtUserPass);
+        edtUserPass.setOnFocusChangeListener(this);
     }
 
 
@@ -128,7 +127,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("DEBUGME ", "firebaseAuthWithGoogle:" + account.getEmail());
 
                 //TODO Comprobar si el usuario que inicia lo tenemos registrado en BBDD, si no es así registrarlo como nuevo usuario sin password
-                //
+                query = new MySqlQuery(getApplicationContext());
+                query.insertUser(account.getEmail(),
+                        "",
+                        account.getFamilyName(),
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Toast.makeText
+                                (getApplicationContext(),
+                                        query.getResult() + "",
+                                        Toast.LENGTH_LONG).show();
+
+                        // TODO -200
+                        if (query.getResult() == -100){
+                            Log.d("DEBUGME ", "userInsertG: " + " error al obtener resultados");
+
+                        }
+
+                    }
+
+                }, this,timeOut);
+
+
+
+
 
                 //Iniciamos sesión
                 Intent intent = new Intent(this, HomeActivity.class);
@@ -156,8 +183,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.btnSignin:
                 if (Patterns.EMAIL_ADDRESS.matcher(edtuserEmail.getText().toString()).matches()
-                        && !edtPass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
-                        && edtPass.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4
+                        && !edtUserPass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
+                        && edtUserPass.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4
                 {
                     checkSharedPreferences();
                 } else {
@@ -172,8 +199,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.btn:
-
-                query("jjh@gmail.es","1234","PEPE",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                query = new MySqlQuery(getApplicationContext());
+                query.insertUser("juan@hh.es", "", "Manolo", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                 break;
 
         }
@@ -196,7 +223,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     edt.setText("");
                 }
                 break;
-            case R.id.edtPass:
+            case R.id.edtUserPass:
                 edt.setText("");
                 break;
         }
@@ -234,68 +261,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //  createSharedPreferences();
         startActivity(signInIntent);
     }
-
-
-////////////////////////////////////////////////
-
-
-    private Button btn;
-/*
-    private final String _email = "a@a.es";
-    private final String _password = "1111";
-    private final String _user = "javi";
-    private final String _date_signup = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-*/
-    private RequestQueue requestQueue;
-
-    private static final String URL1 = "http://192.168.1.23/crud/user_insert.php";
-
-
-    public void query(final String email,final String password,final String user,final String date_signup) {
-
-        requestQueue = Volley.newRequestQueue(this);
-
-        StringRequest sr = new StringRequest(
-                Request.Method.POST,
-                URL1,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), "Response= " + response, Toast.LENGTH_LONG).show();
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "ERROR= " + error, Toast.LENGTH_LONG).show();
-                        Log.d("DEBUGME",error.getMessage());
-                    }
-                }
-        ) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap();
-                params.put("email", email);
-                params.put("password", password);
-                params.put("name", user);
-                params.put("date_signup", date_signup);
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
-       // Toast.makeText(getApplicationContext(), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"", Toast.LENGTH_LONG).show();
-
-        requestQueue.add(sr);
-    }
-
 
 
 }//End Class

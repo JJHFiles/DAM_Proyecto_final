@@ -48,11 +48,11 @@
         android:layout_height="wrap_content"
         android:text="@string/txtvpass_text"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/edtPass"
-        app:layout_constraintStart_toStartOf="@+id/edtPass" />
+        app:layout_constraintBottom_toTopOf="@+id/edtUserPass"
+        app:layout_constraintStart_toStartOf="@+id/edtUserPass" />
 
     <EditText
-        android:id="@+id/edtPass"
+        android:id="@+id/edtUserPass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -78,7 +78,7 @@
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtPass" />
+        app:layout_constraintTop_toBottomOf="@+id/edtUserPass" />
 
 
     <Button
