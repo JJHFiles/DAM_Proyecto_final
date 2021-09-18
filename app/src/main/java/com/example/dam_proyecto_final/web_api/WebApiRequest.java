@@ -8,8 +8,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,10 +24,14 @@ public class WebApiRequest {
 
     private static final String URL = "http://192.168.1.37/webservice/";
     private int result;
+
+    private int id;
+    private String message;
+
     Context context;
 
     public WebApiRequest(Context context) {
-        this.result = -101;
+        this.result = 0;
         this.context = context;
     }
 
@@ -33,27 +41,41 @@ public class WebApiRequest {
         void onError(int result);
     }
 
+    //Método callback
+    public interface WebApiRequestJsonObjectListener{
+        void onSuccess(int id, String message);
+        void onError(int id, String message);
+    }
+
     //Peticion de inicio/registro mediante NO Google
     public void userInsert(String email, String password, String name, WebApiRequestListener webapirequestlistener){
 
     }
 
     //Peticion de inicio/registro mediante Google
-    public void userInsertG(String email, String name, WebApiRequestListener webapirequestlistener) {
+    public void userInsertG(String email, String name, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_insert_g.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("DEBUGME", "onResponse: response " + response);
+                Log.d("DEBUGME", "userInsertG onResponse: response " + response);
+
                 //Respuesta
-                result = Integer.parseInt(response);
-                webapirequestlistener.onSuccess(result);
+                try {
+                    JSONObject json = new JSONObject(response);
+                    id = json.getInt("id");
+                    message = json.getString("message");
+                } catch (JSONException e) {
+                    webapirequestjsonobjectlistener.onError(-2, "userInsertG JSONException: Error al generar el objeto JSON");
+                }
+
+                webapirequestjsonobjectlistener.onSuccess(id, message);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("DEBUGME", "Volley error: " + error.getMessage());
-                webapirequestlistener.onError(-100);
+                Log.d("DEBUGME", "userInsertG VolleyError: " + error.getMessage());
+                webapirequestjsonobjectlistener.onError(-1, "userInsertG vVolleyError: " + error.getMessage());
             }
         }) {
             @Override

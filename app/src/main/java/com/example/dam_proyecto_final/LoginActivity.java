@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -28,8 +27,6 @@ import com.google.android.gms.tasks.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.sleep;
 
@@ -43,12 +40,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
 
     private WebApiRequest webapirequest;
-
+    private Context context;
     private User user;
 
     private EditText edtuserEmail, edtUserPass;
 
-    private String userEmail = "", userPass = "";
+    private String useremail = "", userPass = "";
 
     private MySqlQuery query;
     private final int timeOut = 1000;
@@ -60,10 +57,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //WebApiRequest
         webapirequest = new WebApiRequest(this);
+        context = getApplicationContext();
 
         // Chequea si el usuario ya existe en el dispositivo
-        deleteAllSharedPreferences();
-        checkSharedPreferences();
+        //deleteAllSharedPreferences(); //Dejamos de borrar para probar el guardado de login
+        //checkSharedPreferences(); // Esta comprobación la realiza onStart();
 
         Log.d("DEBUGME ", "metodo onCreate");
 
@@ -75,17 +73,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignUp = findViewById(R.id.btnSignup);
         btnSignUp.setOnClickListener(this);
 
+        //Boton de pruebas JJ
         btn = findViewById(R.id.btn);
         btn.setOnClickListener(this);
 
 
-/*
-        txtvUserEmail = findViewById(R.id.txtvUserEmail);
-        txtvPass = findViewById(R.id.txtvPass);
-
-        edtUserEmail = findViewById(R.id.edtUserEmail);
-        edtPass = findViewById(R.id.edtPass);
-*/
         //Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -106,14 +98,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
         Log.d("DEBUGME ", "metodo on start");
+
+        //TODO se ve ligeramente la ventana antes de ir a la home, seguramente esta comprobación hab´ra que hacerla en una activity previa
+
+        //Comprobamos si existe previamente un usuario Google logeado
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
-            //   Toast.makeText(this, account.getEmail(), Toast.LENGTH_LONG).show();
-        } else {
-            //   Toast.makeText(this, "No se ha iniciado", Toast.LENGTH_LONG).show();
+        //Comprobamos previamente si existe un usuario por SharedPreferences Logeado
+        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
+        useremail = preferencias.getString("email", null);
+
+        //Si alguno de los dos no es nulo hay inicio de sesión previo
+        if (account != null || useremail != null) {
+            Log.d("DEBUGME ", "LoginActivity onStart: inicio de sesión cacheado");
+            //Iniciamos sesión
+            signIn();
         }
     }
 
@@ -132,55 +131,55 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("DEBUGME ", "firebaseAuthWithGoogle:" + account.getEmail());
 
                 //TODO Comprobar si el usuario que inicia lo tenemos registrado en BBDD, si no es así registrarlo como nuevo usuario sin password
-                webapirequest.userInsertG(account.getEmail(), account.getDisplayName(), new WebApiRequest.WebApiRequestListener() {
+                webapirequest.userInsertG(account.getEmail(), account.getDisplayName(), new WebApiRequest.WebApiRequestJsonObjectListener() {
                     @Override
-                    public void onSuccess(int result) {
-                        if (result == -1) {
-                            Log.d("DEBUGME", "LoginActivity: Login correcto, usuario ya registrado previamente");
-                        } else if (result == 1) {
-                            Log.d("DEBUGME", "LoginActivity: Login correcto, usuario registrado ahora correctamente");
-                        } else if (result == -200){
-                            Log.d("DEBUGME", "LoginActivity: Login fallido, error en la query PHP");
+                    public void onSuccess(int id, String message) {
+                        if (id > 0) {
+                            Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+
+                            //Guardamos el usuario en las SharedPreferences
+                            SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("email", account.getEmail());
+                            editor.putString("name", account.getDisplayName());
+                            editor.apply();
+
+                            //Iniciamos sesión
+                            signIn();
+                        } else if (id < 0) {
+                            Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+                            Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
                         }
-                        //Iniciamos sesión
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        //TODO crear instancia de user y pasarla como bundle
-                        startActivity(intent);
                     }
 
                     @Override
-                    public void onError(int result) {
-                        if (result == -100) {
-                            Log.d("DEBUGME", "LoginActivity: Login fallido, error en la petición");
-                        } else {
-                            Log.d("DEBUGME", "LoginActivity: Login fallido, error desconocido");
-                        }
+                    public void onError(int id, String message) {
+                        Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+                        Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
                     }
                 });
-//
+/*                PRUEBAS DE JAVIER
+                query = new MySqlQuery(getApplicationContext());
+                query.insertUser(account.getEmail(),
+                        "",
+                        account.getFamilyName(),
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText
+                                (getApplicationContext(),
+                                        query.getResult() + "",
+                                        Toast.LENGTH_LONG).show();
+                        // TODO -200
+                        if (query.getResult() == -100){
+                            Log.d("DEBUGME ", "userInsertG: " + " error al obtener resultados");
+                        }
+                    }
+                }, this,timeOut);
 
 
-                //PRUEBAS DE JAVIER
-//                query = new MySqlQuery(getApplicationContext());
-//                query.insertUser(account.getEmail(),
-//                        "",
-//                        account.getFamilyName(),
-//                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText
-//                                (getApplicationContext(),
-//                                        query.getResult() + "",
-//                                        Toast.LENGTH_LONG).show();
-//                        // TODO -200
-//                        if (query.getResult() == -100){
-//                            Log.d("DEBUGME ", "userInsertG: " + " error al obtener resultados");
-//                        }
-//                    }
-//                }, this,timeOut);
-
-
+            */
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.d("DEBUGME ", "Google sign in failed", e);
@@ -189,7 +188,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
-
 
     //Método de click que invoca al login
     @Override
@@ -251,10 +249,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // Chequea si ya existe el usuario creado
     private void checkSharedPreferences() {
         SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        userEmail = preferencias.getString("email", "vacio");
+        useremail = preferencias.getString("email", "vacio");
         userPass = preferencias.getString("pass", "vacio");
 
-        if (userEmail.equals("vacio")) {
+        if (useremail.equals("vacio")) {
             // TODO Lanzar el tutorial si el usuario no esta creado y es la primera vez que abre la app (Controlarlo también con Shared preferences).
             // TODO Controlar si el usuario esta logeado con Google
             //Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
@@ -267,7 +265,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
     // Utilidad de desarrollo, solo para tester
     private void deleteAllSharedPreferences() {
         SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
@@ -275,9 +272,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Toast.makeText(this, "Shared Preferences eliminadas", Toast.LENGTH_LONG).show();
     }
 
-    //Método de que invoca el Intent para pantalla de iniciar sesión usuarios No-Google
+    //Método de que invoca el Intent para pantalla de iniciar sesión
     private void signIn() {
         Intent signInIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         //  createSharedPreferences();
         startActivity(signInIntent);
     }
