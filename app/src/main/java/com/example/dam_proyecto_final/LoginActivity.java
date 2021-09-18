@@ -18,6 +18,7 @@ import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.home.model.User;
 import com.example.dam_proyecto_final.registry.RegistryActivity;
 import com.example.dam_proyecto_final.web_api.MySqlQuery;
+import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_SIGN_IN = 1, C_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
+    private WebApiRequest webapirequest;
 
     private User user;
 
@@ -49,12 +51,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String userEmail = "", userPass = "";
 
     private MySqlQuery query;
-    private final int timeOut=1000;
+    private final int timeOut = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //WebApiRequest
+        webapirequest = new WebApiRequest(this);
 
         // Chequea si el usuario ya existe en el dispositivo
         deleteAllSharedPreferences();
@@ -127,40 +132,54 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("DEBUGME ", "firebaseAuthWithGoogle:" + account.getEmail());
 
                 //TODO Comprobar si el usuario que inicia lo tenemos registrado en BBDD, si no es así registrarlo como nuevo usuario sin password
-                query = new MySqlQuery(getApplicationContext());
-                query.insertUser(account.getEmail(),
-                        "",
-                        account.getFamilyName(),
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-
-
-                new Handler().postDelayed(new Runnable() {
+                webapirequest.userInsertG(account.getEmail(), account.getDisplayName(), new WebApiRequest.WebApiRequestListener() {
                     @Override
-                    public void run() {
-
-                        Toast.makeText
-                                (getApplicationContext(),
-                                        query.getResult() + "",
-                                        Toast.LENGTH_LONG).show();
-
-                        // TODO -200
-                        if (query.getResult() == -100){
-                            Log.d("DEBUGME ", "userInsertG: " + " error al obtener resultados");
-
+                    public void onSuccess(int result) {
+                        if (result == -1) {
+                            Log.d("DEBUGME", "LoginActivity: Login correcto, usuario ya registrado previamente");
+                        } else if (result == 1) {
+                            Log.d("DEBUGME", "LoginActivity: Login correcto, usuario registrado ahora correctamente");
+                        } else if (result == -200){
+                            Log.d("DEBUGME", "LoginActivity: Login fallido, error en la query PHP");
                         }
-
+                        //Iniciamos sesión
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        //TODO crear instancia de user y pasarla como bundle
+                        startActivity(intent);
                     }
 
-                }, this,timeOut);
+                    @Override
+                    public void onError(int result) {
+                        if (result == -100) {
+                            Log.d("DEBUGME", "LoginActivity: Login fallido, error en la petición");
+                        } else {
+                            Log.d("DEBUGME", "LoginActivity: Login fallido, error desconocido");
+                        }
+                    }
+                });
+//
 
 
+                //PRUEBAS DE JAVIER
+//                query = new MySqlQuery(getApplicationContext());
+//                query.insertUser(account.getEmail(),
+//                        "",
+//                        account.getFamilyName(),
+//                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText
+//                                (getApplicationContext(),
+//                                        query.getResult() + "",
+//                                        Toast.LENGTH_LONG).show();
+//                        // TODO -200
+//                        if (query.getResult() == -100){
+//                            Log.d("DEBUGME ", "userInsertG: " + " error al obtener resultados");
+//                        }
+//                    }
+//                }, this,timeOut);
 
-
-
-                //Iniciamos sesión
-                Intent intent = new Intent(this, HomeActivity.class);
-                //TODO crear instancia de user y pasarla como bundle
-                startActivity(intent);
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -237,7 +256,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (userEmail.equals("vacio")) {
             // TODO Lanzar el tutorial si el usuario no esta creado y es la primera vez que abre la app (Controlarlo también con Shared preferences).
-            Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
+            // TODO Controlar si el usuario esta logeado con Google
+            //Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
 
         } else /*if(
                 edtuserEmail.getText().toString().equals(email)
