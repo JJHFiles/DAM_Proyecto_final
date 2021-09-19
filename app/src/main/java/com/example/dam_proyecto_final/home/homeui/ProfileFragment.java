@@ -42,11 +42,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private LinearLayout lytchangepsw;
     private LinearLayout lytsignoff;
 
-
-//    Pruebas JJ
-//    private TextView txtv;
-    private String email="vacio";
-    private String pass="vacio";
+    private TextView tvName;
+    private String email="vacio",pass="vacio",name="vacio";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -78,6 +75,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         readSharedPreferences();
+
     }
 
     @Override
@@ -92,9 +90,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         lytsignoff = view.findViewById(R.id.lytsignoff);
         lytsignoff.setOnClickListener(this);
 
+        tvName= view.findViewById(R.id.tvName);
+        tvName.setText(name);
         // Pruebas JJ
-        //txtv = view.findViewById(R.id.txtv);
-        //txtv.setText(email +" - "+ pass);
+
 
         return view;
     }
@@ -104,6 +103,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         preferencias = getActivity().getSharedPreferences("savedData", Context.MODE_PRIVATE);
         email= preferencias.getString("email","vacio");
         pass= preferencias.getString("pass","vacio");
+        name= preferencias.getString("name","vacio");
     }
 
     @Override

@@ -14,9 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dam_proyecto_final.home.HomeActivity;
-import com.example.dam_proyecto_final.home.model.User;
 import com.example.dam_proyecto_final.registry.RegistryActivity;
-import com.example.dam_proyecto_final.web_api.MySqlQuery;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,14 +23,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import static java.lang.Thread.sleep;
-
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
-    private Button btn;
 
     private Button btnsignGoogle, btnSignIn, btnSignUp;
 
@@ -41,14 +33,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private WebApiRequest webapirequest;
     private Context context;
-    private User user;
+
 
     private EditText edtuserEmail, edtUserPass;
 
-    private String useremail = "", userPass = "";
+    private String userEmail = "", userPass = "";
 
-    private MySqlQuery query;
-    private final int timeOut = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +63,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignUp = findViewById(R.id.btnSignup);
         btnSignUp.setOnClickListener(this);
 
-        //Boton de pruebas JJ
-        btn = findViewById(R.id.btn);
-        btn.setOnClickListener(this);
-
 
         //Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -98,6 +84,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
         Log.d("DEBUGME ", "metodo on start");
 
         //TODO se ve ligeramente la ventana antes de ir a la home, seguramente esta comprobación hab´ra que hacerla en una activity previa
@@ -106,10 +94,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         //Comprobamos previamente si existe un usuario por SharedPreferences Logeado
         SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        useremail = preferencias.getString("email", null);
+        userEmail = preferencias.getString("email", null);
 
         //Si alguno de los dos no es nulo hay inicio de sesión previo
-        if (account != null || useremail != null) {
+        if (account != null || userEmail != null) {
             Log.d("DEBUGME ", "LoginActivity onStart: inicio de sesión cacheado");
             //Iniciamos sesión
             signIn();
@@ -158,36 +146,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
                     }
                 });
-/*                PRUEBAS DE JAVIER
-                query = new MySqlQuery(getApplicationContext());
-                query.insertUser(account.getEmail(),
-                        "",
-                        account.getFamilyName(),
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText
-                                (getApplicationContext(),
-                                        query.getResult() + "",
-                                        Toast.LENGTH_LONG).show();
-                        // TODO -200
-                        if (query.getResult() == -100){
-                            Log.d("DEBUGME ", "userInsertG: " + " error al obtener resultados");
-                        }
-                    }
-                }, this,timeOut);
 
-
-            */
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.d("DEBUGME ", "Google sign in failed", e);
                 //Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
                 //txtvdebug.setText(e.getMessage());
             }
+        } else {
+            Toast.makeText(context, "requestCode != RC_SIGN_IN", Toast.LENGTH_LONG).show();
+
         }
     }
+
 
     //Método de click que invoca al login
     @Override
@@ -199,11 +170,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.btnSignin:
+
+                // Si se cumplen formato y tamaño de contraseña
                 if (Patterns.EMAIL_ADDRESS.matcher(edtuserEmail.getText().toString()).matches()
                         && !edtUserPass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
                         && edtUserPass.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4
                 {
-                    checkSharedPreferences();
+                    // Si el usuario esta en sharedPreferences y en bd
+                    if (checkSharedPreferences() && isUserEmailInBD(edtUserPass.getText().toString())) {
+                        signIn();
+                    } else {
+                        Toast.makeText(this, "El usuario no existe en la BD, registrese primero, gracias", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.login_failure), Toast.LENGTH_LONG).show();
 
@@ -213,11 +191,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btnSignup:
                 Intent registryIntent = new Intent(getApplicationContext(), RegistryActivity.class);
                 startActivity(registryIntent);
-                break;
-
-            case R.id.btn:
-                query = new MySqlQuery(getApplicationContext());
-                query.insertUser("juan@hh.es", "", "Manolo", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                 break;
 
         }
@@ -247,23 +220,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     // Chequea si ya existe el usuario creado
-    private void checkSharedPreferences() {
+    private boolean checkSharedPreferences() {
         SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        useremail = preferencias.getString("email", "vacio");
+        userEmail = preferencias.getString("email", "vacio");
         userPass = preferencias.getString("pass", "vacio");
 
-        if (useremail.equals("vacio")) {
-            // TODO Lanzar el tutorial si el usuario no esta creado y es la primera vez que abre la app (Controlarlo también con Shared preferences).
-            // TODO Controlar si el usuario esta logeado con Google
-            //Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
+        if (userEmail.equals("vacio")) {
+            Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
+            return false;
 
-        } else /*if(
-                edtuserEmail.getText().toString().equals(email)
-                && edtPass.getText().toString().equals(pass)
-               )*/ {
-            signIn();
+        } else if (edtuserEmail.getText().toString().equals(userEmail) && edtUserPass.getText().toString().equals(userPass)) {
+            return true; // con true puede entrar en sesion si posteriormente se comprueba que el ususario existe en la bd
+
+        } else {
+            return false;
         }
     }
+
+    public boolean isUserEmailInBD(String userEmail) {
+
+        // TODO get userEmail from bd, comprobar si existe userEmail en bd
+        return true;
+    }
+
 
     // Utilidad de desarrollo, solo para tester
     private void deleteAllSharedPreferences() {

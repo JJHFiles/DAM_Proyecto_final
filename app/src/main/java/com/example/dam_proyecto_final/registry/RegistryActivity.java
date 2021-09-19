@@ -1,8 +1,10 @@
 package com.example.dam_proyecto_final.registry;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.HomeActivity;
+import com.example.dam_proyecto_final.web_api.WebApiRequest;
 
 public class RegistryActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,14 +25,16 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     private Button btnCancel, btnContinue;
     private int step = 0; //0->name, 1->email, 2->pass first, 3->pass second
 
-    private String name = "No introducido", email = "No introducido", pass = "";
+    private String userName = "No introducido", userEmail = "No introducido", userPass = "";
+
+    private WebApiRequest webapirequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registry);
 
-        pass=getResources().getString(R.string.edtpass_text);
+        userPass = getResources().getString(R.string.edtpass_text);
 
         //Muestra flecha de retroceso del ActionBar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -40,6 +45,9 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         btnContinue = findViewById(R.id.btnContinue);
         btnCancel.setOnClickListener(this);
         btnContinue.setOnClickListener(this);
+
+        //WebApiRequest
+        webapirequest = new WebApiRequest(this);
 
     }
 
@@ -62,27 +70,27 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                         // Se comprueba que se introduzca  como minimo 1 caracter
                         if (edtInput.getText().toString().length() >= getResources().getInteger(R.integer.min_name_length)) //1
                         {
-                            name=edtInput.getText().toString();
+                            userName = edtInput.getText().toString();
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
                             edtInput.setText("");
                             edtInput.setHint(getResources().getString(R.string.edtInput_email));
 
                             step = 1;
 
-                        }else{
+                        } else {
                             Toast.makeText(this, R.string.name_empty, Toast.LENGTH_LONG).show();
                         }
                         break;
 
                     case 1:
-                        if(Patterns.EMAIL_ADDRESS.matcher(edtInput.getText().toString()).matches()) {
-                            email=edtInput.getText().toString();
+                        if (Patterns.EMAIL_ADDRESS.matcher(edtInput.getText().toString()).matches()) {
+                            userEmail = edtInput.getText().toString();
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
                             edtInput.setText("");
                             edtInput.setHint(getResources().getString(R.string.edtInput_pass));
 
                             step = 2;
-                        }else{
+                        } else {
                             Toast.makeText(this, R.string.email_NoMatch, Toast.LENGTH_LONG).show();
                         }
                         break;
@@ -92,23 +100,30 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                                 && edtInput.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4)
                         {
                             step = 3;
-                            pass=edtInput.getText().toString();
+                            userPass = edtInput.getText().toString();
                             edtInput.setText(R.string.btnContinue_Finalize);
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passSecond));
                             edtInput.setText("");
                             edtInput.setHint(getResources().getString(R.string.edtInput_pass));
 
 
-                        }else{
+                        } else {
                             Toast.makeText(this, R.string.password_failure, Toast.LENGTH_LONG).show();
 
                         }
                         break;
 
                     case 3:
-                        if (edtInput.getText().toString().equals(pass)) {
+                        if (edtInput.getText().toString().equals(userPass)) {
+
+                            // Graba el usuario en las Shared preferences
                             createSharedPreferences();
-                            //register()
+
+                            // Si el usuario no exise en la bd lo crea nuevo
+                            if (!getUserFromBD().equals(userEmail)) {
+                                isertUserInBD();
+                            }
+
                             signIn();
                         } else {
                             Toast.makeText(this, R.string.pass_NotEquals, Toast.LENGTH_LONG).show();
@@ -122,10 +137,64 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     private void createSharedPreferences() {
         SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("name", name);
-        editor.putString("email", email);
-        editor.putString("pass", pass);
+        editor.putString("name", userName);
+        editor.putString("email", userEmail);
+        editor.putString("pass", userPass);
         editor.apply();
+    }
+
+    // NO SE USA - Chequea si ya existe el usuario creado y hace singIn
+    private void checkSharedPreferences() {
+        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
+        String user = preferencias.getString("email", "vacio");
+        String pass = preferencias.getString("pass", "vacio");
+
+        if (userEmail.equals("vacio")) {
+            // TODO Lanzar el tutorial si el usuario no esta creado y es la primera vez que abre la app (Controlarlo también con Shared preferences).
+            // TODO Controlar si el usuario esta logeado con Google
+
+            Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
+
+        } else if (userEmail.equals(user) && userPass.equals(pass)) {
+            signIn();
+        }
+    }
+
+    public String getUserFromBD() {
+        String user = "vacio";
+        // TODO get user from bd
+        return user;
+    }
+
+    public void isertUserInBD() {
+        webapirequest.userInsert(userEmail, userPass, userName, new WebApiRequest.WebApiRequestJsonObjectListener() {
+            @Override
+            public void onSuccess(int id, String message) {
+                if (id > 0) {
+                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+
+                    //Guardamos el usuario en las SharedPreferences
+                    SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("email", userEmail);
+                    editor.putString("password", userPass);
+                    editor.putString("name", userName);
+                    editor.apply();
+
+                    //Iniciamos sesión
+                    signIn();
+                } else if (id < 0) {
+                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+                    Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(int id, String message) {
+                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+                Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     //Método de que invoca el Intent para pantalla de iniciar sesión usuarios No-Google
@@ -145,7 +214,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     // Retrocede a la opc anterior dentro de la misma actividad
     @Override
     public void onBackPressed() {
-     step--;
+        step--;
         switch (step) {
             case -1:
                 // Cierra la actividad y vuelve  la ventana login
@@ -173,6 +242,4 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
-
-
 }

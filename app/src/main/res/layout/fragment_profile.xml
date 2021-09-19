@@ -28,30 +28,30 @@
         app:layout_constraintTop_toTopOf="@+id/prfbanner" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvGreeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="Hola"
         android:textColor="@color/white"
-        android:textSize="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvName"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/prfbanner" />
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:text="Maria"
+        android:text="Unkwow"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:textSize="40dp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/prfbanner"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/tvGreeting" />
 
     <!--    Mis datos-->
     <LinearLayout
