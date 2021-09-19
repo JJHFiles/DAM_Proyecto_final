@@ -45,6 +45,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Quitar cabecera
+        getSupportActionBar().hide();
+
         //WebApiRequest
         webapirequest = new WebApiRequest(this);
         context = getApplicationContext();
@@ -84,8 +87,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
         Log.d("DEBUGME ", "metodo on start");
 
         //TODO se ve ligeramente la ventana antes de ir a la home, seguramente esta comprobación hab´ra que hacerla en una activity previa
