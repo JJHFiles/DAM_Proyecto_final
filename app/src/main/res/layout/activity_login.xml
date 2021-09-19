@@ -10,10 +10,10 @@
 
     <ImageView
         android:id="@+id/imgvLogo"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="100dp"
-        android:layout_marginTop="32dp"
-        android:src="@drawable/logo"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/ic_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="16dp"
         android:inputType="textWebEmailAddress"
         android:text="@string/edtuseremail_text"
@@ -67,15 +67,13 @@
 
     <Button
         android:id="@+id/btnSignin"
+        style="@style/PrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/round_button"
         android:text="@string/btnsignin_text"
-        android:textColor="@color/black"
-        app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtUserPass" />
@@ -83,27 +81,24 @@
 
     <Button
         android:id="@+id/btnSignGoogle"
+        style="@style/SecondaryButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/round_button"
         android:text="@string/btnsigngoogle"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        app:backgroundTint="@null"
         app:icon="@drawable/btn_google"
         app:iconGravity="textStart"
-        app:iconSize="24dp"
+        app:iconSize="16dp"
         app:iconTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSignin" />
 
     <Button
         android:id="@+id/btnSignup"
+        style="@style/SecondaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -111,8 +106,6 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/round_button"
         android:text="@string/btnsignup_text"
-        android:textColor="@color/black"
-        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -156,18 +149,6 @@
         app:layout_constraintStart_toEndOf="@+id/linearLayout2"
         app:layout_constraintTop_toBottomOf="@+id/btnSignin"
         app:layout_constraintVertical_bias="0.555" />
-
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/txtvUserEmail"
-        app:layout_constraintEnd_toStartOf="@+id/imgvLogo"
-        app:layout_constraintHorizontal_bias="0.258"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

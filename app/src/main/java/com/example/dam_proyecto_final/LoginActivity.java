@@ -55,6 +55,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Quitar cabecera
+        getSupportActionBar().hide();
+
         //WebApiRequest
         webapirequest = new WebApiRequest(this);
         context = getApplicationContext();
@@ -72,11 +75,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignIn.setOnClickListener(this);
         btnSignUp = findViewById(R.id.btnSignup);
         btnSignUp.setOnClickListener(this);
-
-        //Boton de pruebas JJ
-        btn = findViewById(R.id.btn);
-        btn.setOnClickListener(this);
-
 
         //Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -213,11 +211,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btnSignup:
                 Intent registryIntent = new Intent(getApplicationContext(), RegistryActivity.class);
                 startActivity(registryIntent);
-                break;
-
-            case R.id.btn:
-                query = new MySqlQuery(getApplicationContext());
-                query.insertUser("juan@hh.es", "", "Manolo", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                 break;
 
         }
