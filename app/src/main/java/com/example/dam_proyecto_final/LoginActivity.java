@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText edtuserEmail, edtUserPass;
 
-    private String userEmail = "", userPass = "";
+    private String userEmail = "", userPass = "",userName="";
 
 
     @Override
@@ -176,8 +176,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         && !edtUserPass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
                         && edtUserPass.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4
                 {
-                    // Si el usuario esta en sharedPreferences y en bd
-                    if (checkSharedPreferences() && isUserEmailInBD(edtUserPass.getText().toString())) {
+                    // Si el usuario esta en bd
+                    if (isUserEmailInBD(edtUserPass.getText().toString())) {
+                        SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("email", userEmail);
+                        editor.putString("name", userPass);
+                        editor.putString("name", "Leer user de bd");
+                        editor.apply();
                         signIn();
                     } else {
                         Toast.makeText(this, "El usuario no existe en la BD, registrese primero, gracias", Toast.LENGTH_LONG).show();
@@ -240,6 +246,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public boolean isUserEmailInBD(String userEmail) {
 
         // TODO get userEmail from bd, comprobar si existe userEmail en bd
+        // TODO get userName from BD to put in Sharedprefernces
         return true;
     }
 
@@ -250,6 +257,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         preferencias.edit().clear().apply();
         Toast.makeText(this, "Shared Preferences eliminadas", Toast.LENGTH_LONG).show();
     }
+
+
 
     //Método de que invoca el Intent para pantalla de iniciar sesión
     private void signIn() {

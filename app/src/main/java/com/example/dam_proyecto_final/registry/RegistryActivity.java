@@ -120,9 +120,9 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             createSharedPreferences();
 
                             // Si el usuario no exise en la bd lo crea nuevo
-                            if (!getUserFromBD().equals(userEmail)) {
+
                                 isertUserInBD();
-                            }
+
 
                             signIn();
                         } else {
@@ -160,11 +160,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public String getUserFromBD() {
-        String user = "vacio";
-        // TODO get user from bd
-        return user;
-    }
+
 
     public void isertUserInBD() {
         webapirequest.userInsert(userEmail, userPass, userName, new WebApiRequest.WebApiRequestJsonObjectListener() {
