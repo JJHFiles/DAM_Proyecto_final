@@ -22,8 +22,8 @@ import java.util.Map;
 
 public class WebApiRequest {
 
-    private static final String URL = "http://192.168.1.37/webservice/";
-    private int result;
+    private static final String URL = "http://192.168.1.23/webservice/";
+
 
     private int id;
     private String message;
@@ -31,7 +31,6 @@ public class WebApiRequest {
     Context context;
 
     public WebApiRequest(Context context) {
-        this.result = 0;
         this.context = context;
     }
 
@@ -48,7 +47,53 @@ public class WebApiRequest {
     }
 
     //Peticion de inicio/registro mediante NO Google
-    public void userInsert(String email, String password, String name, WebApiRequestListener webapirequestlistener){
+    public void userInsert(String email, String pass, String name, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_insert.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "userInsert onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    JSONObject json = new JSONObject(response);
+                    id = json.getInt("id");
+                    message = json.getString("message");
+                } catch (JSONException e) {
+                    webapirequestjsonobjectlistener.onError(-2, "userInsert JSONException: Error al generar el objeto JSON");
+                }
+
+                webapirequestjsonobjectlistener.onSuccess(id, message);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "userInsert VolleyError: " + error.getMessage());
+                webapirequestjsonobjectlistener.onError(-1, "userInsert vVolleyError: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Date date = new Date();
+                String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+                Log.d("DEBUGME", "getparams: " + email + " " + name + " " + now);
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", pass);
+                params.put("name", name);
+                params.put("date_signup", now);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
 
     }
 
