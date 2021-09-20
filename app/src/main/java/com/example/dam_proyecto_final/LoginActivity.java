@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //deleteAllSharedPreferences(); //Dejamos de borrar para probar el guardado de login
         //checkSharedPreferences(); // Esta comprobación la realiza onStart();
 
+
         Log.d("DEBUGME ", "metodo onCreate");
 
         //Instanciamos botones establecemos el listeners
@@ -264,6 +265,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //Método de que invoca el Intent para pantalla de iniciar sesión
     private void signIn() {
         Intent signInIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        //TODO este intent no tiene que permitir volver atras (ahora si lo permite)
         signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         //  createSharedPreferences();
         startActivity(signInIntent);

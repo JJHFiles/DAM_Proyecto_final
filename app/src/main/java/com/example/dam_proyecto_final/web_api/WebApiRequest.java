@@ -108,6 +108,7 @@ public class WebApiRequest {
                 //Respuesta
                 try {
                     JSONObject json = new JSONObject(response);
+
                     id = json.getInt("id");
                     message = json.getString("message");
                 } catch (JSONException e) {
@@ -131,7 +132,7 @@ public class WebApiRequest {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
                 params.put("name", name);
-                params.put("date_signup", now);
+                params.put("date_signup", "a");
 
                 return params;
             }
