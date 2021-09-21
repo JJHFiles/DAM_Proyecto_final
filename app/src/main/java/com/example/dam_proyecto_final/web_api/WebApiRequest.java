@@ -8,7 +8,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -30,18 +29,21 @@ public class WebApiRequest {
 
     Context context;
 
+    public boolean isUserInBD = false;
+
     public WebApiRequest(Context context) {
         this.context = context;
     }
 
     //Método callback
-    public interface WebApiRequestListener{
+    public interface WebApiRequestListener {
         void onSuccess(int result);
+
         void onError(int result);
     }
 
     //Método callback
-    public interface WebApiRequestJsonObjectListener{
+    public interface WebApiRequestJsonObjectListener {
         void onSuccess(int id, String message);
         void onError(int id, String message);
     }
@@ -97,13 +99,59 @@ public class WebApiRequest {
 
     }
 
+    //Comprobacion, si existe el usuario creado en BD
+    public void isUserInBd(String email, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_getEmail.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "userGetEmail onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    JSONObject json = new JSONObject(response);
+                    id = json.getInt("id");
+                    message = json.getString("message");
+                } catch (JSONException e) {
+                    webapirequestjsonobjectlistener.onError(-2, "userGetEmail JSONException: Error al generar el objeto JSON");
+                }
+
+                webapirequestjsonobjectlistener.onSuccess(id, message);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "userInsert VolleyError: " + error.getMessage());
+                webapirequestjsonobjectlistener.onError(-1, "userGetEmail vVolleyError: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Log.d("DEBUGME", "getparams: " + email);
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+
+    }
+
     //Peticion de inicio/registro mediante Google
     public void userInsertG(String email, String name, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_insert_g.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("DEBUGME", "userInsertG onResponse: response " + response);
+                Log.d("DEBUGME", "getEmail onResponse: response " + response);
 
                 //Respuesta
                 try {

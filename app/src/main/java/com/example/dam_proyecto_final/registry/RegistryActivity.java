@@ -117,9 +117,9 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                         if (edtInput.getText().toString().equals(userPass)) {
 
                             // Graba el usuario en las Shared preferences
-                            createSharedPreferences();
+                          //  createSharedPreferences();
 
-                            // Si el usuario no exise en la bd lo crea nuevo
+                            // Si el usuario no exise en la bd lo crea nuevo y graba shared preferences
 
                                 isertUserInBD();
 
@@ -133,20 +133,23 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                 break; //fin de -> case R.id.btnContinue:
         }
     }
-
+/*
     private void createSharedPreferences() {
         SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("name", userName);
+
         editor.putString("email", userEmail);
         editor.putString("pass", userPass);
+        editor.putString("name", userName);
         editor.apply();
     }
+
+ */
 
     // NO SE USA - Chequea si ya existe el usuario creado y hace singIn
     private void checkSharedPreferences() {
         SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        String user = preferencias.getString("email", "vacio");
+        String email = preferencias.getString("email", "vacio");
         String pass = preferencias.getString("pass", "vacio");
 
         if (userEmail.equals("vacio")) {
@@ -155,7 +158,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
             Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
 
-        } else if (userEmail.equals(user) && userPass.equals(pass)) {
+        } else if (userEmail.equals(email) && userPass.equals(pass)) {
             signIn();
         }
     }
@@ -173,7 +176,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                     SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("email", userEmail);
-                    editor.putString("password", userPass);
+                    editor.putString("pass", userPass);
                     editor.putString("name", userName);
                     editor.apply();
 

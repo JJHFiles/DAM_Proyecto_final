@@ -128,7 +128,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
                     mGoogleSignInClient.signOut();
                 }
-                //Si tenemos login por sharedpreferent
+                //Si tenemos login por sharedpreferences
                 SharedPreferences preferencias = context.getSharedPreferences("savedData", Context.MODE_PRIVATE);
                 preferencias.edit().clear().apply();
 
