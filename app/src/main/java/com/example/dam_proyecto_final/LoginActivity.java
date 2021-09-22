@@ -23,13 +23,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.util.Objects;
+
 // Admite login y registro de usuarios Google y NO Google.
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
 
     private Button btnsignGoogle, btnSignIn, btnSignUp;
 
-    private static final int RC_SIGN_IN = 1, C_LOGIN_STR = 1;
+    private static final int RC_SIGN_IN = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
     private WebApiRequest webapirequest;
@@ -48,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         //Quitar cabecera
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         //WebApiRequest
         webapirequest = new WebApiRequest(this);
@@ -214,14 +216,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         userPass = preferencias.getString("pass", "vacio");
         userName = preferencias.getString("name", "vacio");
 
-        if (userEmail.equals("vacio")) {
-            Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
-            return false;
-
-        } else if (edtUserEmail.getText().toString().equals(userEmail) && edtUserPass.getText().toString().equals(userPass)) {
+        if (edtUserEmail.getText().toString().equals(userEmail) && edtUserPass.getText().toString().equals(userPass)) {
             return true; // con true puede entrar en sesion si posteriormente se comprueba que el ususario existe en la bd
 
         } else {
+            Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
             return false;
         }
     }
