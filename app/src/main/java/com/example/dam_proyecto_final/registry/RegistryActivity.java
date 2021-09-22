@@ -115,15 +115,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                     case 3:
                         if (edtInput.getText().toString().equals(userPass)) {
-
-                            // Graba el usuario en las Shared preferences
-                          //  createSharedPreferences();
-
-                            // Si el usuario no exise en la bd lo crea nuevo y graba shared preferences
-
                                 isertUserInBD();
-
-
                             signIn();
                         } else {
                             Toast.makeText(this, R.string.pass_NotEquals, Toast.LENGTH_LONG).show();
@@ -144,7 +136,6 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         editor.apply();
     }
 
- */
 
     // NO SE USA - Chequea si ya existe el usuario creado y hace singIn
     private void checkSharedPreferences() {
@@ -153,9 +144,6 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         String pass = preferencias.getString("pass", "vacio");
 
         if (userEmail.equals("vacio")) {
-            // TODO Lanzar el tutorial si el usuario no esta creado y es la primera vez que abre la app (Controlarlo también con Shared preferences).
-            // TODO Controlar si el usuario esta logeado con Google
-
             Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
 
         } else if (userEmail.equals(email) && userPass.equals(pass)) {
@@ -164,6 +152,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
+ */
 
     public void isertUserInBD() {
         webapirequest.userInsert(userEmail, userPass, userName, new WebApiRequest.WebApiRequestJsonObjectListener() {
@@ -199,7 +188,6 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     //Método de que invoca el Intent para pantalla de iniciar sesión usuarios No-Google
     private void signIn() {
         Intent signInIntent = new Intent(getApplicationContext(), HomeActivity.class);
-        //  createSharedPreferences();
         startActivity(signInIntent);
     }
 

@@ -2,6 +2,7 @@ package com.example.dam_proyecto_final.web_api;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -42,9 +43,15 @@ public class WebApiRequest {
         void onError(int result);
     }
 
-    //Método callback
+    //Método callback1
     public interface WebApiRequestJsonObjectListener {
         void onSuccess(int id, String message);
+        void onError(int id, String message);
+    }
+
+    //Método callback2
+    public interface WebApiRequestJsonObjectListener_getName {
+        void onSuccess(int id, String message, String name);
         void onError(int id, String message);
     }
 
@@ -112,6 +119,7 @@ public class WebApiRequest {
                     JSONObject json = new JSONObject(response);
                     id = json.getInt("id");
                     message = json.getString("message");
+
                 } catch (JSONException e) {
                     webapirequestjsonobjectlistener.onError(-2, "userGetEmail JSONException: Error al generar el objeto JSON");
                 }
@@ -123,6 +131,61 @@ public class WebApiRequest {
             public void onErrorResponse(VolleyError error) {
                 Log.d("DEBUGME", "userInsert VolleyError: " + error.getMessage());
                 webapirequestjsonobjectlistener.onError(-1, "userGetEmail vVolleyError: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Log.d("DEBUGME", "getparams: " + email);
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+
+    }
+
+    public void getNameByEmail(String email, WebApiRequestJsonObjectListener_getName webApiRequestJsonObjectListener_getName) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_getNameByEmail.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "getNameByEmail onResponse: response " + response);
+
+                //Respuesta
+
+                try {
+                    JSONObject json = new JSONObject(response);
+                    JSONObject data = json.getJSONObject("name");
+
+
+                    id = json.getInt("id");
+                    message = json.getString("message");
+                    String  name = data.getString("name");
+                    webApiRequestJsonObjectListener_getName.onSuccess(id, message,name);
+                    Toast.makeText(context, "Resultado nombre= " + message, Toast.LENGTH_LONG).show();
+
+
+                } catch (JSONException e) {
+                    webApiRequestJsonObjectListener_getName.onError(-2, "getNameByEmail JSONException: Error al generar el objeto JSON");
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "getNameByEmail VolleyError: " + error.getMessage());
+                webApiRequestJsonObjectListener_getName.onError(-1, "getNameByEmail vVolleyError: " + error.getMessage());
             }
         }) {
             @Override
@@ -180,7 +243,7 @@ public class WebApiRequest {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
                 params.put("name", name);
-                params.put("date_signup", "a");
+                params.put("date_signup", now);
 
                 return params;
             }
