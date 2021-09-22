@@ -1,6 +1,5 @@
 package com.example.dam_proyecto_final.registry;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 
+// Para el registro de usuarios NO Google
 public class RegistryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView txtvQuestion;
@@ -66,7 +66,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                 switch (step) {
 
-                    case 0:
+                    case 0:// introduccion del nombre, primer paso
                         // Se comprueba que se introduzca  como minimo 1 caracter
                         if (edtInput.getText().toString().length() >= getResources().getInteger(R.integer.min_name_length)) //1
                         {
@@ -74,28 +74,25 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
                             edtInput.setText("");
                             edtInput.setHint(getResources().getString(R.string.edtInput_email));
-
-                            step = 1;
-
+                            step = 1; // se avanza al paso siguiente
                         } else {
                             Toast.makeText(this, R.string.name_empty, Toast.LENGTH_LONG).show();
                         }
                         break;
 
-                    case 1:
+                    case 1:// introduccion del email, segundo paso
                         if (Patterns.EMAIL_ADDRESS.matcher(edtInput.getText().toString()).matches()) {
                             userEmail = edtInput.getText().toString();
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
                             edtInput.setText("");
                             edtInput.setHint(getResources().getString(R.string.edtInput_pass));
-
                             step = 2;
                         } else {
                             Toast.makeText(this, R.string.email_NoMatch, Toast.LENGTH_LONG).show();
                         }
                         break;
 
-                    case 2:
+                    case 2: // introduccion de la contraseña, tercer paso
                         if (!edtInput.getText().toString().contains(getResources().getString(R.string.edtpass_text))
                                 && edtInput.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4)
                         {
@@ -105,15 +102,12 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passSecond));
                             edtInput.setText("");
                             edtInput.setHint(getResources().getString(R.string.edtInput_pass));
-
-
                         } else {
                             Toast.makeText(this, R.string.password_failure, Toast.LENGTH_LONG).show();
-
                         }
                         break;
 
-                    case 3:
+                    case 3: // introduccion de la contraseña por segunda vez, verificacion de coincidencia de caracteres, cuarto y ultimo paso.
                         if (edtInput.getText().toString().equals(userPass)) {
                                 isertUserInBD();
                             signIn();
@@ -125,35 +119,8 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                 break; //fin de -> case R.id.btnContinue:
         }
     }
-/*
-    private void createSharedPreferences() {
-        SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
 
-        editor.putString("email", userEmail);
-        editor.putString("pass", userPass);
-        editor.putString("name", userName);
-        editor.apply();
-    }
-
-
-    // NO SE USA - Chequea si ya existe el usuario creado y hace singIn
-    private void checkSharedPreferences() {
-        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        String email = preferencias.getString("email", "vacio");
-        String pass = preferencias.getString("pass", "vacio");
-
-        if (userEmail.equals("vacio")) {
-            Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
-
-        } else if (userEmail.equals(email) && userPass.equals(pass)) {
-            signIn();
-        }
-    }
-
-
- */
-
+    // introduce el usuario en la bd e inicia sesion No google.
     public void isertUserInBD() {
         webapirequest.userInsert(userEmail, userPass, userName, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override

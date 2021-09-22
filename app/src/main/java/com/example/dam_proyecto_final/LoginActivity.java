@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+// Admite login y registro de usuarios Google y NO Google.
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
 
@@ -39,7 +40,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private String userEmail = "", userPass = "", userName = "";
 
-    private boolean isUserInBD = false;
 
     // TODO Lanzar el tutorial si el usuario no esta creado y es la primera vez que abre la app.
     @Override
@@ -53,11 +53,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //WebApiRequest
         webapirequest = new WebApiRequest(this);
         context = getApplicationContext();
-
-        // Chequea si el usuario ya existe en el dispositivo
-        //deleteAllSharedPreferences(); //Dejamos de borrar para probar el guardado de login
-        //checkSharedPreferences(); // Esta comprobación la realiza onStart();
-
 
         Log.d("DEBUGME ", "metodo onCreate");
 
@@ -168,32 +163,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         //Si el bóton es el de login
         switch (view.getId()) {
-            case R.id.btnSignGoogle:
+            case R.id.btnSignGoogle: // loga con cuenta google
                 googleSignIn();
                 break;
 
-            case R.id.btnSignin:
+            case R.id.btnSignin: // loga con cuenta No google
 
                 // Si se cumplen formato y tamaño de contraseña
                 if (Patterns.EMAIL_ADDRESS.matcher(edtUserEmail.getText().toString()).matches()
                         && !edtUserPass.getText().toString().contains(getResources().getString(R.string.edtpass_text))
                         && edtUserPass.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4
                 {
-                    // Si el usuario esta en bd
-//                    if (
                     userEmail = edtUserEmail.getText().toString();
                     isUserEmailInBD(edtUserEmail.getText().toString());
-//                            )) {
-
-                    //                   } else {
-                    //                      Toast.makeText(this, "El usuario no existe en la BD, registrese primero, gracias", Toast.LENGTH_LONG).show();
-                    //                   }
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.login_failure), Toast.LENGTH_LONG).show();
                 }
                 break;
 
-            case R.id.btnSignup:
+            case R.id.btnSignup: // Entra en el activit de registro de cuenta No google
                 Intent registryIntent = new Intent(getApplicationContext(), RegistryActivity.class);
                 startActivity(registryIntent);
                 break;
@@ -238,14 +226,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    // problema, no devuelve a tiempo delay de bd
+    // comprueba que el email que recibe como parametro esta en la bd, llama al método getNameByEmail(), prara sesion No google
     public void isUserEmailInBD(String userEmail) {
         webapirequest.isUserInBd(userEmail, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
                 if (id > 0) {
-                    Log.d("DEBUGME", "usuario " +userEmail+ " existe, mensa: " + message);
-                    Toast.makeText(context, "usuario " +userEmail+ " existe, mensa: " + message, Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME", "usuario " + userEmail + " existe, mensa: " + message);
+                    Toast.makeText(context, "usuario " + userEmail + " existe, mensa: " + message, Toast.LENGTH_LONG).show();
                     getNameByEmail(userEmail);
                 } else if (id < 0) {
                     Log.d("DEBUGME", "Usuario no existe");
@@ -261,8 +249,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    // cConsulta y recibe el nombre del usuario de la bd, e inicia sesion No google
     public void getNameByEmail(String email) {
-
         webapirequest.getNameByEmail(email, new WebApiRequest.WebApiRequestJsonObjectListener_getName() {
             @Override
             public void onSuccess(int id, String message, String name) {
