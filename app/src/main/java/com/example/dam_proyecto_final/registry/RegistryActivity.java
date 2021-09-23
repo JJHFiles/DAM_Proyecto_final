@@ -16,12 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 // Para el registro de usuarios NO Google
 public class RegistryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView txtvQuestion;
-    private EditText edtInput;
+    private TextInputEditText txInEdTx;
+    private TextInputLayout txInLaHint;
     private Button btnCancel, btnContinue;
     private int step = 0; //0->name, 1->email, 2->pass first, 3->pass second
 
@@ -40,7 +43,8 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         txtvQuestion = findViewById(R.id.txtvQuestion);
-        edtInput = findViewById(R.id.edtInput);
+        txInEdTx = findViewById(R.id.txInEdTx);
+        txInLaHint = findViewById(R.id.txInLaHint);
         btnCancel = findViewById(R.id.btnCancel);
         btnContinue = findViewById(R.id.btnContinue);
         btnCancel.setOnClickListener(this);
@@ -68,12 +72,12 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                     case 0:// introduccion del nombre, primer paso
                         // Se comprueba que se introduzca  como minimo 1 caracter
-                        if (edtInput.getText().toString().length() >= getResources().getInteger(R.integer.min_name_length)) //1
+                        if (txInEdTx.getText().toString().length() >= getResources().getInteger(R.integer.min_name_length)) //1
                         {
-                            userName = edtInput.getText().toString();
+                            userName = txInEdTx.getText().toString();
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
-                            edtInput.setText("");
-                            edtInput.setHint(getResources().getString(R.string.edtInput_email));
+                            txInEdTx.setText("");
+                            txInLaHint.setHint(getResources().getString(R.string.edtInput_email));
                             step = 1; // se avanza al paso siguiente
                         } else {
                             Toast.makeText(this, R.string.name_empty, Toast.LENGTH_LONG).show();
@@ -81,11 +85,11 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                         break;
 
                     case 1:// introduccion del email, segundo paso
-                        if (Patterns.EMAIL_ADDRESS.matcher(edtInput.getText().toString()).matches()) {
-                            userEmail = edtInput.getText().toString();
+                        if (Patterns.EMAIL_ADDRESS.matcher(txInEdTx.getText().toString()).matches()) {
+                            userEmail = txInEdTx.getText().toString();
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
-                            edtInput.setText("");
-                            edtInput.setHint(getResources().getString(R.string.edtInput_pass));
+                            txInEdTx.setText("");
+                            txInLaHint.setHint(getResources().getString(R.string.edtInput_pass));
                             step = 2;
                         } else {
                             Toast.makeText(this, R.string.email_NoMatch, Toast.LENGTH_LONG).show();
@@ -93,22 +97,22 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                         break;
 
                     case 2: // introduccion de la contraseña, tercer paso
-                        if (!edtInput.getText().toString().contains(getResources().getString(R.string.edtpass_text))
-                                && edtInput.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4)
+                        if (!txInEdTx.getText().toString().contains(getResources().getString(R.string.edtpass_text))
+                                && txInEdTx.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4)
                         {
                             step = 3;
-                            userPass = edtInput.getText().toString();
-                            edtInput.setText(R.string.btnContinue_Finalize);
+                            userPass = txInEdTx.getText().toString();
+                            txInEdTx.setText(R.string.btnContinue_Finalize);
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passSecond));
-                            edtInput.setText("");
-                            edtInput.setHint(getResources().getString(R.string.edtInput_pass));
+                            txInEdTx.setText("");
+                            txInLaHint.setHint(getResources().getString(R.string.edtInput_pass));
                         } else {
                             Toast.makeText(this, R.string.password_failure, Toast.LENGTH_LONG).show();
                         }
                         break;
 
                     case 3: // introduccion de la contraseña por segunda vez, verificacion de coincidencia de caracteres, cuarto y ultimo paso.
-                        if (edtInput.getText().toString().equals(userPass)) {
+                        if (txInEdTx.getText().toString().equals(userPass)) {
                                 isertUserInBD();
                             signIn();
                         } else {
@@ -177,22 +181,22 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
             case 0:
                 btnContinue.setText(R.string.btnContinue_Continue);
                 txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_name));
-                edtInput.setText("");
-                edtInput.setHint(getResources().getString(R.string.edtInput_name));
+                txInEdTx.setText("");
+                txInEdTx.setHint(getResources().getString(R.string.edtInput_name));
                 break;
 
             case 1:
                 btnContinue.setText(R.string.btnContinue_Continue);
                 txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
-                edtInput.setText("");
-                edtInput.setHint(getResources().getString(R.string.edtInput_email));
+                txInEdTx.setText("");
+                txInEdTx.setHint(getResources().getString(R.string.edtInput_email));
                 break;
 
             case 2:
                 btnContinue.setText(R.string.btnContinue_Continue);
                 txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
-                edtInput.setText("");
-                edtInput.setHint(getResources().getString(R.string.edtInput_pass));
+                txInEdTx.setText("");
+                txInEdTx.setHint(getResources().getString(R.string.edtInput_pass));
                 break;
         }
     }
