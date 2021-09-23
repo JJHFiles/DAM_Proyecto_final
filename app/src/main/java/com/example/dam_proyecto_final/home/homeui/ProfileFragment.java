@@ -57,13 +57,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      * @param param2 Parameter 2.
      * @return A new instance of fragment ProfileFragment.
      */
-    // TODO: Rename and change types and number of parameters
+    // TODO: Comment (not used) or Rename and change types and number of parameters (if used)
     public static ProfileFragment newInstance(String param1, String param2) {
         ProfileFragment fragment = new ProfileFragment();
+
+        // comentar esto, no se usa
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+        // fin del comentar
+
         return fragment;
     }
 
@@ -128,7 +132,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
                     mGoogleSignInClient.signOut();
                 }
-                //Si tenemos login por sharedpreferent
+                //Si tenemos login por sharedpreferences
                 SharedPreferences preferencias = context.getSharedPreferences("savedData", Context.MODE_PRIVATE);
                 preferencias.edit().clear().apply();
 

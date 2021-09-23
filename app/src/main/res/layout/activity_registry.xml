@@ -12,7 +12,7 @@
         android:id="@+id/txtvTitle"
         android:layout_width="363dp"
         android:layout_height="50dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="40dp"
         android:text="@string/txtvTitle"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -24,52 +24,63 @@
         android:id="@+id/txtvQuestion"
         android:layout_width="363dp"
         android:layout_height="56dp"
-        android:layout_marginTop="8dp"
         android:text="@string/txtvQuestion_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvTitle" />
 
-    <EditText
-        android:id="@+id/edtInput"
-        android:layout_width="363dp"
-        android:layout_height="57dp"
-        android:hint="@string/edtInput_name"
-        android:inputType="text"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txInLaHint"
+        android:layout_width="367dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:hint="Nombre"
+        app:layout_constraintBottom_toTopOf="@+id/btnCancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtvQuestion" />
+        app:layout_constraintTop_toBottomOf="@+id/txtvQuestion"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txInEdTx"
+            android:layout_width="364dp"
+            android:layout_height="56dp"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnCancel"
+        style="@style/SecondaryButton"
         android:layout_width="177dp"
         android:layout_height="51dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/round_button"
+        android:backgroundTint="#BCBCBC"
         android:text="@string/btnCancel"
         android:textColor="@color/black"
-        android:backgroundTint="#BCBCBC"
-        app:backgroundTint="@null"
+        app:layout_constraintEnd_toStartOf="@+id/btnContinue"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtInput" />
+        app:layout_constraintTop_toBottomOf="@+id/txInLaHint" />
 
     <Button
         android:id="@+id/btnContinue"
+        style="@style/PrimaryButton"
         android:layout_width="180dp"
         android:layout_height="51dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/round_button"
+        android:backgroundTint="#048BF3"
         android:text="@string/btnContinue_Continue"
         android:textColor="@color/white"
-        android:backgroundTint="#048BF3"
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toEndOf="@+id/btnCancel"
-        app:layout_constraintTop_toBottomOf="@+id/edtInput"
-        />
+        app:layout_constraintHorizontal_bias="0.962"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txInLaHint" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
