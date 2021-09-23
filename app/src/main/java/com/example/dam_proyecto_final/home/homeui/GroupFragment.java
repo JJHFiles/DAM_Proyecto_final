@@ -1,6 +1,7 @@
 package com.example.dam_proyecto_final.home.homeui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -9,16 +10,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.dam_proyecto_final.LoginActivity;
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.home.homeui.groupui.GroupAddActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link GroupFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GroupFragment extends Fragment {
+public class GroupFragment extends Fragment implements View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,6 +37,8 @@ public class GroupFragment extends Fragment {
 
     private String email="vacio";
     private String pass="vacio";
+
+    private Button btn_FGEAddGroup;
 
     public GroupFragment() {
         // Required empty public constructor
@@ -74,10 +80,10 @@ public class GroupFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-//        View view = inflater.inflate(R.layout.fragment_group, container, false);
-//
         View view = inflater.inflate(R.layout.fragment_group, container, false);
 
+        btn_FGEAddGroup = view.findViewById(R.id.btn_FGEAddGroup);
+        btn_FGEAddGroup.setOnClickListener(this);
 
 
 //        txtv = view.findViewById(R.id.txtv);
@@ -92,5 +98,12 @@ public class GroupFragment extends Fragment {
         preferencias = getActivity().getSharedPreferences("savedData", Context.MODE_PRIVATE);
         email= preferencias.getString("email","vacio");
         pass= preferencias.getString("pass","vacio");
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(view.getContext(), GroupAddActivity.class);
+        startActivity(intent);
+
     }
 }

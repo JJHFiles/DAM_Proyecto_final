@@ -20,7 +20,7 @@
 
     <!--    Button primary-->
     <style name="PrimaryButton" parent="Widget.AppCompat.Button">
-        <item name="backgroundTint">@color/primary_color</item>
+        <item name="android:backgroundTint">@color/primary_color</item>
         <item name="android:textColor">@color/primary_textcolor</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
@@ -40,6 +40,18 @@
         <item name="android:height">48dp</item>
     </style>
 
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/secondary_color</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxBackgroundMode">filled</item>
+    </style>
+
+    <style name="ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/secondary_color</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxBackgroundMode">filled</item>
+    </style>
+
     <!--    Button google-->
 <!--    <style name="GoogleButton" parent="Widget.AppCompat.Button">-->
 <!--        <item name="backgroundTint">@color/secondary_color</item>-->
@@ -53,12 +65,4 @@
 <!--    </style>-->
 
 
-    <style name="Theme.DAM_Proyecto_final.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.DAM_Proyecto_final.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.DAM_Proyecto_final.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

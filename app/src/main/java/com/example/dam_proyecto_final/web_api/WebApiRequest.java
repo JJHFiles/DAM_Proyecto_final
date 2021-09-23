@@ -111,6 +111,7 @@ public class WebApiRequest {
 
                     id = json.getInt("id");
                     message = json.getString("message");
+
                 } catch (JSONException e) {
                     webapirequestjsonobjectlistener.onError(-2, "userInsertG JSONException: Error al generar el objeto JSON");
                 }

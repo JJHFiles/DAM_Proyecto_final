@@ -43,6 +43,6 @@
     <string name="page_activity">Actividad</string>
     <string name="page_profile">Perfil</string>
     <string name="fg_emptytitle">Sin grupos</string>
-    <string name="fg_emptydescription">Aún no tienes ningún grupo creado.<br/>Cuando lo crees este te aparecerá aquí.</string>
+    <string name="fg_emptydescription">Aún no tienes ningún grupo creado.<br />Cuando lo crees este te aparecerá aquí.</string>
 
 </resources>

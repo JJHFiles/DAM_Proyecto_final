@@ -8,6 +8,7 @@
     tools:context=".home.homeui.GroupFragment">
 
     <ImageView
+        android:id="@+id/imgv_FGEmptyIlustration"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="128dp"
@@ -17,32 +18,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/txtv_FGEmptyTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="64dp"
         android:text="@string/fg_emptytitle"
-        android:textStyle="bold"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/txtv_fgemptydescription"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgv_FGEmptyIlustration" />
 
 
     <TextView
-        android:id="@+id/txtv_fgemptydescription"
+        android:id="@+id/txtv_FGEmptyDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="128dp"
-        android:textAlignment="center"
         android:text="@string/fg_emptydescription"
-        app:layout_constraintBottom_toTopOf="@+id/btn_addgroup_empty"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtv_FGEmptyTitle" />
 
     <Button
-        android:id="@+id/btn_addgroup_empty"
+        android:id="@+id/btn_FGEAddGroup"
         style="@style/PrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

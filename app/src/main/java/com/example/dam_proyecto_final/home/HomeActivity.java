@@ -27,13 +27,13 @@ public class HomeActivity extends FragmentActivity implements NavigationBarView.
 
         //Lectura de datos drecibidos desde el el login
 
-        bottom_navigation = findViewById(R.id.bottom_navigation);
+        bottom_navigation = findViewById(R.id.bttmNav);
         bottom_navigation.setOnItemSelectedListener(this);
 
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fcvhome, GroupFragment.class, null)
+                .replace(R.id.fcvHome, GroupFragment.class, null)
                 .addToBackStack(null) // name can be null
                 .commit();
     }
@@ -46,25 +46,25 @@ public class HomeActivity extends FragmentActivity implements NavigationBarView.
         switch (item.getItemId()) {
             case R.id.page_group:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fcvhome, GroupFragment.class, null)
+                        .replace(R.id.fcvHome, GroupFragment.class, null)
                         .addToBackStack(null) // name can be null
                         .commit();
                 return true;
             case R.id.page_activity:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fcvhome, ActivityFragment.class, null)
+                        .replace(R.id.fcvHome, ActivityFragment.class, null)
                         .addToBackStack(null) // name can be null
                         .commit();
                 return true;
             case R.id.page_profile:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fcvhome, ProfileFragment.class, null)
+                        .replace(R.id.fcvHome, ProfileFragment.class, null)
                         .addToBackStack(null) // name can be null
                         .commit();
                 return true;
             default:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fcvhome, GroupFragment.class, null)
+                        .replace(R.id.fcvHome, GroupFragment.class, null)
                         .addToBackStack(null) // name can be null
                         .commit();
                 return true;

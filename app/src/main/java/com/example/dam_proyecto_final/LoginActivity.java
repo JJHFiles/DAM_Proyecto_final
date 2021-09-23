@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_SIGN_IN = 1, C_LOGIN_STR = 1;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private WebApiRequest webapirequest;
+    private WebApiRequest webApiRequest;
     private Context context;
 
 
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().hide();
 
         //WebApiRequest
-        webapirequest = new WebApiRequest(this);
+        webApiRequest = new WebApiRequest(this);
         context = getApplicationContext();
 
         // Chequea si el usuario ya existe en el dispositivo
@@ -120,8 +120,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d("DEBUGME ", "firebaseAuthWithGoogle:" + account.getEmail());
 
+
                 //TODO Comprobar si el usuario que inicia lo tenemos registrado en BBDD, si no es así registrarlo como nuevo usuario sin password
-                webapirequest.userInsertG(account.getEmail(), account.getDisplayName(), new WebApiRequest.WebApiRequestJsonObjectListener() {
+                webApiRequest.userInsertG(account.getEmail(), account.getDisplayName(), new WebApiRequest.WebApiRequestJsonObjectListener() {
                     @Override
                     public void onSuccess(int id, String message) {
                         if (id > 0) {
