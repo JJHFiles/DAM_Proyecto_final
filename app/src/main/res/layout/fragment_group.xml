@@ -37,12 +37,12 @@
         android:layout_marginBottom="128dp"
         android:textAlignment="center"
         android:text="@string/fg_emptydescription"
-        app:layout_constraintBottom_toTopOf="@+id/btn_addgroup_empty"
+        app:layout_constraintBottom_toTopOf="@+id/btn_FGEAddGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btn_addgroup_empty"
+        android:id="@+id/btn_FGEAddGroup"
         style="@style/PrimaryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

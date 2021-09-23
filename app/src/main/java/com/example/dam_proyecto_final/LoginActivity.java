@@ -228,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // comprueba que el email que recibe como parametro esta en la bd, llama al método getNameByEmail(), prara sesion No google
     public void isUserEmailInBD(String userEmail) {
-        webapirequest.isUserInBd(userEmail, new WebApiRequest.WebApiRequestJsonObjectListener() {
+        webApiRequest.isUserInBd(userEmail, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
                 if (id > 0) {
@@ -251,7 +251,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // cConsulta y recibe el nombre del usuario de la bd, e inicia sesion No google
     public void getNameByEmail(String email) {
-        webapirequest.getNameByEmail(email, new WebApiRequest.WebApiRequestJsonObjectListener_getName() {
+        webApiRequest.getNameByEmail(email, new WebApiRequest.WebApiRequestJsonObjectListener_getName() {
             @Override
             public void onSuccess(int id, String message, String name) {
                 if (id > 0) {

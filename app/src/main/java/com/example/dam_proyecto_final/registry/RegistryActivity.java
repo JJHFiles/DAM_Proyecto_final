@@ -113,8 +113,8 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                     case 3: // introduccion de la contraseña por segunda vez, verificacion de coincidencia de caracteres, cuarto y ultimo paso.
                         if (txInEdTx.getText().toString().equals(userPass)) {
-                                isertUserInBD();
-                            signIn();
+                            isertUserInBD();
+                            //signIn();
                         } else {
                             Toast.makeText(this, R.string.pass_NotEquals, Toast.LENGTH_LONG).show();
                         }
@@ -130,7 +130,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onSuccess(int id, String message) {
                 if (id > 0) {
-                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+                    Log.d("DEBUGME", "RegistryActivity onSucess: " + id + " " + message);
 
                     //Guardamos el usuario en las SharedPreferences
                     SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
@@ -143,14 +143,14 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                     //Iniciamos sesión
                     signIn();
                 } else if (id < 0) {
-                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+                    Log.d("DEBUGME", "RegistryActivity onSucess: " + id + " " + message);
                     Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
-                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+                Log.d("DEBUGME", "RegistryActivity onerror: " + id + " " + message);
                 Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
             }
         });
