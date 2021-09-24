@@ -9,15 +9,21 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dam_proyecto_final.Model.Group;
+import com.example.dam_proyecto_final.Model.JsonResponse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WebApiRequest {
@@ -53,6 +59,12 @@ public class WebApiRequest {
     public interface WebApiRequestJsonObjectListener_getName {
         void onSuccess(int id, String message, String name);
         void onError(int id, String message);
+    }
+
+    //Método callback2
+    public interface WebApiRequestJsonObjectArrayListener {
+        void onSuccess(JsonResponse response, List<?> data);
+        void onError(JsonResponse response);
     }
 
     //Peticion de inicio/registro mediante NO Google
@@ -259,4 +271,75 @@ public class WebApiRequest {
         queue.add(sr);
 
     }
+
+    public void getGroupsByEmail(String email, String password, WebApiRequestJsonObjectArrayListener webApiRequestJsonObjectArrayListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "getGroupsByEmail.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "getGroupsByEmail onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    //Obtenemos el JsonResponde Padre
+                    JSONObject json = new JSONObject(response);
+                    //Obtenemos el JsonObject hijo con la respuesta
+                    JSONObject jsonObjectResponse = json.getJSONObject("response");
+                    JsonResponse jsonResponse = new JsonResponse(
+                            jsonObjectResponse.getInt("id"),
+                            jsonObjectResponse.getString("message"));
+
+                    //Creamos la lista de grupos
+                    ArrayList<Group> grupos = new ArrayList<Group>();
+                    if (jsonResponse.getId() > 0){
+                        //Si la respuesta es Positiva hay datos. Obtenemos el JsonArray
+                        JSONArray jsonArrayGroups = json.getJSONArray("groups");
+                        for (int i=0; i<jsonArrayGroups.length(); i++){
+                            //Obtenemos el objeto JSONObjet de grupo individual
+                            JSONObject jsonObjectGroup = jsonArrayGroups.getJSONObject(i);
+                            grupos.add(new Group(
+                                    jsonObjectGroup.getString("groupname"),
+                                    jsonObjectGroup.getString("groupdescription")));
+                        }
+
+                        //Una vez tenemos la respuesta y la lista la retornamos
+                        webApiRequestJsonObjectArrayListener.onSuccess(jsonResponse, grupos);
+                    } else {
+                        //Si la respuesta es negativa devolvemos el error
+                        webApiRequestJsonObjectArrayListener.onError(jsonResponse);
+                    }
+
+                } catch (JSONException e) {
+                    webApiRequestJsonObjectArrayListener.onError(new JsonResponse(-2, "getGroupsByEmail JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "getGroupsByEmail VolleyError: " + error.getMessage());
+                webApiRequestJsonObjectArrayListener.onError(new JsonResponse(-1, "getGroupsByEmail onErrorResponse: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Log.d("DEBUGME", "getparams: " + email + " " + password);
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", password);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+
+    }
+
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.dam_proyecto_final.LoginActivity;
+import com.example.dam_proyecto_final.Model.Group;
+import com.example.dam_proyecto_final.Model.JsonResponse;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.homeui.groupui.GroupAddActivity;
+import com.example.dam_proyecto_final.web_api.WebApiRequest;
+
+import java.nio.file.attribute.GroupPrincipal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +47,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private String pass="vacio";
 
     private Button btn_FGEAddGroup;
+    private Context context;
+
+    private WebApiRequest webApiRequest;
+    private String userEmail;
+    private String userPass;
 
     public GroupFragment() {
         // Required empty public constructor
@@ -81,13 +94,35 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_group, container, false);
+        context = view.getContext();
+
+        SharedPreferences preferencias = context.getSharedPreferences("savedData", Context.MODE_PRIVATE);
+        userEmail = preferencias.getString("email", "vacio");
+        userPass = preferencias.getString("pass", "vacio");
+
+        //Invocamos los grupos
+        webApiRequest = new WebApiRequest(context);
+        webApiRequest.getGroupsByEmail(userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
+            @Override
+            public void onSuccess(JsonResponse response, List<?> data) {
+                Log.d("DEBUGME", response.getId() + " " + response.getMessage());
+                ArrayList<Group> groups = (ArrayList<Group>) data;
+                for (Group g: groups){
+                    Log.d("DEBUGME groups", g.getDescripción());
+                }
+            }
+
+            @Override
+            public void onError(JsonResponse response) {
+
+            }
+        });
 
         btn_FGEAddGroup = view.findViewById(R.id.btn_FGEAddGroup);
         btn_FGEAddGroup.setOnClickListener(this);
 
 
-//        txtv = view.findViewById(R.id.txtv);
-//        txtv.setText(email +" - "+ pass);
+
 
         return view;
     }

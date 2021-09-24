@@ -131,6 +131,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("email", account.getEmail());
                             editor.putString("name", account.getDisplayName());
+                            //TODO habrá que crear pantalla de creación de contraseña en usuarios nuevos de Google
+                            //Necesitamos una contraseña para las consultas
+                            editor.putString("pass", "123456");
                             editor.apply();
 
                             //Iniciamos sesión
