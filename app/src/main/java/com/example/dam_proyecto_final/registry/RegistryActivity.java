@@ -3,6 +3,7 @@ package com.example.dam_proyecto_final.registry;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -78,6 +79,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
                             txInEdTx.setText("");
                             txInLaHint.setHint(getResources().getString(R.string.edtInput_email));
+                            txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
                             step = 1; // se avanza al paso siguiente
                         } else {
                             Toast.makeText(this, R.string.name_empty, Toast.LENGTH_LONG).show();
@@ -90,6 +92,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
                             txInEdTx.setText("");
                             txInLaHint.setHint(getResources().getString(R.string.edtInput_pass));
+                            txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                             step = 2;
                         } else {
                             Toast.makeText(this, R.string.email_NoMatch, Toast.LENGTH_LONG).show();
@@ -105,6 +108,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             txInEdTx.setText(R.string.btnContinue_Finalize);
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passSecond));
                             txInEdTx.setText("");
+                            txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                             txInLaHint.setHint(getResources().getString(R.string.edtInput_pass));
                         } else {
                             Toast.makeText(this, R.string.password_failure, Toast.LENGTH_LONG).show();
@@ -114,7 +118,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                     case 3: // introduccion de la contraseña por segunda vez, verificacion de coincidencia de caracteres, cuarto y ultimo paso.
                         if (txInEdTx.getText().toString().equals(userPass)) {
                             isertUserInBD();
-                            //signIn();
+                            signIn();
                         } else {
                             Toast.makeText(this, R.string.pass_NotEquals, Toast.LENGTH_LONG).show();
                         }
@@ -130,7 +134,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onSuccess(int id, String message) {
                 if (id > 0) {
-                    Log.d("DEBUGME", "RegistryActivity onSucess: " + id + " " + message);
+                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
 
                     //Guardamos el usuario en las SharedPreferences
                     SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
@@ -143,14 +147,14 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                     //Iniciamos sesión
                     signIn();
                 } else if (id < 0) {
-                    Log.d("DEBUGME", "RegistryActivity onSucess: " + id + " " + message);
+                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
                     Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
-                Log.d("DEBUGME", "RegistryActivity onerror: " + id + " " + message);
+                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
                 Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
             }
         });
@@ -182,21 +186,25 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                 btnContinue.setText(R.string.btnContinue_Continue);
                 txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_name));
                 txInEdTx.setText("");
-                txInEdTx.setHint(getResources().getString(R.string.edtInput_name));
+                txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+                txInLaHint.setHint(getResources().getString(R.string.edtInput_name));
+
                 break;
 
             case 1:
                 btnContinue.setText(R.string.btnContinue_Continue);
                 txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
                 txInEdTx.setText("");
-                txInEdTx.setHint(getResources().getString(R.string.edtInput_email));
+                txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+                txInLaHint.setHint(getResources().getString(R.string.edtInput_email));
                 break;
 
             case 2:
                 btnContinue.setText(R.string.btnContinue_Continue);
                 txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
                 txInEdTx.setText("");
-                txInEdTx.setHint(getResources().getString(R.string.edtInput_pass));
+                txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                txInLaHint.setHint(getResources().getString(R.string.edtInput_pass));
                 break;
         }
     }
