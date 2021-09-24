@@ -31,6 +31,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayoutStyle"
         android:id="@+id/txInLaHint"
         android:layout_width="367dp"
         android:layout_height="59dp"
@@ -56,10 +57,7 @@
         android:layout_width="177dp"
         android:layout_height="51dp"
         android:layout_marginTop="60dp"
-        android:background="@drawable/round_button"
-        android:backgroundTint="#BCBCBC"
         android:text="@string/btnCancel"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/btnContinue"
         app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,10 +70,7 @@
         android:layout_height="51dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/round_button"
-        android:backgroundTint="#048BF3"
         android:text="@string/btnContinue_Continue"
-        android:textColor="@color/white"
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.962"
