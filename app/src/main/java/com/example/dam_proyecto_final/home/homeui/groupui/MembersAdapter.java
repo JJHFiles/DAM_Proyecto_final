@@ -1,12 +1,9 @@
 package com.example.dam_proyecto_final.home.homeui.groupui;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -46,7 +43,7 @@ public class MembersAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        view = layoutInflater.inflate(R.layout.listview_members, null);
+        view = layoutInflater.inflate(R.layout.activity_group_add_listview_members_item, null);
 
         TextView txtv_Member = view.findViewById(R.id.txtv_Member);
         txtv_Member.setText(members.get(i));

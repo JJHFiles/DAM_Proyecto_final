@@ -298,6 +298,7 @@ public class WebApiRequest {
                             //Obtenemos el objeto JSONObjet de grupo individual
                             JSONObject jsonObjectGroup = jsonArrayGroups.getJSONObject(i);
                             grupos.add(new Group(
+                                    jsonObjectGroup.getInt("groupid"),
                                     jsonObjectGroup.getString("groupname"),
                                     jsonObjectGroup.getString("groupdescription")));
                         }

@@ -14,7 +14,6 @@ public class JsonResponse {
         return id;
     }
 
-
     public String getMessage() {
         return message;
     }

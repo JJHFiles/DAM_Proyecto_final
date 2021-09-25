@@ -12,16 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.dam_proyecto_final.LoginActivity;
 import com.example.dam_proyecto_final.Model.Group;
 import com.example.dam_proyecto_final.Model.JsonResponse;
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.home.homeui.groupui.GroupAdapter;
 import com.example.dam_proyecto_final.home.homeui.groupui.GroupAddActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 
-import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +50,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private String pass="vacio";
 
     private Button btn_FGEAddGroup;
+    private TextView txtv_FGEmptyTitle;
+    private TextView txtv_FGEmptyDescription;
+    private ListView lstv_FGGroups;
+    private ImageView imgv_FGEmptyAnimation;
+
     private Context context;
 
     private WebApiRequest webApiRequest;
@@ -96,6 +104,15 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_group, container, false);
         context = view.getContext();
 
+        //Instanciamos vistas
+        btn_FGEAddGroup = view.findViewById(R.id.btn_FGAddGroup);
+        btn_FGEAddGroup.setOnClickListener(this);
+        txtv_FGEmptyTitle = view.findViewById(R.id.txtv_FGEmptyTitle);
+        txtv_FGEmptyDescription = view.findViewById(R.id.txtv_FGEmptyDescription);
+        lstv_FGGroups = view.findViewById(R.id.lstv_FGGroups);
+        imgv_FGEmptyAnimation = view.findViewById(R.id.imgv_FGEmptyAnimation);
+
+        //Cogemos el usuario/contraseña para las consultas
         SharedPreferences preferencias = context.getSharedPreferences("savedData", Context.MODE_PRIVATE);
         userEmail = preferencias.getString("email", "vacio");
         userPass = preferencias.getString("pass", "vacio");
@@ -107,22 +124,31 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             public void onSuccess(JsonResponse response, List<?> data) {
                 Log.d("DEBUGME", response.getId() + " " + response.getMessage());
                 ArrayList<Group> groups = (ArrayList<Group>) data;
-                for (Group g: groups){
-                    Log.d("DEBUGME groups", g.getDescripción());
-                }
+//                for (Group g: groups){
+//                    Log.d("DEBUGME groups", g.getDescripción());
+//                }
+                //lstv_FGGroups
+                GroupAdapter groupAdapter = new GroupAdapter(context, groups);
+                lstv_FGGroups.setAdapter(groupAdapter);
+                imgv_FGEmptyAnimation.setVisibility(View.INVISIBLE);
+                lstv_FGGroups.setVisibility(View.VISIBLE);
+
             }
 
             @Override
             public void onError(JsonResponse response) {
+                if (response.getId() == -253){
+                    //Si es -252 es que el usuario no tiene grupos
+                    //Ponemos visibles los textos de empty
+                    txtv_FGEmptyTitle.setVisibility(View.VISIBLE);
+                    txtv_FGEmptyDescription.setVisibility(View.VISIBLE);
 
+                } else {
+                    //Si no ha podido ser cualquier error
+                    Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG);
+                }
             }
         });
-
-        btn_FGEAddGroup = view.findViewById(R.id.btn_FGEAddGroup);
-        btn_FGEAddGroup.setOnClickListener(this);
-
-
-
 
         return view;
     }
