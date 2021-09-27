@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.dam_proyecto_final.Model.Member;
 import com.example.dam_proyecto_final.R;
 
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ import java.util.ArrayList;
 public class MembersAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<String> members;
+    private ArrayList<Member> members;
 
-    public MembersAdapter(Context context, ArrayList<String> members) {
+    public MembersAdapter(Context context, ArrayList<Member> members) {
         super();
         this.context = context;
         this.members = members;
@@ -45,8 +46,20 @@ public class MembersAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         view = layoutInflater.inflate(R.layout.activity_group_add_listview_members_item, null);
 
+        String role = "";
+        if (members.get(i).getRole()==0){
+            role = view.getResources().getString(R.string.role_admin);
+        } else if (members.get(i).getRole()==1){
+            role = view.getResources().getString(R.string.role_editor);
+        } else if (members.get(i).getRole()==2){
+            role = view.getResources().getString(R.string.role_reader);
+        }
+
+
         TextView txtv_Member = view.findViewById(R.id.txtv_Member);
-        txtv_Member.setText(members.get(i));
+        txtv_Member.setText(members.get(i).getEmail());
+        TextView txtv_MemberRole = view.findViewById(R.id.txtv_MemberRole);
+        txtv_MemberRole.setText(role);
         ImageButton imgb_MemberDelete = view.findViewById(R.id.imgb_MemberDelete);
         imgb_MemberDelete.setOnClickListener(new View.OnClickListener() {
             @Override

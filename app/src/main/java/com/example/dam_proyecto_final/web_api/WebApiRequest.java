@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.dam_proyecto_final.Model.Group;
 import com.example.dam_proyecto_final.Model.JsonResponse;
+import com.example.dam_proyecto_final.Model.Member;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,21 +50,27 @@ public class WebApiRequest {
         void onError(int result);
     }
 
-    //Método callback1
+    //Método callback1 Devuelve un String
     public interface WebApiRequestJsonObjectListener {
         void onSuccess(int id, String message);
         void onError(int id, String message);
     }
 
-    //Método callback2
+    //Método callback2 Devuelve id, mensaje y nombre
     public interface WebApiRequestJsonObjectListener_getName {
         void onSuccess(int id, String message, String name);
         void onError(int id, String message);
     }
 
-    //Método callback2
+    //Método callback3 Devuelve una respuesta y una lista
     public interface WebApiRequestJsonObjectArrayListener {
         void onSuccess(JsonResponse response, List<?> data);
+        void onError(JsonResponse response);
+    }
+
+    //Método callback3 Devuelve una respuesta y una lista
+    public interface WebApiRequestJsonResponseListener {
+        void onSuccess(JsonResponse response);
         void onError(JsonResponse response);
     }
 
@@ -226,7 +233,7 @@ public class WebApiRequest {
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_insert_g.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("DEBUGME", "getEmail onResponse: response " + response);
+                Log.d("DEBUGME", "userInsertG onResponse: response " + response);
 
                 //Respuesta
                 try {
@@ -328,6 +335,126 @@ public class WebApiRequest {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
                 params.put("password", password);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+
+    }
+
+    public void getIfEmailExist(String email, WebApiRequestJsonResponseListener webApiRequestJsonResponseListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "getIfEmailExist.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "getIfEmailExist onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    //Obtenemos el JsonResponde Padre
+                    JSONObject json = new JSONObject(response);
+
+                    //Creamos el JsonResponse
+                    JsonResponse jsonResponse = new JsonResponse(
+                            json.getInt("id"),
+                            json.getString("message"));
+
+                    if (jsonResponse.getId() > 0){
+                        webApiRequestJsonResponseListener.onSuccess(jsonResponse);
+                    } else {
+                        webApiRequestJsonResponseListener.onError(jsonResponse);
+                    }
+                } catch (JSONException e) {
+                    webApiRequestJsonResponseListener.onError(new JsonResponse(-2, "getIfEmailExist JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "getGroupsByEmail VolleyError: " + error.getMessage());
+                webApiRequestJsonResponseListener.onError(new JsonResponse(-1, "getIfEmailExist onErrorResponse: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Log.d("DEBUGME", "getparams: " + email);
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+
+    }
+
+    public void addGroup(String email, String password, String groupname, String groupdescription, String groupcurrency, ArrayList<Member> members, WebApiRequestJsonResponseListener webApiRequestJsonResponseListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "addGroup.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "addGroup onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    //Obtenemos el JsonResponde Padre
+                    JSONObject json = new JSONObject(response);
+
+                    //Creamos el JsonResponse
+                    JsonResponse jsonResponse = new JsonResponse(
+                            json.getInt("id"),
+                            json.getString("message"));
+
+                    if (jsonResponse.getId() > 0){
+                        webApiRequestJsonResponseListener.onSuccess(jsonResponse);
+                    } else {
+                        webApiRequestJsonResponseListener.onError(jsonResponse);
+                    }
+                } catch (JSONException e) {
+                    webApiRequestJsonResponseListener.onError(new JsonResponse(-2, "addGroup JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "getGroupsByEmail VolleyError: " + error.getMessage());
+                webApiRequestJsonResponseListener.onError(new JsonResponse(-1, "addGroup onErrorResponse: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Log.d("DEBUGME", "getparams: " + email);
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", password);
+                params.put("groupname", groupname);
+                params.put("groupdescription", groupdescription);
+                params.put("groupcurrency", groupcurrency);
+
+                int c= 0;
+                for (Member m : members){
+                    Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + "member"+c);
+                    params.put("member"+c, m.getEmail());
+                    params.put("role"+c, String.valueOf(m.getRole()));
+                    c++;
+                }
 
                 return params;
             }

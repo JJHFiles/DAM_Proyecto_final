@@ -11,7 +11,7 @@
         android:id="@+id/imgv_FGEmptyAnimation"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="64dp"
         android:src="@drawable/ic_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

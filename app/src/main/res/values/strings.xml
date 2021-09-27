@@ -44,5 +44,10 @@
     <string name="page_profile">Perfil</string>
     <string name="fg_emptytitle">Sin grupos</string>
     <string name="fg_emptydescription">Aún no tienes ningún grupo creado.<br />Cuando lo crees este te aparecerá aquí.</string>
+    <string name="role_noselected">Eliga un rol para el nuevo miembro</string>
+    <string name="userNoDB">El usuario no está registrado</string>
+    <string name="role_admin">Admin</string>
+    <string name="role_editor">Editor</string>
+    <string name="role_reader">Lector</string>
 
 </resources>
