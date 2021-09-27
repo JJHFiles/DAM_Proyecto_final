@@ -448,11 +448,13 @@ public class WebApiRequest {
                 params.put("groupdescription", groupdescription);
                 params.put("groupcurrency", groupcurrency);
 
-                int c= 0;
+                int c= 1;
                 for (Member m : members){
-                    Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + "member"+c);
-                    params.put("member"+c, m.getEmail());
-                    params.put("role"+c, String.valueOf(m.getRole()));
+                    String member = "member"+c;
+                    String role = "role"+c;
+                    Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member + " " + role);
+                    params.put(member, m.getEmail());
+                    params.put(role, String.valueOf(m.getRole()));
                     c++;
                 }
 

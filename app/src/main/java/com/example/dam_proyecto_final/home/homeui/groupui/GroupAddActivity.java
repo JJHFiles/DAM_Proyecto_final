@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,9 +18,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.dam_proyecto_final.LoginActivity;
 import com.example.dam_proyecto_final.Model.JsonResponse;
 import com.example.dam_proyecto_final.Model.Member;
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -157,6 +160,11 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onSuccess(JsonResponse response) {
                             Toast.makeText(context, "Grupo creado correctamente", Toast.LENGTH_LONG).show();
+
+                            //Volvemos al login activity
+                            Intent intent = new Intent(context, HomeActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
 
                         @Override
@@ -164,6 +172,8 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                             Toast.makeText(context, response.getId(), Toast.LENGTH_LONG).show();
                         }
                 });
+            } else {
+                Toast.makeText(this, "Por favor, rellene todos los campos", Toast.LENGTH_LONG).show();
             }
         } else if ( view.getId() == R.id.btn_AGACancel ){
             finish();
