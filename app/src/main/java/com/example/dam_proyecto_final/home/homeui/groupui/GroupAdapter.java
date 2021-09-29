@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.dam_proyecto_final.Model.Group;
+import com.example.dam_proyecto_final.Model.GroupModel;
 import com.example.dam_proyecto_final.R;
 
 import java.util.ArrayList;
@@ -15,28 +15,28 @@ import java.util.ArrayList;
 public class GroupAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Group> groups;
+    private ArrayList<GroupModel> groupModels;
 
-    public GroupAdapter(Context context, ArrayList<Group> groups) {
+    public GroupAdapter(Context context, ArrayList<GroupModel> groupModels) {
         super();
         this.context = context;
-        this.groups = groups;
+        this.groupModels = groupModels;
     }
 
 
     @Override
     public int getCount() {
-        return groups.size();
+        return groupModels.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return groups.get(i);
+        return groupModels.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return groups.get(i).getId();
+        return groupModels.get(i).getId();
     }
 
     @Override
@@ -46,9 +46,9 @@ public class GroupAdapter extends BaseAdapter {
         view = layoutInflater.inflate(R.layout.fragment_group_listview_group_item, null);
 
         TextView txtv_GITitle = view.findViewById(R.id.txtv_GITitle);
-        txtv_GITitle.setText(groups.get(i).getNombre());
+        txtv_GITitle.setText(groupModels.get(i).getNombre());
         TextView txtv_GIDescription = view.findViewById(R.id.txtv_GIDescription);
-        txtv_GIDescription.setText(groups.get(i).getDescripción());
+        txtv_GIDescription.setText(groupModels.get(i).getDescripción());
 
         return view;
     }

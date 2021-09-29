@@ -1,11 +1,11 @@
 package com.example.dam_proyecto_final.Model;
 
-public class Member {
+public class MemberModel {
 
     private String email;
     private int role;
 
-    public Member(String email, int role) {
+    public MemberModel(String email, int role) {
         this.email = email;
         this.role = role;
     }

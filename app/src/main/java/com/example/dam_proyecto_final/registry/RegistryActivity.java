@@ -8,7 +8,6 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +30,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
     private String userName = "No introducido", userEmail = "No introducido", userPass = "";
 
-    private WebApiRequest webapirequest;
+    private WebApiRequest webApiRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         btnContinue.setOnClickListener(this);
 
         //WebApiRequest
-        webapirequest = new WebApiRequest(this);
+        webApiRequest = new WebApiRequest(this);
 
     }
 
@@ -117,8 +116,9 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                     case 3: // introduccion de la contraseña por segunda vez, verificacion de coincidencia de caracteres, cuarto y ultimo paso.
                         if (txInEdTx.getText().toString().equals(userPass)) {
-                            isertUserInBD();
-                            signIn();
+                         //   isertUserInBD();
+                            isUserEmailInBD(userEmail);
+
                         } else {
                             Toast.makeText(this, R.string.pass_NotEquals, Toast.LENGTH_LONG).show();
                         }
@@ -128,9 +128,33 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    // Comprueba si existe el usuario en la bd
+    public void isUserEmailInBD(String userEmail) {
+        webApiRequest.isUserEmailInBd(userEmail, new WebApiRequest.WebApiRequestJsonObjectListener() {
+            @Override
+            public void onSuccess(int id, String message) {
+                if (id ==222) {
+                    Log.d("DEBUGME", "usuario " + userEmail + " existe, mensa: " + message);
+                    Toast.makeText(getApplicationContext(), "usuario " + userEmail + " existe vuelva a intentarlo con otro correo electrónico, mensa: " + message, Toast.LENGTH_LONG).show();
+
+                } else if (id ==223) {
+                    Log.d("DEBUGME", "Usuario no existe, recibido: "+ id);
+                  //  Toast.makeText(getApplicationContext(), "usuario no existe " + id, Toast.LENGTH_LONG).show();
+                    isertUserInBD();
+                }
+            }
+
+            @Override
+            public void onError(int id, String message) {
+                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+                Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     // introduce el usuario en la bd e inicia sesion No google.
     public void isertUserInBD() {
-        webapirequest.userInsert(userEmail, userPass, userName, new WebApiRequest.WebApiRequestJsonObjectListener() {
+        webApiRequest.userInsert(userEmail, userPass, userName, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
                 if (id > 0) {

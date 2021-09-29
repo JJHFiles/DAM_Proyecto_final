@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edtUserEmail.setOnFocusChangeListener(this);
         edtUserPass = findViewById(R.id.edtUserPass);
         edtUserPass.setOnFocusChangeListener(this);
+
     }
 
 
@@ -181,6 +182,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         && edtUserPass.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4
                 {
                     userEmail = edtUserEmail.getText().toString();
+                    userPass=edtUserPass.getText().toString();
                     isUserEmailInBD(edtUserEmail.getText().toString());
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.login_failure), Toast.LENGTH_LONG).show();
@@ -229,17 +231,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    // comprueba que el email que recibe como parametro esta en la bd, llama al método getNameByEmail(), prara sesion No google
+    // comprueba que el email que recibe como parametro esta en la bd, llama al método getNameByEmail(), para sesion No google
     public void isUserEmailInBD(String userEmail) {
-        webApiRequest.isUserInBd(userEmail, new WebApiRequest.WebApiRequestJsonObjectListener() {
+        webApiRequest.isUserEmailInBd(userEmail, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
-                if (id > 0) {
+                if (id ==222) {
                     Log.d("DEBUGME", "usuario " + userEmail + " existe, mensa: " + message);
                     Toast.makeText(context, "usuario " + userEmail + " existe, mensa: " + message, Toast.LENGTH_LONG).show();
                     getNameByEmail(userEmail);
-                } else if (id < 0) {
-                    Log.d("DEBUGME", "Usuario no existe");
+                } else if (id ==223) {
+                    Log.d("DEBUGME", "Usuario no existe, recibido: "+ id);
                     Toast.makeText(context, "usuario no existe " + id, Toast.LENGTH_LONG).show();
                 }
             }
@@ -252,7 +254,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    // cConsulta y recibe el nombre del usuario de la bd, e inicia sesion No google
+    // cConsulta y recibe el nombre del usuario de la bd, e inicia sesion No google, graba shared preferences
     public void getNameByEmail(String email) {
         webApiRequest.getNameByEmail(email, new WebApiRequest.WebApiRequestJsonObjectListener_getName() {
             @Override
@@ -263,6 +265,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("email", userEmail);
+                    editor.putString("pass", userPass);
                     editor.putString("name", name);
                     editor.apply();
                     signIn();
