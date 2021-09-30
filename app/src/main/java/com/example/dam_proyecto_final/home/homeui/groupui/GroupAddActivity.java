@@ -19,8 +19,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.dam_proyecto_final.LoginActivity;
-import com.example.dam_proyecto_final.Model.JsonResponse;
-import com.example.dam_proyecto_final.Model.Member;
+import com.example.dam_proyecto_final.Model.JsonResponseModel;
+import com.example.dam_proyecto_final.Model.MemberModel;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class GroupAddActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ListView lstv_Members;
-    private ArrayList<Member> members;
+    private ArrayList<MemberModel> members;
     private TextInputEditText edt_AddMember;
     private TextInputEditText edt_AGAGroupName;
     private TextInputEditText edt_AGADescription;
@@ -94,7 +94,7 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
 
         //ListView de miembros
         lstv_Members = findViewById(R.id.lstv_AGAMembers);
-        members = new ArrayList<Member>();
+        members = new ArrayList<MemberModel>();
         membersAdapter = new MembersAdapter(this, members);
         lstv_Members.setAdapter(membersAdapter);
 
@@ -119,7 +119,7 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                         //Comprobar si el mail existe
                         webApiRequest.getIfEmailExist(edt_AddMember.getText().toString(), new WebApiRequest.WebApiRequestJsonResponseListener() {
                             @Override
-                            public void onSuccess(JsonResponse response) {
+                            public void onSuccess(JsonResponseModel response) {
                                 int role = 2;
                                 if (roleSelection.toString().equals(getString(R.string.role_admin))){
                                     role = 0;
@@ -128,13 +128,13 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                                 } else if (roleSelection.toString().equals(getString(R.string.role_reader))){
                                     role = 2;
                                 }
-                                members.add(new Member(edt_AddMember.getText().toString(), role));
+                                members.add(new MemberModel(edt_AddMember.getText().toString(), role));
                                 membersAdapter.notifyDataSetChanged();
                                 edt_AddMember.setText("");
                             }
 
                             @Override
-                            public void onError(JsonResponse response) {
+                            public void onError(JsonResponseModel response) {
                                 edt_AddMember.setText("");
                                 Toast.makeText(context, R.string.userNoDB, Toast.LENGTH_LONG).show();
                             }
@@ -158,7 +158,7 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                     webApiRequest.addGroup(userEmail, userPass, edt_AGAGroupName.getText().toString(),
                             edt_AGADescription.getText().toString(), currencySelection, members, new WebApiRequest.WebApiRequestJsonResponseListener() {
                         @Override
-                        public void onSuccess(JsonResponse response) {
+                        public void onSuccess(JsonResponseModel response) {
                             Toast.makeText(context, "Grupo creado correctamente", Toast.LENGTH_LONG).show();
 
                             //Volvemos al login activity
@@ -168,7 +168,7 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                         }
 
                         @Override
-                        public void onError(JsonResponse response) {
+                        public void onError(JsonResponseModel response) {
                             Toast.makeText(context, response.getId(), Toast.LENGTH_LONG).show();
                         }
                 });

@@ -4,23 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dam_proyecto_final.Model.Group;
-import com.example.dam_proyecto_final.Model.JsonResponse;
+import androidx.fragment.app.Fragment;
+
+import com.example.dam_proyecto_final.Model.GroupModel;
+import com.example.dam_proyecto_final.Model.JsonResponseModel;
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceHomeActivity;
+import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceTab;
 import com.example.dam_proyecto_final.home.homeui.groupui.GroupAdapter;
 import com.example.dam_proyecto_final.home.homeui.groupui.GroupAddActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
@@ -46,8 +47,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     private TextView txtv;
 
-    private String email="vacio";
-    private String pass="vacio";
+    private String email = "vacioEmail";
+    private String pass = "vacioPass";
 
     private Button btn_FGEAddGroup;
     private TextView txtv_FGEmptyTitle;
@@ -58,8 +59,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private Context context;
 
     private WebApiRequest webApiRequest;
-    private String userEmail;
-    private String userPass;
+    private String userEmail, userPass, idGroup;
 
     public GroupFragment() {
         // Required empty public constructor
@@ -107,37 +107,53 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         //Instanciamos vistas
         btn_FGEAddGroup = view.findViewById(R.id.btn_FGAddGroup);
         btn_FGEAddGroup.setOnClickListener(this);
-        txtv_FGEmptyTitle = view.findViewById(R.id.txtv_FGEmptyTitle);
-        txtv_FGEmptyDescription = view.findViewById(R.id.txtv_FGEmptyDescription);
-        lstv_FGGroups = view.findViewById(R.id.lstv_FGGroups);
-        imgv_FGEmptyAnimation = view.findViewById(R.id.imgv_FGEmptyAnimation);
+        txtv_FGEmptyTitle = view.findViewById(R.id.txtv_EmptyTitle);
+        txtv_FGEmptyDescription = view.findViewById(R.id.txtv_EmptyDescription);
+        lstv_FGGroups = view.findViewById(R.id.lstv_Activities);
+        imgv_FGEmptyAnimation = view.findViewById(R.id.imgv_EmptyAnimation);
 
         //Cogemos el usuario/contraseña para las consultas
         SharedPreferences preferencias = context.getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        userEmail = preferencias.getString("email", "vacio");
-        userPass = preferencias.getString("pass", "vacio");
+        userEmail = preferencias.getString("email", "vacio1");
+        userPass = preferencias.getString("pass", "vacio2");
 
         //Invocamos los grupos
         webApiRequest = new WebApiRequest(context);
         webApiRequest.getGroupsByEmail(userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
             @Override
-            public void onSuccess(JsonResponse response, List<?> data) {
+            public void onSuccess(JsonResponseModel response, List<?> data) {
                 Log.d("DEBUGME", response.getId() + " " + response.getMessage());
-                ArrayList<Group> groups = (ArrayList<Group>) data;
-//                for (Group g: groups){
-//                    Log.d("DEBUGME groups", g.getDescripción());
+                ArrayList<GroupModel> groupModels = (ArrayList<GroupModel>) data;
+//                for (GroupModel g: groupModels){
+//                    Log.d("DEBUGME groupModels", g.getDescripción());
 //                }
                 //lstv_FGGroups
-                GroupAdapter groupAdapter = new GroupAdapter(context, groups);
+                GroupAdapter groupAdapter = new GroupAdapter(context, groupModels);
                 lstv_FGGroups.setAdapter(groupAdapter);
                 imgv_FGEmptyAnimation.setVisibility(View.INVISIBLE);
                 lstv_FGGroups.setVisibility(View.VISIBLE);
 
+                AdapterView.OnItemClickListener lvClick = new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView parent, View v, int position, long id) {
+
+                        //  Toast.makeText(context, "Seleccionado elemento: "+position, Toast.LENGTH_LONG).show();
+                        //  Toast.makeText(context, "Seleccionado grupo: "+groupModels.get(position).getNombre(), Toast.LENGTH_LONG).show();
+
+                        /*TODO: Si hay facturas debe visualizar GroupInvoiceTab, un ListView con las facturas de ese grupo, si se hace click sobre la factura, mostrarla.
+                                Si no las hay visualizar GroupInvoiceHomeActivity, activity con seleccion por Tabs (listado y gráficas)
+                        */
+
+                        idGroup = groupModels.get(position).getId() + "";
+                        isInvoiceByGroup(idGroup, groupModels, position);
+
+                    }
+                };
+                lstv_FGGroups.setOnItemClickListener(lvClick);
             }
 
             @Override
-            public void onError(JsonResponse response) {
-                if (response.getId() == -253){
+            public void onError(JsonResponseModel response) {
+                if (response.getId() == -253) {
                     //Si es -252 es que el usuario no tiene grupos
                     //Ponemos visibles los textos de empty
                     txtv_FGEmptyTitle.setVisibility(View.VISIBLE);
@@ -153,12 +169,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void readSharedPreferences(){
+    private void readSharedPreferences() {
 
         SharedPreferences preferencias;
         preferencias = getActivity().getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        email= preferencias.getString("email","vacio");
-        pass= preferencias.getString("pass","vacio");
+        email = preferencias.getString("email", "vacio3");
+        pass = preferencias.getString("pass", "vacio4");
     }
 
     @Override
@@ -167,4 +183,39 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         startActivity(intent);
 
     }
+
+    // Comprueba si existe el usuario en la bd
+    public void isInvoiceByGroup(String groupId, ArrayList<GroupModel> groupModel, int position) {
+        webApiRequest.isInvoiceByGroup(groupId, new WebApiRequest.WebApiRequestJsonObjectListener() {
+            @Override
+            public void onSuccess(int id, String message) {
+                if (id == 222) {
+                    Log.d("DEBUGME", "Con facturas en el grupo:" + groupId + ", " + message);
+                    //    Toast.makeText(context, "Con facturas en el grupo, mensa: " + message, Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(context, GroupInvoiceTab.class);
+                    intent.putExtra("idGroup", groupModel.get(position).getId() + "");
+                    intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
+                    intent.putExtra("userEmail", userEmail);
+                    startActivity(intent);
+
+                } else if (id == 223) {
+                    Log.d("DEBUGME", "Sin facturas en el grupo: " + groupId + ", id:" + id);
+                    //     Toast.makeText(context, "Sin facturas en el grupo " + id, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(context, GroupInvoiceHomeActivity.class);
+                    intent.putExtra("idGroup", groupModel.get(position).getId() + "");
+                    intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
+                    intent.putExtra("userEmail", userEmail);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onError(int id, String message) {
+                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+                Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 }
