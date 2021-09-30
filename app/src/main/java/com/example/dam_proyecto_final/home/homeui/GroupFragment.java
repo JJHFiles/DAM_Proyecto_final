@@ -144,14 +144,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                         */
 
                         idGroup = groupModels.get(position).getId() + "";
-
-
                         isInvoiceByGroup(idGroup, groupModels, position);
 
                     }
                 };
                 lstv_FGGroups.setOnItemClickListener(lvClick);
-
             }
 
             @Override

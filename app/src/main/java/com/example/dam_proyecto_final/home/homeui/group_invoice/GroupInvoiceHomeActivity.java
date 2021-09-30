@@ -1,19 +1,19 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.dam_proyecto_final.Model.InvoiceModel;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
 
 import java.util.ArrayList;
 
@@ -21,7 +21,8 @@ public class GroupInvoiceHomeActivity extends AppCompatActivity implements View.
 
     private TextView txtv_EmptyDescription, txtv_EmptyTitle;
     private ImageButton ibAdd;
-    private Button btManual, btOCR;
+
+    private ExtendedFloatingActionButton btOCR,btManual;
 
     private ListView lv_invoice;
 
@@ -46,6 +47,7 @@ public class GroupInvoiceHomeActivity extends AppCompatActivity implements View.
         btManual.setOnClickListener(this);
         btOCR.setOnClickListener(this);
 
+
 /* No hacen falta, se recibe por Bundle.
         SharedPreferences preferencias = getApplicationContext().getSharedPreferences("savedData", Context.MODE_PRIVATE);
         userEmail = preferencias.getString("email", "vacio1");
@@ -65,6 +67,7 @@ public class GroupInvoiceHomeActivity extends AppCompatActivity implements View.
        this.setTitle(groupName);
 
         noInvoices();
+
 
     }
 

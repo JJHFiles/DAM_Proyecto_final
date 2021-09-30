@@ -7,115 +7,116 @@
     tools:context=".home.homeui.group_invoice.GroupInvoiceHomeActivity">
 
 
+    <TextView
+        android:id="@+id/txtv_EmptyTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Sin facturas añadidas"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/txtv_EmptyDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgv_EmptyAnimation"
+        app:layout_constraintVertical_bias="1.0" />
 
-        <TextView
-            android:id="@+id/txtv_EmptyTitle"
-            android:layout_width="0dp"
+    <ImageView
+        android:id="@+id/imgv_EmptyAnimation"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="64dp"
+        android:src="@drawable/ic_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtv_EmptyDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="272dp"
+        android:text="@string/fg_emptydescription"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ListView
+            android:id="@+id/lv_invoice"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="Sin facturas añadidas"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/txtv_EmptyDescription"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgv_EmptyAnimation"
-            app:layout_constraintVertical_bias="1.0" />
+            android:visibility="invisible" />
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgv_EmptyAnimation"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="64dp"
-            android:src="@drawable/ic_logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/txtv_EmptyDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="272dp"
-            android:text="@string/fg_emptydescription"
-            android:textAlignment="center"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+    <ImageButton
+        android:id="@+id/ibAdd"
+        style="@style/SecondaryButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="36dp"
+        android:backgroundTint="@color/gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_plus" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btManual"
+        android:layout_width="190dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="52dp"
+        android:backgroundTint="@color/gray"
+        android:gravity="center"
+        android:text="Añadir de forma manual"
+        android:textColor="@color/black"
+        android:textSize="10dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.868"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtv_EmptyDescription" />
 
-                <ListView
-                    android:id="@+id/lv_invoice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible" />
-        </LinearLayout>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btOCR"
+        android:layout_width="190dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="@color/gray"
+        android:contentDescription="description"
 
-        <ImageButton
-            android:id="@+id/ibAdd"
-            style="@style/SecondaryButton"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="176dp"
-            android:backgroundTint="@color/gray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.881"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtv_EmptyDescription"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_plus" />
 
-        <Button
-            android:id="@+id/btOCR"
-            style="@style/SecondaryButton"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/gray"
-            android:text="Añadir por OCR"
-            android:textColor="@color/black"
-            android:textSize="10dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/ibAdd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.826"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btManual"
-            style="@style/SecondaryButton"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="12dp"
-            android:backgroundTint="@color/gray"
-            android:text="Añadir de forma manual"
-            android:textColor="@color/black"
-            android:textSize="10dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/btOCR"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.827"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+        android:gravity="center"
+        android:text="Añadir por OCR"
+        android:textSize="10dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/ibAdd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btManual"
+        app:layout_constraintVertical_bias="0.411" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

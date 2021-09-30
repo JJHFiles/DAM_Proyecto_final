@@ -12,5 +12,6 @@ public class GroupInvoiceAdd extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_invoice_add);
+        setTitle("Editar factura");
     }
 }
