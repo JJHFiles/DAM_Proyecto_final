@@ -29,7 +29,8 @@ import java.util.Map;
 
 public class WebApiRequest {
 
-    private static final String URL = "http://192.168.1.23/webservice/";
+    //private static final String URL = "http://192.168.1.23/webservice/";
+    private static final String URL = "https://blist.azurewebsites.net/";
 
 
     private int id;
