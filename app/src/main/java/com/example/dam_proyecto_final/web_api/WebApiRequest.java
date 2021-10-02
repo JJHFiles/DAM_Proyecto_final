@@ -11,11 +11,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.dam_proyecto_final.Model.ActivityModel;
-import com.example.dam_proyecto_final.Model.GroupModel;
-import com.example.dam_proyecto_final.Model.InvoiceModel;
-import com.example.dam_proyecto_final.Model.JsonResponseModel;
-import com.example.dam_proyecto_final.Model.MemberModel;
+import com.example.dam_proyecto_final.model.ActivityModel;
+import com.example.dam_proyecto_final.model.GroupModel;
+import com.example.dam_proyecto_final.model.InvoiceModel;
+import com.example.dam_proyecto_final.model.JsonResponseModel;
+import com.example.dam_proyecto_final.model.MemberModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +30,8 @@ import java.util.Map;
 
 public class WebApiRequest {
 
-    private static final String URL = "http://192.168.1.23/webservice/";
+  private static final String URL = "http://192.168.1.23/webservice/";
+   // private static final String URL = "https://blist.azurewebsites.net/";
 
 
     private int id;
@@ -54,24 +55,28 @@ public class WebApiRequest {
     //Método callback1 Devuelve un String
     public interface WebApiRequestJsonObjectListener {
         void onSuccess(int id, String message);
+
         void onError(int id, String message);
     }
 
     //Método callback2 Devuelve id, mensaje y nombre
     public interface WebApiRequestJsonObjectListener_getName {
         void onSuccess(int id, String message, String name);
+
         void onError(int id, String message);
     }
 
     //Método callback3 Devuelve una respuesta y una lista
     public interface WebApiRequestJsonObjectArrayListener {
         void onSuccess(JsonResponseModel response, List<?> data);
+
         void onError(JsonResponseModel response);
     }
 
     //Método callback3 Devuelve una respuesta y una lista
     public interface WebApiRequestJsonResponseListener {
         void onSuccess(JsonResponseModel response);
+
         void onError(JsonResponseModel response);
     }
 
@@ -190,8 +195,8 @@ public class WebApiRequest {
 
                     id = json.getInt("id");
                     message = json.getString("message");
-                    String  name = data.getString("name");
-                    webApiRequestJsonObjectListener_getName.onSuccess(id, message,name);
+                    String name = data.getString("name");
+                    webApiRequestJsonObjectListener_getName.onSuccess(id, message, name);
                     Toast.makeText(context, "Resultado nombre= " + message, Toast.LENGTH_LONG).show();
 
 
@@ -299,10 +304,10 @@ public class WebApiRequest {
 
                     //Creamos la lista de grupos
                     ArrayList<GroupModel> grupos = new ArrayList<GroupModel>();
-                    if (jsonResponseModel.getId() > 0){
+                    if (jsonResponseModel.getId() > 0) {
                         //Si la respuesta es Positiva hay datos. Obtenemos el JsonArray
                         JSONArray jsonArrayGroups = json.getJSONArray("groups");
-                        for (int i=0; i<jsonArrayGroups.length(); i++){
+                        for (int i = 0; i < jsonArrayGroups.length(); i++) {
                             //Obtenemos el objeto JSONObjet de grupo individual
                             JSONObject jsonObjectGroup = jsonArrayGroups.getJSONObject(i);
                             grupos.add(new GroupModel(
@@ -372,10 +377,10 @@ public class WebApiRequest {
 
                     //Creamos la lista de grupos
                     ArrayList<ActivityModel> activityModel = new ArrayList<>();
-                    if (jsonResponseModel.getId() > 0){
+                    if (jsonResponseModel.getId() > 0) {
                         //Si la respuesta es Positiva hay datos. Obtenemos el JsonArray
                         JSONArray jsonArrayActivity = json.getJSONArray("activity");
-                        for (int i=0; i<jsonArrayActivity.length(); i++){
+                        for (int i = 0; i < jsonArrayActivity.length(); i++) {
                             //Obtenemos el objeto JSONObjet de Activity individual
                             JSONObject jsonObjectActivity = jsonArrayActivity.getJSONObject(i);
                             activityModel.add(new ActivityModel(
@@ -445,7 +450,7 @@ public class WebApiRequest {
                             json.getInt("id"),
                             json.getString("message"));
 
-                    if (jsonResponseModel.getId() > 0){
+                    if (jsonResponseModel.getId() > 0) {
                         webApiRequestJsonResponseListener.onSuccess(jsonResponseModel);
                     } else {
                         webApiRequestJsonResponseListener.onError(jsonResponseModel);
@@ -499,7 +504,7 @@ public class WebApiRequest {
                             json.getInt("id"),
                             json.getString("message"));
 
-                    if (jsonResponseModel.getId() > 0){
+                    if (jsonResponseModel.getId() > 0) {
                         webApiRequestJsonResponseListener.onSuccess(jsonResponseModel);
                     } else {
                         webApiRequestJsonResponseListener.onError(jsonResponseModel);
@@ -526,10 +531,10 @@ public class WebApiRequest {
                 params.put("groupdescription", groupdescription);
                 params.put("groupcurrency", groupcurrency);
 
-                int c= 1;
-                for (MemberModel m : memberModels){
-                    String member = "member"+c;
-                    String role = "role"+c;
+                int c = 1;
+                for (MemberModel m : memberModels) {
+                    String member = "member" + c;
+                    String role = "role" + c;
                     Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member + " " + role);
                     params.put(member, m.getEmail());
                     params.put(role, String.valueOf(m.getRole()));
@@ -570,10 +575,10 @@ public class WebApiRequest {
                     //Creamos la lista de grupos
                     ArrayList<InvoiceModel> invoiceModel;
                     invoiceModel = new ArrayList<>();
-                    if (jsonResponseModel.getId() > 0){
+                    if (jsonResponseModel.getId() > 0) {
                         //Si la respuesta es Positiva hay datos. Obtenemos el JsonArray
                         JSONArray jsonArrayInvoice = json.getJSONArray("invoice");
-                        for (int i=0; i<jsonArrayInvoice.length(); i++){
+                        for (int i = 0; i < jsonArrayInvoice.length(); i++) {
                             //Obtenemos el objeto JSONObjet de Activity individual
                             JSONObject jsonObjectInvoice = jsonArrayInvoice.getJSONObject(i);
                             invoiceModel.add(new InvoiceModel(
@@ -662,6 +667,60 @@ public class WebApiRequest {
                 Log.d("DEBUGME", "getparams: " + idGroup);
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("idgroup", idGroup);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+
+    }
+    public void insertInvoice(InvoiceModel im, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "insertInvoice.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "insertInvoice onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    JSONObject json = new JSONObject(response);
+                    id = json.getInt("id");
+                    message = json.getString("message");
+                } catch (JSONException e) {
+                    webapirequestjsonobjectlistener.onError(-2, "insertInvoice JSONException: Error al generar el objeto JSON");
+                }
+
+                webapirequestjsonobjectlistener.onSuccess(id, message);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "insertInvoice VolleyError: " + error.getMessage());
+                webapirequestjsonobjectlistener.onError(-1, "insertInvoice vVolleyError: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+               // Date date = new Date();
+               // String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+                Log.d("DEBUGME", "getparams: " + im.getIdentifier());
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("identifier", im.getIdentifier());
+                params.put("type", im.getType());
+                params.put("date", im.getDate());
+                params.put("start_period", im.getStart_period());
+                params.put("end_period", im.getEnd_period());
+                params.put("consumption", im.getConsumption());
+                params.put("amount", im.getAmount());
+                params.put("idgroup", im.getIdgroup());
 
                 return params;
             }

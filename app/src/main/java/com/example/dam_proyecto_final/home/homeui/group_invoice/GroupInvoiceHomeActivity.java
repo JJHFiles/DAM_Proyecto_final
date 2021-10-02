@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.dam_proyecto_final.Model.InvoiceModel;
+import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;

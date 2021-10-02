@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.dam_proyecto_final.Model.GroupModel;
-import com.example.dam_proyecto_final.Model.JsonResponseModel;
+import com.example.dam_proyecto_final.model.GroupModel;
+import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceHomeActivity;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceTab;

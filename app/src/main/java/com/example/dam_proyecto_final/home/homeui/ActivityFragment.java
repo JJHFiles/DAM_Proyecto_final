@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.dam_proyecto_final.Model.ActivityModel;
-import com.example.dam_proyecto_final.Model.JsonResponseModel;
+import com.example.dam_proyecto_final.model.ActivityModel;
+import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 

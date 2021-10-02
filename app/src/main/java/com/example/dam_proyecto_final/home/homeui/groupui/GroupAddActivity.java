@@ -1,7 +1,6 @@
 package com.example.dam_proyecto_final.home.homeui.groupui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,9 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.dam_proyecto_final.LoginActivity;
-import com.example.dam_proyecto_final.Model.JsonResponseModel;
-import com.example.dam_proyecto_final.Model.MemberModel;
+import com.example.dam_proyecto_final.model.JsonResponseModel;
+import com.example.dam_proyecto_final.model.MemberModel;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;

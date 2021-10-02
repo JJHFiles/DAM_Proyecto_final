@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.dam_proyecto_final.Model.GroupModel;
+import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.R;
 
 import java.util.ArrayList;

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.dam_proyecto_final.Model.MemberModel;
+import com.example.dam_proyecto_final.model.MemberModel;
 import com.example.dam_proyecto_final.R;
 
 import java.util.ArrayList;

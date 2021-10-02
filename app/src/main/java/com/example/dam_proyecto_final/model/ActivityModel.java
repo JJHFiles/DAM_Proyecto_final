@@ -1,6 +1,4 @@
-package com.example.dam_proyecto_final.Model;
-
-import java.sql.Date;
+package com.example.dam_proyecto_final.model;
 
 public class ActivityModel {
 

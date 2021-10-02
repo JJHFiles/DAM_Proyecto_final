@@ -1,4 +1,4 @@
-package com.example.dam_proyecto_final.Model;
+package com.example.dam_proyecto_final.model;
 
 public class MemberModel {
 

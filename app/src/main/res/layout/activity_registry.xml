@@ -31,8 +31,8 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/TextInputLayoutStyle"
         android:id="@+id/txInLaHint"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="367dp"
         android:layout_height="59dp"
         android:layout_marginTop="0dp"

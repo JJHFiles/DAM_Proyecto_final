@@ -10,11 +10,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dam_proyecto_final.Model.InvoiceModel;
-import com.example.dam_proyecto_final.Model.JsonResponseModel;
+import com.example.dam_proyecto_final.model.InvoiceModel;
+import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
