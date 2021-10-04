@@ -13,8 +13,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dam_proyecto_final.Model.JsonResponseModel;
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.registry.RegistryActivity;
+import com.example.dam_proyecto_final.registry.RegistryGoogleActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -121,36 +123,75 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
                 //TODO Comprobar si el usuario que inicia lo tenemos registrado en BBDD, si no es así registrarlo como nuevo usuario sin password
-                webApiRequest.userInsertG(account.getEmail(), account.getDisplayName(), new WebApiRequest.WebApiRequestJsonObjectListener() {
-                    @Override
-                    public void onSuccess(int id, String message) {
-                        if (id > 0) {
-                            Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
 
-                            //Guardamos el usuario en las SharedPreferences
-                            SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString("email", account.getEmail());
-                            editor.putString("name", account.getDisplayName());
-                            //TODO habrá que crear pantalla de creación de contraseña en usuarios nuevos de Google
-                            //Necesitamos una contraseña para las consultas
-                            editor.putString("pass", "123456");
-                            editor.apply();
+                webApiRequest.isUserEmailInBd(account.getEmail(), new WebApiRequest.WebApiRequestJsonObjectListener() {
+                            @Override
+                            public void onSuccess(int id, String message) {
+                                if (id == 222){
+                                    //Usuario en la BBDD iniciamos sesión
 
-                            //Iniciamos sesión
-                            signIn();
-                        } else if (id < 0) {
-                            Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
-                            Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                                    //TODO realizar la consulta de la contraseña mediante email/token
+                                    //Habrá que realizar la consulta de la contraseña mediante email/token
+                                    String pass = "123456";
+
+                                    //Guardamos el usuario en las SharedPreferences
+                                    SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("email", account.getEmail());
+                                    editor.putString("name", account.getDisplayName());
+                                    editor.putString("pass", pass);
+                                    editor.apply();
+
+                                    //Iniciamos sesión
+                                    signIn();
+
+                                } else if (id == 223){
+                                    //Usuario nuevo, mandamos a registro con contraseña
+                                    Intent registryIntent = new Intent(getApplicationContext(), RegistryGoogleActivity.class);
+                                    registryIntent.putExtra("account", account);
+                                    startActivity(registryIntent);
+                                }
+                            }
+
+                            @Override
+                            public void onError(int id, String message) {
+                                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+                                Toast.makeText(context, "Error al inicar sesión. Codigo de error: " +id, Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
+                );
 
-                    @Override
-                    public void onError(int id, String message) {
-                        Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
-                        Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
-                    }
-                });
+
+//                        webApiRequest.userInsertG(account.getEmail(), account.getDisplayName(), new WebApiRequest.WebApiRequestJsonObjectListener() {
+//                            @Override
+//                            public void onSuccess(int id, String message) {
+//                                if (id > 0) {
+//                                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+//
+//                                    //Guardamos el usuario en las SharedPreferences
+//                                    SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+//                                    SharedPreferences.Editor editor = preferences.edit();
+//                                    editor.putString("email", account.getEmail());
+//                                    editor.putString("name", account.getDisplayName());
+//                                    //TODO habrá que crear pantalla de creación de contraseña en usuarios nuevos de Google
+//                                    //Necesitamos una contraseña para las consultas
+//                                    editor.putString("pass", "123456");
+//                                    editor.apply();
+//
+//                                    //Iniciamos sesión
+//                                    signIn();
+//                                } else if (id < 0) {
+//                                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+//                                    Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onError(int id, String message) {
+//                                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+//                                Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+//                            }
+//                        });
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately

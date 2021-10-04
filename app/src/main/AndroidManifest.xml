@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DAM_Proyecto_final"
         android:usesCleartextTraffic="true">
-        <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd"></activity>
+        <activity android:name=".registry.RegistryGoogleActivity"></activity>
+        <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd" />
         <activity android:name=".home.homeui.group_invoice.GroupInvoiceTab" />
         <activity android:name=".home.homeui.group_invoice.GroupInvoiceHomeActivity" />
         <activity android:name=".home.homeui.groupui.GroupAddActivity" />
