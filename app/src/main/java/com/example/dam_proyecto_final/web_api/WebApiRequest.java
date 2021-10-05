@@ -171,10 +171,60 @@ public class WebApiRequest {
             }
         };
         queue.add(sr);
-
     }
 
-    public void getNameByEmail(String email, WebApiRequestJsonObjectListener_getName webApiRequestJsonObjectListener_getName) {
+    //Comprobacion, si existe el usuario creado en BD
+    public void validateUser(String email, String password, WebApiRequestJsonResponseListener webapirequestjsonresponselistener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "validateUser.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "validateUser onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    JSONObject json = new JSONObject(response);
+                    id = json.getInt("id");
+                    message = json.getString("message");
+                    JsonResponseModel jsonResponseModel = new JsonResponseModel(id, message);
+                    if (jsonResponseModel.getId() > 0){
+                        webapirequestjsonresponselistener.onSuccess(jsonResponseModel);
+                    } else {
+                        webapirequestjsonresponselistener.onError(jsonResponseModel);
+                    }
+                } catch (JSONException e) {
+                    webapirequestjsonresponselistener.onError(new JsonResponseModel(-2, "validateUser JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "validateUser VolleyError: " + error.getMessage());
+                webapirequestjsonresponselistener.onError(new JsonResponseModel(-1, "validateUser vVolleyError: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Log.d("DEBUGME", "getparams: " + email);
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", password);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
+
+    public void getNameByEmail(String email, String password, WebApiRequestJsonObjectListener_getName webApiRequestJsonObjectListener_getName) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_getNameByEmail.php", new Response.Listener<String>() {
@@ -193,7 +243,6 @@ public class WebApiRequest {
                     message = json.getString("message");
                     String  name = data.getString("name");
                     webApiRequestJsonObjectListener_getName.onSuccess(id, message,name);
-                    Toast.makeText(context, "Resultado nombre= " + message, Toast.LENGTH_LONG).show();
 
 
                 } catch (JSONException e) {
@@ -214,6 +263,7 @@ public class WebApiRequest {
                 Log.d("DEBUGME", "getparams: " + email);
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
+                params.put("password", password);
 
                 return params;
             }

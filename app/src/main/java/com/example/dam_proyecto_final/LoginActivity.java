@@ -9,10 +9,12 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.dam_proyecto_final.home.HomeActivity;
+import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.registry.RegistryActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -28,7 +30,8 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
 
-    private Button btnsignGoogle, btnSignIn, btnSignUp;
+    private Button btnsignGoogle, btnSignIn;
+    private LinearLayout llay_SignUp;
 
     private static final int RC_SIGN_IN = 1;
     private GoogleSignInClient mGoogleSignInClient;
@@ -62,8 +65,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnsignGoogle.setOnClickListener(this);
         btnSignIn = findViewById(R.id.btnSignin);
         btnSignIn.setOnClickListener(this);
-        btnSignUp = findViewById(R.id.btnSignup);
-        btnSignUp.setOnClickListener(this);
+        llay_SignUp = findViewById(R.id.llay_SignUp);
+        llay_SignUp.setOnClickListener(this);
 
 
         //Configure Google Sign In
@@ -182,13 +185,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 {
                     userEmail = edtUserEmail.getText().toString();
                     userPass=edtUserPass.getText().toString();
-                    isUserEmailInBD(edtUserEmail.getText().toString());
+                    validateUser(edtUserEmail.getText().toString());
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.login_failure), Toast.LENGTH_LONG).show();
                 }
                 break;
 
-            case R.id.btnSignup: // Entra en el activit de registro de cuenta No google
+            case R.id.llay_SignUp: // Entra en el activit de registro de cuenta No google
                 Intent registryIntent = new Intent(getApplicationContext(), RegistryActivity.class);
                 startActivity(registryIntent);
                 break;
@@ -231,31 +234,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     // comprueba que el email que recibe como parametro esta en la bd, llama al método getNameByEmail(), para sesion No google
-    public void isUserEmailInBD(String userEmail) {
-        webApiRequest.isUserEmailInBd(userEmail, new WebApiRequest.WebApiRequestJsonObjectListener() {
+    public void validateUser(String userEmail) {
+
+        webApiRequest.validateUser(userEmail, userPass, new WebApiRequest.WebApiRequestJsonResponseListener() {
             @Override
-            public void onSuccess(int id, String message) {
-                if (id ==222) {
-                    Log.d("DEBUGME", "usuario " + userEmail + " existe, mensa: " + message);
-                  //  Toast.makeText(context, "usuario " + userEmail + " existe, mensa: " + message, Toast.LENGTH_LONG).show();
-                    getNameByEmail(userEmail);
-                } else if (id ==223) {
-                    Log.d("DEBUGME", "Usuario no existe, recibido: "+ id);
-                  //  Toast.makeText(context, "usuario no existe " + id, Toast.LENGTH_LONG).show();
-                }
+            public void onSuccess(JsonResponseModel response) {
+                Log.d("DEBUGME", "loginActivity: usuario logeado" + " " + response.getId() + " " + response.getMessage());
+                getNameByEmail(userEmail, userPass);
             }
 
             @Override
-            public void onError(int id, String message) {
-                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
-              //  Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+            public void onError(JsonResponseModel response) {
+                if (response.getId() == -210){
+                    Log.d("DEBUGME", "loginActivity: "+ response.getId());
+                    Toast.makeText(context, "Usuario o contraseña incorrectos", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d("DEBUGME", "loginActivity: "+ response.getId());
+                    Toast.makeText(context, "Error" + response.getId(), Toast.LENGTH_LONG).show();
+                }
             }
         });
+
     }
 
     // cConsulta y recibe el nombre del usuario de la bd, e inicia sesion No google, graba shared preferences
-    public void getNameByEmail(String email) {
-        webApiRequest.getNameByEmail(email, new WebApiRequest.WebApiRequestJsonObjectListener_getName() {
+    public void getNameByEmail(String email, String password) {
+        webApiRequest.getNameByEmail(email, password, new WebApiRequest.WebApiRequestJsonObjectListener_getName() {
             @Override
             public void onSuccess(int id, String message, String name) {
                 if (id > 0) {
