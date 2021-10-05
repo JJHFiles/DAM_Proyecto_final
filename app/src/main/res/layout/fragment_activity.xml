@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.homeui.ActivityFragment">
+    tools:context=".home.homeui.ActivityFragment"
+    android:background="@color/background_lay_gray">
 
 
     <LinearLayout
@@ -17,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.008"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,6 +34,11 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:background="@color/background_lay_gray"
+        android:padding="5dp"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+      />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

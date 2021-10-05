@@ -360,7 +360,10 @@ public class WebApiRequest {
                             grupos.add(new GroupModel(
                                     jsonObjectGroup.getInt("groupid"),
                                     jsonObjectGroup.getString("groupname"),
-                                    jsonObjectGroup.getString("groupdescription")));
+                                    jsonObjectGroup.getString("groupdescription"),
+                                    jsonObjectGroup.getString("currency"),
+                                    jsonObjectGroup.getString("role")
+                                    ));
                         }
 
                         //Una vez tenemos la respuesta y la lista la retornamos
