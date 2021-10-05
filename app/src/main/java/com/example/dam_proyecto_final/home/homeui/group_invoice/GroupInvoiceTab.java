@@ -1,9 +1,13 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,6 +20,7 @@ import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -23,13 +28,15 @@ import java.util.List;
 
 //https://material.io/components/tabs/android#fixed-tabs
 
-public class GroupInvoiceTab extends AppCompatActivity {
+public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickListener {
     private String userEmail, idGroup, groupName,currency,role;
     private WebApiRequest webApiRequest;
     private ListView lv_invoice;
     private TabLayout tabLayout;
     private ImageView iv;
+    private ImageButton ibAdd;
 
+    private ExtendedFloatingActionButton btOCR,btManual;
 
     private ArrayList<InvoiceModel> arrIM;
     private ArrayList<InvoiceListModel> ilm=new ArrayList<InvoiceListModel>();
@@ -42,7 +49,12 @@ public class GroupInvoiceTab extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_invoice_tab);
 
-
+        ibAdd = findViewById(R.id.ibAdd);
+        ibAdd.setOnClickListener(this);
+        btManual = findViewById(R.id.btManual);
+        btOCR = findViewById(R.id.btOCR);
+        btManual.setOnClickListener(this);
+        btOCR.setOnClickListener(this);
 
 
         lv_invoice = findViewById(R.id.lv_invoice);
@@ -205,5 +217,45 @@ public class GroupInvoiceTab extends AppCompatActivity {
     }
 
  */
+@Override
+public void onClick(View v) {
+    int choice = v.getId();
+    switch (v.getId()) {
+        case R.id.ibAdd:
+            btManual.setVisibility(View.VISIBLE);
+            btOCR.setVisibility(View.VISIBLE);
+
+            // Para verse las sombras de los botones, provoca un back negro, cambiar el método back
+          //  getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            //  Toast.makeText(getApplicationContext(), "idGroup "+idGroup, Toast.LENGTH_LONG).show();
+
+ /*            TODO: que la actividad se torne en escala grises
+               new AlertDialog.Builder(this)
+                        .setCancelable(false)
+                        .setPositiveButton("Añadir de forma manual",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    }).create().show();
+*/
+
+            break;
+
+        case R.id.btManual:
+            // abre activity para añadir nuevas facturas manuales
+            Intent intent = new Intent(getApplicationContext(), GroupInvoiceAdd.class);
+            intent.putExtra("idGroup",idGroup);
+            intent.putExtra("groupName",groupName);
+            intent.putExtra("userEmail",userEmail);
+            startActivity(intent);
+            break;
+
+        case R.id.btOCR:
+            //TODO: lectura factura por OCR
+            break;
+    }
+}
 
 }
