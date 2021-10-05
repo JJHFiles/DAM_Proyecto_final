@@ -3,19 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/round_item">
 
     <TextView
         android:id="@+id/txtv_GITitle"
-        android:layout_margin="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:textStyle="bold"
+        android:textColor="@color/primary_color"
         android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/txtv_GIDescription"
-        android:layout_margin="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
