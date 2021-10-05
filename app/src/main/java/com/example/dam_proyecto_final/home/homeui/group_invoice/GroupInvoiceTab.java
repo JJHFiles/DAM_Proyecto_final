@@ -39,7 +39,7 @@ public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickLi
     private ExtendedFloatingActionButton btOCR,btManual;
 
     private ArrayList<InvoiceModel> arrIM;
-    private ArrayList<InvoiceListModel> ilm=new ArrayList<InvoiceListModel>();
+
 
 
 
@@ -172,7 +172,7 @@ public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickLi
 */
     }
     private void fillListViewCustomAdapter(){
-
+        ArrayList<InvoiceListModel> ilm=new ArrayList<InvoiceListModel>();
         for (int x = 0; x < arrIM.size(); x++) {
             String measure="";
 

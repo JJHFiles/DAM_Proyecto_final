@@ -1,21 +1,29 @@
 package com.example.dam_proyecto_final.home.homeui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceAdd;
+import com.example.dam_proyecto_final.home.homeui.groupui.GroupAddActivity;
 import com.example.dam_proyecto_final.model.ActivityModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
-import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 
 import java.util.ArrayList;
@@ -46,6 +54,9 @@ public class ActivityFragment extends Fragment {
 
     private WebApiRequest webApiRequest;
 
+    private TextView txtv_EmptyTitle,txtv_EmptyDescription;
+    private ImageView imgv_EmptyAnimation;
+
     public ActivityFragment() {
         // Required empty public constructor
     }
@@ -75,40 +86,65 @@ public class ActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_activity, container, false);
+
         lv = view.findViewById(R.id.lv);
         context = view.getContext();
+
+        txtv_EmptyDescription=view.findViewById(R.id.txtv_EmptyDescription);
+        txtv_EmptyTitle=view.findViewById(R.id.txtv_EmptyTitle);
+        imgv_EmptyAnimation=view.findViewById(R.id.imgv_EmptyAnimation);
+
+
         SharedPreferences preferencias = context.getSharedPreferences("savedData", Context.MODE_PRIVATE);
         String userEmail = preferencias.getString("email", "vacio");
 
 
+
         getActivityByEmail(userEmail);
+
         return view;
     }
 
 
+
+
     public void getActivityByEmail(String email) {
+
         webApiRequest = new WebApiRequest(context);
         webApiRequest.getActivityByEmail(email, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
             @Override
             public void onSuccess(JsonResponseModel response, List<?> data) {
                 Log.d("DEBUGME", response.getId() + " " + response.getMessage());
 
+                txtv_EmptyDescription.setVisibility(View.INVISIBLE);
+                txtv_EmptyTitle.setVisibility(View.INVISIBLE);
+                imgv_EmptyAnimation.setVisibility(View.INVISIBLE);
+                lv.setVisibility(View.VISIBLE);
                 fillListView((ArrayList<ActivityModel>) data);
+
+
             }
 
             @Override
             public void onError(JsonResponseModel response) {
+                txtv_EmptyDescription.setVisibility(View.VISIBLE);
+                txtv_EmptyTitle.setVisibility(View.VISIBLE);
+                imgv_EmptyAnimation.setVisibility(View.VISIBLE);
+
+                lv.setVisibility(View.INVISIBLE);
+
                 if (response.getId() == -253) {
                     //Si es -252 es que el usuario no tiene actividades
-                    Toast.makeText(context, "Error " + response.getId() + " Sin actividades", Toast.LENGTH_LONG);
+//                    Toast.makeText(context, "Error " + response.getId() + " Sin actividades", Toast.LENGTH_LONG);
 
 
                 } else {
                     //Si no ha podido ser cualquier error
-                    Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG);
+//                    Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG);
                 }
             }
         });
+
     }
 
     private void fillListView(ArrayList<ActivityModel> al) {
@@ -117,13 +153,14 @@ public class ActivityFragment extends Fragment {
         for (int x = 0; x < al.size(); x++) {
             arr.add(""
                     + "#" + (x + 1)
-              //      + "\nID Actividad: " + al.get(x).getIdactivity()
+                    //      + "\nID Actividad: " + al.get(x).getIdactivity()
                     + "\nActividad: " + al.get(x).getAction()
                     + "\nNombre: " + al.get(x).getName()
                     + "\nFecha: " + al.get(x).getDate_activity()
                     + "\nDescripcion: " + al.get(x).getDescription()
                     + "\nCreador: " + al.get(x).getEmail());
         }
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, R.layout.activity_fragmet_listview, arr);
         lv.setAdapter(arrayAdapter);
 /*
@@ -135,4 +172,6 @@ public class ActivityFragment extends Fragment {
         lv.setOnItemClickListener(lvClick);
 */
     }
+
+
 }
