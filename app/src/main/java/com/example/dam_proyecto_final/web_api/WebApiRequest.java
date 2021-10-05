@@ -678,4 +678,59 @@ public class WebApiRequest {
         queue.add(sr);
 
     }
+    public void insertInvoice(InvoiceModel im, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        @SuppressWarnings("RedundantThrows") StringRequest sr = new StringRequest(Request.Method.POST, URL + "insertInvoice.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "insertInvoice onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    JSONObject json = new JSONObject(response);
+                    id = json.getInt("id");
+                    message = json.getString("message");
+                } catch (JSONException e) {
+                    webapirequestjsonobjectlistener.onError(-2, "insertInvoice JSONException: Error al generar el objeto JSON");
+                }
+
+                webapirequestjsonobjectlistener.onSuccess(id, message);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "insertInvoice VolleyError: " + error.getMessage());
+                webapirequestjsonobjectlistener.onError(-1, "insertInvoice vVolleyError: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // Date date = new Date();
+                // String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+                Log.d("DEBUGME", "getparams: " +"identificador: "+im.getIdentifier());
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("identifier",im.getIdentifier() );
+                params.put("type",im.getType() );
+                params.put("date",im.getDate() );
+                params.put("start_period", im.getStart_period());
+                params.put("end_period", im.getEnd_period());
+                params.put("consumption", im.getConsumption());
+                params.put("amount",im.getAmount() );
+                params.put("idgroup", im.getIdgroup());
+
+
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+
+    }
 }
