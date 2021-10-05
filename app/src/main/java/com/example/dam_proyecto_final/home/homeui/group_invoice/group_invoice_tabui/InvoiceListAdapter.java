@@ -64,13 +64,13 @@ public class InvoiceListAdapter extends BaseAdapter {
         tvBasePrice.setText(invoiceListModel.get(position).getConsumption());
 
         LinearLayout ll = (LinearLayout) view.findViewById(R.id.ll);
-        if (position % 2 == 0) {
+    /*    if (position % 2 == 0) {
             ll.setBackgroundColor(Color.LTGRAY);
         } else {
             ll.setBackgroundColor(Color.WHITE);
 
         }
-
+*/
         return view;
     }
 }

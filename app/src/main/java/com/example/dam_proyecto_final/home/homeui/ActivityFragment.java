@@ -124,7 +124,7 @@ public class ActivityFragment extends Fragment {
                     + "\nDescripcion: " + al.get(x).getDescription()
                     + "\nCreador: " + al.get(x).getEmail());
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, arr);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, R.layout.activity_fragmet_listview, arr);
         lv.setAdapter(arrayAdapter);
 /*
         AdapterView.OnItemClickListener lvClick = new AdapterView.OnItemClickListener() {
