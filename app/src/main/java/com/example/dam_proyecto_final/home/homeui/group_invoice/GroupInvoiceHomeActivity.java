@@ -2,8 +2,11 @@ package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ public class GroupInvoiceHomeActivity extends AppCompatActivity implements View.
     private WebApiRequest webApiRequest;
     private String userEmail, idGroup, groupName;
     private ArrayList<InvoiceModel> invoiceModel;
+
 
 
     @Override
@@ -78,6 +82,10 @@ public class GroupInvoiceHomeActivity extends AppCompatActivity implements View.
             case R.id.ibAdd:
                 btManual.setVisibility(View.VISIBLE);
                 btOCR.setVisibility(View.VISIBLE);
+
+                // Para verse las sombras de los botones, provoca un back negro, cambiar el método back
+              getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
                 //  Toast.makeText(getApplicationContext(), "idGroup "+idGroup, Toast.LENGTH_LONG).show();
 
  /*            TODO: que la actividad se torne en escala grises

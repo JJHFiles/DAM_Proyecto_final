@@ -12,11 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.dam_proyecto_final.Model.JsonResponseModel;
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.registry.RegistryActivity;
-import com.example.dam_proyecto_final.registry.RegistryGoogleActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -92,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         Log.d("DEBUGME ", "metodo on start");
 
-        //TODO se ve ligeramente la ventana antes de ir a la home, seguramente esta comprobación hab´ra que hacerla en una activity previa
+        //TODO se ve ligeramente la ventana antes de ir a la home, seguramente esta comprobación habrá que hacerla en una activity previa
 
         //Comprobamos si existe previamente un usuario Google logeado
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -157,10 +154,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
                 //txtvdebug.setText(e.getMessage());
             }
-        } else {
-            Toast.makeText(context, "requestCode != RC_SIGN_IN", Toast.LENGTH_LONG).show();
+        }
+        /*else {
+         //   Toast.makeText(context, "requestCode != RC_SIGN_IN", Toast.LENGTH_LONG).show();
 
         }
+
+         */
     }
 
 
@@ -225,7 +225,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return true; // con true puede entrar en sesion si posteriormente se comprueba que el ususario existe en la bd
 
         } else {
-            Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
+          //  Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
             return false;
         }
     }
@@ -237,18 +237,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onSuccess(int id, String message) {
                 if (id ==222) {
                     Log.d("DEBUGME", "usuario " + userEmail + " existe, mensa: " + message);
-                    Toast.makeText(context, "usuario " + userEmail + " existe, mensa: " + message, Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(context, "usuario " + userEmail + " existe, mensa: " + message, Toast.LENGTH_LONG).show();
                     getNameByEmail(userEmail);
                 } else if (id ==223) {
                     Log.d("DEBUGME", "Usuario no existe, recibido: "+ id);
-                    Toast.makeText(context, "usuario no existe " + id, Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(context, "usuario no existe " + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
-                Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+              //  Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -260,7 +260,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onSuccess(int id, String message, String name) {
                 if (id > 0) {
                     Log.d("DEBUGME", "recibido nombre: " + name);
-                    Toast.makeText(context, "recibido nombre: " + name, Toast.LENGTH_LONG).show();
+               //     Toast.makeText(context, "recibido nombre: " + name, Toast.LENGTH_LONG).show();
                     SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("email", userEmail);
@@ -271,14 +271,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 } else if (id < 0) {
                     Log.d("DEBUGME", "No encontrado nombre para ese email");
-                    Toast.makeText(context, "No encontrado nombre para ese email " + id, Toast.LENGTH_LONG).show();
+                 //   Toast.makeText(context, "No encontrado nombre para ese email " + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "Volley error: " + id + " " + message);
-                Toast.makeText(context, "Volley error. Codigo de error: " + id + "message: " + message, Toast.LENGTH_LONG).show();
+             //   Toast.makeText(context, "Volley error. Codigo de error: " + id + "message: " + message, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -288,7 +288,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void deleteAllSharedPreferences() {
         SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
         preferencias.edit().clear().apply();
-        Toast.makeText(this, "Shared Preferences eliminadas", Toast.LENGTH_LONG).show();
+     //   Toast.makeText(this, "Shared Preferences eliminadas", Toast.LENGTH_LONG).show();
     }
 
 

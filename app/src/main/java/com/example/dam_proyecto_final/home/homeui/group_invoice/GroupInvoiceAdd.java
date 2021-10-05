@@ -1,13 +1,16 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,10 +35,9 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     private String typeSelection;
     private AutoCompleteTextView actv_invoiceType;
     private Button bt_New;
-    private String idGroup,groupName,userEmail;
+    private String idGroup,groupName,userEmail,currency;
 
     private WebApiRequest webApiRequest;
-
 
 
     @Override
@@ -62,6 +64,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             idGroup = param.getString("idGroup", "vacio");
             groupName = param.getString("groupName", "vacio");
             userEmail = param.getString("userEmail", "vacio");
+            currency=param.getString("currency", "vacio");
         }
         loadInvoiceType();
 
@@ -74,6 +77,15 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
         cuDate = new CalendarUtility(this, R.id.tiet_date);
         listenerDate();
+
+
+
+
+
+     /*   final EditText password1 = (EditText) layout.findViewById(R.id.EditText_Pwd1);
+        final EditText password2 = (EditText) layout.findViewById(R.id.EditText_Pwd2);
+        final TextView error = (TextView) layout.findViewById(R.id.TextView_PwdProblem);
+*/
 
 
     }
@@ -106,7 +118,6 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.bt_New){
-           //TODO: Crea factura
             invoiceModel=new InvoiceModel(
                     tiet_invoiceNum.getText().toString(),
                     typeSelection,

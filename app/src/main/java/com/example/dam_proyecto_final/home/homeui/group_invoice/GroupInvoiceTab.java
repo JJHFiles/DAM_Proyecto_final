@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.InvoiceListAdapter;
+import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.InvoiceListModel;
 import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.R;
@@ -22,7 +24,7 @@ import java.util.List;
 //https://material.io/components/tabs/android#fixed-tabs
 
 public class GroupInvoiceTab extends AppCompatActivity {
-    private String userEmail, idGroup, groupName;
+    private String userEmail, idGroup, groupName,currency;
     private WebApiRequest webApiRequest;
     private ListView lv_invoice;
     private TabLayout tabLayout;
@@ -30,12 +32,18 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
 
     private ArrayList<InvoiceModel> arrIM;
+    private ArrayList<InvoiceListModel> ilm=new ArrayList<InvoiceListModel>();
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_invoice_tab);
+
+
+
 
         lv_invoice = findViewById(R.id.lv_invoice);
         tabLayout = findViewById(R.id.tabLayout);
@@ -49,6 +57,8 @@ public class GroupInvoiceTab extends AppCompatActivity {
             idGroup = parametros.getString("idGroup", "vacio");
             groupName = parametros.getString("groupName", "vacio");
             userEmail = parametros.getString("userEmail", "vacio");
+            currency=parametros.getString("currency", "EUR.");
+
             Toast.makeText(getApplicationContext(), "idGroup " + idGroup, Toast.LENGTH_LONG).show();
 
         } else {
@@ -67,7 +77,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
                         if (tab.getPosition() == 0) {
                             iv.setVisibility(View.INVISIBLE);
                             lv_invoice.setVisibility(View.VISIBLE);
-                            fillListView(arrIM);
+                            fillListViewCustomAdapter();
 
                         }
                         if (tab.getPosition() == 1) {
@@ -102,7 +112,8 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
                 arrIM = (ArrayList<InvoiceModel>) data;
 
-                fillListView(arrIM);
+                // fillListViewSimpleAdapter(arrIM);
+                fillListViewCustomAdapter();
 
 
             }
@@ -122,7 +133,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
         });
     }
 
-    private void fillListView(ArrayList<InvoiceModel> al) {
+    private void fillListViewSimpleAdapter(ArrayList<InvoiceModel> al) {
 
         ArrayList<String> arr = new ArrayList<>();
         for (int x = 0; x < al.size(); x++) {
@@ -145,6 +156,36 @@ public class GroupInvoiceTab extends AppCompatActivity {
         };
         lv_invoice.setOnItemClickListener(lvClick);
 */
+    }
+    private void fillListViewCustomAdapter(){
+
+        for (int x = 0; x < arrIM.size(); x++) {
+            String measure="";
+
+           if(arrIM.get(x).getType().equals("electricidad")){
+                measure="KW";
+            }else if(arrIM.get(x).getType().equals("gas")) {
+           measure="Litros";
+           }else if(arrIM.get(x).getType().equals("agua")){
+               measure="Litros";
+           }else if(arrIM.get(x).getType().equals("Telefonia")){
+               measure="Mes";
+           }else if(arrIM.get(x).getType().equals("Renting Coche")){
+               measure="Mes";
+           }else if(arrIM.get(x).getType().equals("IBI")){
+               measure="Mes";
+           }
+
+            ilm.add(new InvoiceListModel());
+            ilm.get(x).setType("Tipo: "+arrIM.get(x).getType());
+            ilm.get(x).setAmount("Gasto: "+arrIM.get(x).getAmount()+currency);
+            ilm.get(x).setDate("Fecha: "+arrIM.get(x).getDate());
+            ilm.get(x).setConsumption("Consumo: "+arrIM.get(x).getConsumption()+measure);
+            ilm.get(x).setCode(x);
+        }
+
+        InvoiceListAdapter ila =new InvoiceListAdapter(this, this, ilm);
+        lv_invoice.setAdapter(ila);
     }
 
 /*

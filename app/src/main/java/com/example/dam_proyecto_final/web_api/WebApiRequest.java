@@ -9,12 +9,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.dam_proyecto_final.Model.Group;
-import com.example.dam_proyecto_final.Model.JsonResponse;
-import com.example.dam_proyecto_final.Model.Member;
+import com.example.dam_proyecto_final.model.ActivityModel;
+import com.example.dam_proyecto_final.model.GroupModel;
+import com.example.dam_proyecto_final.model.InvoiceModel;
+import com.example.dam_proyecto_final.model.MemberModel;
+import com.example.dam_proyecto_final.model.JsonResponseModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,7 +128,7 @@ public class WebApiRequest {
     }
 
     //Comprobacion, si existe el usuario creado en BD
-    public void isUserInBd(String email, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+    public void isUserEmailInBd(String email, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_getEmail.php", new Response.Listener<String>() {
             @Override
