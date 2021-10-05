@@ -49,8 +49,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     private String email = "vacioEmail";
     private String pass = "vacioPass";
-    private String currency="vacioCurrency";
-    private String role="vacioRole";
+   // private String currency="vacioCurrency";
+   // private String role="vacioRole";
 
     private Button btn_FGEAddGroup;
     private TextView txtv_FGEmptyTitle;
@@ -145,8 +145,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                                 Si no las hay visualizar GroupInvoiceHomeActivity, activity con seleccion por Tabs (listado y gráficas)
                         */
 
-                     //   currency=groupModels.get(position).getCurrency();
-
+                    //    role=groupModels.get(position).getRole();
+                      //  currency=groupModels.get(position).getCurrency();
                         idGroup = groupModels.get(position).getId() + "";
                         isInvoiceByGroup(idGroup, groupModels, position);
 
@@ -203,7 +203,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     intent.putExtra("idGroup", groupModel.get(position).getId() + "");
                     intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
                     intent.putExtra("userEmail", userEmail);
-                 //   intent.putExtra("currency", currency);
+                    intent.putExtra("currency", groupModel.get(position).getCurrency());
+                    intent.putExtra("role", groupModel.get(position).getRole());
+
 
 
                     startActivity(intent);
@@ -215,7 +217,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     intent.putExtra("idGroup", groupModel.get(position).getId() + "");
                     intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
                     intent.putExtra("userEmail", userEmail);
-               //     intent.putExtra("currency", currency);
+                    intent.putExtra("currency",groupModel.get(position).getCurrency());
+                    intent.putExtra("role", groupModel.get(position).getRole());
                     startActivity(intent);
                 }
             }
