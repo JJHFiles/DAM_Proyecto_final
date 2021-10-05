@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.StringRequest;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
@@ -80,7 +79,7 @@ public class RegistryGoogleActivity extends AppCompatActivity implements View.On
                             //Registro
                             GoogleSignInAccount account = (GoogleSignInAccount) getIntent().getSerializableExtra("account");
                             WebApiRequest webApiRequest = new WebApiRequest(this);
-                            webApiRequest.userInsertG(account.getEmail(), account.getDisplayName(), new WebApiRequest.WebApiRequestJsonObjectListener() {
+                            webApiRequest.userInsertG(account.getEmail(), account.getDisplayName(), account.getIdToken(), new WebApiRequest.WebApiRequestJsonObjectListener() {
                             @Override
                             public void onSuccess(int id, String message) {
                                 if (id > 0) {

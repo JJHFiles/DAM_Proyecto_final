@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -39,7 +40,7 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
     private MembersAdapter membersAdapter;
     private AutoCompleteTextView dd_AGACurrency;
     private AutoCompleteTextView dd_AGARole;
-    private Button btn_AGACancel;
+//    private Button btn_AGACancel;
     private Button btn_AGAAdd;
     private ArrayAdapter rolesAdapter;
     private String roleSelection;
@@ -57,7 +58,9 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
         context = this;
         webApiRequest = new WebApiRequest(context);
 
+        //Editamos la barra superior con nombre y botón back
         getSupportActionBar().setTitle("Crear grupo");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Cogemos el usuario/contraseña para las consultas
         SharedPreferences preferencias = context.getSharedPreferences("savedData", Context.MODE_PRIVATE);
@@ -95,12 +98,12 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
         //ListView de miembros
         lstv_Members = findViewById(R.id.lstv_AGAMembers);
         members = new ArrayList<MemberModel>();
-        membersAdapter = new MembersAdapter(this, members);
+        membersAdapter = new MembersAdapter(this, members, lstv_Members);
         lstv_Members.setAdapter(membersAdapter);
 
         //Buttons
-        btn_AGACancel = findViewById(R.id.btn_AGACancel);
-        btn_AGACancel.setOnClickListener(this);
+//        btn_AGACancel = findViewById(R.id.btn_AGACancel);
+//        btn_AGACancel.setOnClickListener(this);
         btn_AGAAdd = findViewById(R.id.btn_AGAAdd);
         btn_AGAAdd.setOnClickListener(this);
 
@@ -109,13 +112,13 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-
+    //TODO revisar que el elemento no esté ya en la lista
         if (view.getId() == R.id.imgb_AGAAddMember){
             //Comprobamos que el email y el rol no esten vacios
             if (Patterns.EMAIL_ADDRESS.matcher(edt_AddMember.getText().toString()).matches()) {
                 if (!edt_AddMember.getText().toString().equals("") && roleSelection != null) {
                     //Comprobamos que no haya ya 10 usuario en la lista (máximo 10 usuarios por grupo)
-                    if (members.size() <= 10) {
+                    if (members.size() < 10) {
                         //Comprobar si el mail existe
                         webApiRequest.getIfEmailExist(edt_AddMember.getText().toString(), new WebApiRequest.WebApiRequestJsonResponseListener() {
                             @Override
@@ -131,6 +134,7 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                                 members.add(new MemberModel(edt_AddMember.getText().toString(), role));
                                 membersAdapter.notifyDataSetChanged();
                                 edt_AddMember.setText("");
+                                setListViewHeightBasedOnChildren(lstv_Members);
                             }
 
                             @Override
@@ -175,13 +179,33 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
             } else {
                 Toast.makeText(this, "Por favor, rellene todos los campos", Toast.LENGTH_LONG).show();
             }
-        } else if ( view.getId() == R.id.btn_AGACancel ){
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(getIntent());
-            overridePendingTransition(0, 0);
+        } //else if ( view.getId() == R.id.btn_AGACancel ){
+//            finish();
+//            overridePendingTransition(0, 0);
+//            startActivity(getIntent());
+//            overridePendingTransition(0, 0);
+//        }
+
+    }
+
+    private void setListViewHeightBasedOnChildren(ListView listView) {
+        MembersAdapter listAdapter = (MembersAdapter) listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
         }
 
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
 
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }

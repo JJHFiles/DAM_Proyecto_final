@@ -153,11 +153,13 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(JsonResponseModel response) {
-                if (response.getId() == -253) {
+                if (response.getId() == -252) {
                     //Si es -252 es que el usuario no tiene grupos
                     //Ponemos visibles los textos de empty
+                    imgv_FGEmptyAnimation.setVisibility(View.VISIBLE);
                     txtv_FGEmptyTitle.setVisibility(View.VISIBLE);
                     txtv_FGEmptyDescription.setVisibility(View.VISIBLE);
+                    //txtv_FGEmptyDescription.setText(response.getMessage() + " " + pass);
 
                 } else {
                     //Si no ha podido ser cualquier error

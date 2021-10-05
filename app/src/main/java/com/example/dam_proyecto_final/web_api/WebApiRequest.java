@@ -230,7 +230,7 @@ public class WebApiRequest {
     }
 
     //Peticion de inicio/registro mediante Google
-    public void userInsertG(String email, String name, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+    public void userInsertG(String email, String name, String idToken, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_insert_g.php", new Response.Listener<String>() {
             @Override
@@ -261,10 +261,11 @@ public class WebApiRequest {
             protected Map<String, String> getParams() {
                 Date date = new Date();
                 String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
-                Log.d("DEBUGME", "getparams: " + email + " " + name + " " + now);
+                Log.d("DEBUGME", "userInsertG getParams: " + email + " " + name + " " + now);
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
                 params.put("name", name);
+                params.put("token", idToken);
                 params.put("date_signup", now);
 
                 return params;

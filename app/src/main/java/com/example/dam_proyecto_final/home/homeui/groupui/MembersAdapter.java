@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.dam_proyecto_final.Model.MemberModel;
@@ -17,11 +18,13 @@ public class MembersAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<MemberModel> memberModels;
+    private ListView lstv_Members;
 
-    public MembersAdapter(Context context, ArrayList<MemberModel> memberModels) {
+    public MembersAdapter(Context context, ArrayList<MemberModel> memberModels, ListView lstv_Members) {
         super();
         this.context = context;
         this.memberModels = memberModels;
+        this.lstv_Members = lstv_Members;
     }
 
 
@@ -66,10 +69,31 @@ public class MembersAdapter extends BaseAdapter {
             public void onClick(View view) {
                 memberModels.remove(memberModels.get(i));
                 notifyDataSetChanged();
+                setListViewHeightBasedOnChildren(lstv_Members);
             }
         });
 
         return view;
     }
 
+    private void setListViewHeightBasedOnChildren(ListView listView) {
+        MembersAdapter listAdapter = (MembersAdapter) listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
 }

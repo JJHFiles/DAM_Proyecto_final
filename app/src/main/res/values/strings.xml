@@ -51,5 +51,13 @@
     <string name="role_reader">Lector</string>
     <string name="txtv_RGADescription_0">Necesitamos que establezcas una contraseña. Esto te permitirá iniciar sesión también con tu correo electrónico</string>
     <string name="txtv_RGADescription_1">Vuelve a introducir la contraseña. Nos aseguraremos que esté bien escrita</string>
+    <string name="edt_AGAMemberOfGroup">Miembro del grupo</string>
+    <string name="dd_AGARole">Rol</string>
+    <string name="dd_AGACurrency">Divisa</string>
+    <string name="dd_AGADescription">Descripción</string>
+    <string name="btn_AGAAdd">Crear</string>
+    <string name="edt_agagroupname">Nombre del grupo</string>
+    <string name="imgb_AGAAddMemberContentDescription">Plus image to add member</string>
+    <string name="txtv_AGAMemberLabel">Miembros del grupo</string>
 
 </resources>
