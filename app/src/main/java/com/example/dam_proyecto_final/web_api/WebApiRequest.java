@@ -9,13 +9,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.dam_proyecto_final.model.ActivityModel;
-import com.example.dam_proyecto_final.model.GroupModel;
-import com.example.dam_proyecto_final.model.InvoiceModel;
-import com.example.dam_proyecto_final.model.JsonResponseModel;
-import com.example.dam_proyecto_final.model.MemberModel;
+import com.example.dam_proyecto_final.Model.Group;
+import com.example.dam_proyecto_final.Model.JsonResponse;
+import com.example.dam_proyecto_final.Model.Member;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +29,8 @@ import java.util.Map;
 
 public class WebApiRequest {
 
-  private static final String URL = "http://192.168.1.23/webservice/";
-   // private static final String URL = "https://blist.azurewebsites.net/";
+    //private static final String URL = "http://192.168.1.23/webservice/";
+    private static final String URL = "https://blist.azurewebsites.net/";
 
 
     private int id;
@@ -128,7 +127,7 @@ public class WebApiRequest {
     }
 
     //Comprobacion, si existe el usuario creado en BD
-    public void isUserEmailInBd(String email, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+    public void isUserInBd(String email, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "user_getEmail.php", new Response.Listener<String>() {
             @Override
@@ -150,7 +149,7 @@ public class WebApiRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("DEBUGME", "userGetEmail VolleyError: " + error.getMessage());
+                Log.d("DEBUGME", "userInsert VolleyError: " + error.getMessage());
                 webapirequestjsonobjectlistener.onError(-1, "userGetEmail vVolleyError: " + error.getMessage());
             }
         }) {
@@ -191,8 +190,8 @@ public class WebApiRequest {
 
                     id = json.getInt("id");
                     message = json.getString("message");
-                    String name = data.getString("name");
-                    webApiRequestJsonObjectListener_getName.onSuccess(id, message, name);
+                    String  name = data.getString("name");
+                    webApiRequestJsonObjectListener_getName.onSuccess(id, message,name);
                     Toast.makeText(context, "Resultado nombre= " + message, Toast.LENGTH_LONG).show();
 
 
