@@ -38,7 +38,6 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
     private MembersAdapter membersAdapter;
     private AutoCompleteTextView dd_AGACurrency;
     private AutoCompleteTextView dd_AGARole;
-//    private Button btn_AGACancel;
     private Button btn_AGAAdd;
     private ArrayAdapter rolesAdapter;
     private String roleSelection;
@@ -112,35 +111,47 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
     //TODO revisar que el elemento no esté ya en la lista
         if (view.getId() == R.id.imgb_AGAAddMember){
-            //Comprobamos que el email y el rol no esten vacios
+            //Comprobamos que el email y el rol no esten vacios y que el email se ajuste formato. Tambien que el miembro no esté ya en la lista
             if (Patterns.EMAIL_ADDRESS.matcher(edt_AddMember.getText().toString()).matches()) {
-                if (!edt_AddMember.getText().toString().equals("") && roleSelection != null) {
+                if (!edt_AddMember.getText().toString().equals("") && roleSelection != null ){
                     //Comprobamos que no haya ya 10 usuario en la lista (máximo 10 usuarios por grupo)
                     if (members.size() < 10) {
-                        //Comprobar si el mail existe
-                        webApiRequest.getIfEmailExist(edt_AddMember.getText().toString(), new WebApiRequest.WebApiRequestJsonResponseListener() {
-                            @Override
-                            public void onSuccess(JsonResponseModel response) {
-                                int role = 2;
-                                if (roleSelection.toString().equals(getString(R.string.role_admin))){
-                                    role = 0;
-                                } else if (roleSelection.toString().equals(getString(R.string.role_editor))){
-                                    role = 1;
-                                } else if (roleSelection.toString().equals(getString(R.string.role_reader))){
-                                    role = 2;
+                        //Comprobamos que el mail no esté ya en la lista
+                        Boolean memberExist = false;
+                        for (MemberModel m : members) {
+                            if (m.getEmail().equals(edt_AddMember.getText().toString())) {
+                                memberExist = true;
+                            }
+                        }
+                            //Si no existe ok si existe toast
+                        if (!memberExist){
+                            //Comprobar si el mail existe en BD
+                            webApiRequest.getIfEmailExist(edt_AddMember.getText().toString(), new WebApiRequest.WebApiRequestJsonResponseListener() {
+                                @Override
+                                public void onSuccess(JsonResponseModel response) {
+                                    int role = 2;
+                                    if (roleSelection.toString().equals(getString(R.string.role_admin))){
+                                        role = 0;
+                                    } else if (roleSelection.toString().equals(getString(R.string.role_editor))){
+                                        role = 1;
+                                    } else if (roleSelection.toString().equals(getString(R.string.role_reader))){
+                                        role = 2;
+                                    }
+                                    members.add(new MemberModel(edt_AddMember.getText().toString(), role));
+                                    membersAdapter.notifyDataSetChanged();
+                                    edt_AddMember.setText("");
+                                    setListViewHeightBasedOnChildren(lstv_Members);
                                 }
-                                members.add(new MemberModel(edt_AddMember.getText().toString(), role));
-                                membersAdapter.notifyDataSetChanged();
-                                edt_AddMember.setText("");
-                                setListViewHeightBasedOnChildren(lstv_Members);
-                            }
 
-                            @Override
-                            public void onError(JsonResponseModel response) {
-                                edt_AddMember.setText("");
-                                Toast.makeText(context, R.string.userNoDB, Toast.LENGTH_LONG).show();
-                            }
-                        });
+                                @Override
+                                public void onError(JsonResponseModel response) {
+                                    edt_AddMember.setText("");
+                                    Toast.makeText(context, R.string.userNoDB, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(this, "Ya se ha incluido al miembro en la lista", Toast.LENGTH_LONG).show();
+                        }
                     } else {
                         Toast.makeText(this, "No se pueden añadir más de 10 miembros", Toast.LENGTH_LONG).show();
                     }
