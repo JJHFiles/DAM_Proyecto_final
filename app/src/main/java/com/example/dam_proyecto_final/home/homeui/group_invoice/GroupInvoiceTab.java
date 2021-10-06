@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -89,6 +92,7 @@ public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickLi
         }
 
         this.setTitle(groupName);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         // tab1 index -> tab.getPosition()==0, tab2 -> 1
@@ -330,5 +334,27 @@ public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickLi
 //        xAxis.add("JUN");
 //        return new IBarDataSet(xAxis);
 //    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.group_invoice_home_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.mnu_GIHAFilter:
+                //TODO crear flujo de filtro
+                return true;
+            case R.id.mnu_GIHAEditGroup:
+                //TODO crear flujo de grupo
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }

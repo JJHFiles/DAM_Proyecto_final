@@ -58,5 +58,7 @@
     <string name="edt_agagroupname">Nombre del grupo</string>
     <string name="imgb_AGAAddMemberContentDescription">Plus image to add member</string>
     <string name="txtv_AGAMemberLabel">Miembros del grupo</string>
+    <string name="filter">Filtrar</string>
+    <string name="edit">Editar</string>
 
 </resources>

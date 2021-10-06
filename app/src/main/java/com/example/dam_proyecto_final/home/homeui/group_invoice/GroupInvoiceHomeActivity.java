@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -68,7 +71,9 @@ public class GroupInvoiceHomeActivity extends AppCompatActivity implements View.
         } else {
             Toast.makeText(getApplicationContext(), "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
         }
-       this.setTitle(groupName);
+
+        this.setTitle(groupName);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         noInvoices();
 
@@ -122,6 +127,8 @@ public class GroupInvoiceHomeActivity extends AppCompatActivity implements View.
                 "Cuando añadas una esta te aparecerá aquí.");
         txtv_EmptyDescription.setVisibility(View.VISIBLE);
         txtv_EmptyTitle.setVisibility(View.VISIBLE);
-        this.setTitle("Nombre del grupo seleccionado");
+        //this.setTitle("Nombre del grupo seleccionado");
     }
+
+
 }
