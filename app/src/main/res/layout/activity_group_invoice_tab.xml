@@ -35,7 +35,7 @@
     <ListView
         android:id="@+id/lv_invoice"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:background="@color/background_lay_gray"
         android:divider="@null"
         android:paddingBottom="50dp"
@@ -103,5 +103,15 @@
         app:layout_constraintHorizontal_bias="0.909"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_plus" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart_AGITAmount"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/lv_invoice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

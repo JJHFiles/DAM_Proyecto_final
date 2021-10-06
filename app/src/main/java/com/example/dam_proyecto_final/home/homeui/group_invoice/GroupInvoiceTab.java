@@ -20,6 +20,13 @@ import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -29,19 +36,20 @@ import java.util.List;
 //https://material.io/components/tabs/android#fixed-tabs
 
 public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickListener {
-    private String userEmail, idGroup, groupName,currency,role;
+    private String userEmail, idGroup, groupName, currency, role;
     private WebApiRequest webApiRequest;
     private ListView lv_invoice;
     private TabLayout tabLayout;
     private ImageView iv;
     private ImageButton ibAdd;
 
-    private ExtendedFloatingActionButton btOCR,btManual;
+
+    //Grafic panel
+    private BarChart chart_AGITAmount;
+
+    private ExtendedFloatingActionButton btOCR, btManual;
 
     private ArrayList<InvoiceModel> arrIM;
-
-
-
 
 
     @Override
@@ -61,6 +69,7 @@ public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickLi
         tabLayout = findViewById(R.id.tabLayout);
         iv = findViewById(R.id.iv);
 
+        chart_AGITAmount = findViewById(R.id.chart_AGITAmount);
 
 
         Bundle parametros = this.getIntent().getExtras();
@@ -69,8 +78,8 @@ public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickLi
             idGroup = parametros.getString("idGroup", "vacio");
             groupName = parametros.getString("groupName", "vacio");
             userEmail = parametros.getString("userEmail", "vacio");
-            currency=parametros.getString("currency", "vacioCurrency");
-            role=parametros.getString("role", "vacioRole");
+            currency = parametros.getString("currency", "vacioCurrency");
+            role = parametros.getString("role", "vacioRole");
 
 
             Toast.makeText(getApplicationContext(), "idGroup " + idGroup, Toast.LENGTH_LONG).show();
@@ -90,13 +99,27 @@ public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickLi
                         Toast.makeText(getApplicationContext(), "TAB: " + tab.getPosition(), Toast.LENGTH_LONG).show();
                         if (tab.getPosition() == 0) {
                             iv.setVisibility(View.INVISIBLE);
+                            chart_AGITAmount.setVisibility(View.INVISIBLE);
                             lv_invoice.setVisibility(View.VISIBLE);
+                            ibAdd.setVisibility(View.VISIBLE);
                             fillListViewCustomAdapter();
 
                         }
                         if (tab.getPosition() == 1) {
-                            iv.setVisibility(View.VISIBLE);
+                            iv.setVisibility(View.INVISIBLE);
                             lv_invoice.setVisibility(View.INVISIBLE);
+                            ibAdd.setVisibility(View.INVISIBLE);
+                            chart_AGITAmount.setVisibility(View.VISIBLE);
+
+                            BarData data = new BarData(getDataSet());
+                            chart_AGITAmount.setData(data);
+                            Description description = new Description();
+                            description.setText("Mi gráfico");
+                            chart_AGITAmount.setDescription(description);
+                            chart_AGITAmount.setFitBars(true);
+                            chart_AGITAmount.animateXY(1000, 1000);
+                            chart_AGITAmount.invalidate();
+
                         }
 
                     }
@@ -171,64 +194,65 @@ public class GroupInvoiceTab extends AppCompatActivity implements View.OnClickLi
         lv_invoice.setOnItemClickListener(lvClick);
 */
     }
-    private void fillListViewCustomAdapter(){
-        ArrayList<InvoiceListModel> ilm=new ArrayList<InvoiceListModel>();
-        for (int x = 0; x < arrIM.size(); x++) {
-            String measure="";
 
-           if(arrIM.get(x).getType().equals("electricidad")){
-                measure="KW";
-            }else if(arrIM.get(x).getType().equals("gas")) {
-           measure="Litros";
-           }else if(arrIM.get(x).getType().equals("agua")){
-               measure="Litros";
-           }else if(arrIM.get(x).getType().equals("Telefonia")){
-               measure="Mes";
-           }else if(arrIM.get(x).getType().equals("Renting Coche")){
-               measure="Mes";
-           }else if(arrIM.get(x).getType().equals("IBI")){
-               measure="Mes";
-           }
+    private void fillListViewCustomAdapter() {
+        ArrayList<InvoiceListModel> ilm = new ArrayList<InvoiceListModel>();
+        for (int x = 0; x < arrIM.size(); x++) {
+            String measure = "";
+
+            if (arrIM.get(x).getType().equals("electricidad")) {
+                measure = "KW";
+            } else if (arrIM.get(x).getType().equals("gas")) {
+                measure = "Litros";
+            } else if (arrIM.get(x).getType().equals("agua")) {
+                measure = "Litros";
+            } else if (arrIM.get(x).getType().equals("Telefonia")) {
+                measure = "Mes";
+            } else if (arrIM.get(x).getType().equals("Renting Coche")) {
+                measure = "Mes";
+            } else if (arrIM.get(x).getType().equals("IBI")) {
+                measure = "Mes";
+            }
 
             ilm.add(new InvoiceListModel());
-            ilm.get(x).setType("Tipo: "+arrIM.get(x).getType());
-            ilm.get(x).setAmount("Gasto: "+arrIM.get(x).getAmount()+currency);
-            ilm.get(x).setDate("Fecha: "+arrIM.get(x).getDate());
-            ilm.get(x).setConsumption("Consumo: "+arrIM.get(x).getConsumption()+measure);
+            ilm.get(x).setType("Tipo: " + arrIM.get(x).getType());
+            ilm.get(x).setAmount("Gasto: " + arrIM.get(x).getAmount() + currency);
+            ilm.get(x).setDate("Fecha: " + arrIM.get(x).getDate());
+            ilm.get(x).setConsumption("Consumo: " + arrIM.get(x).getConsumption() + measure);
             ilm.get(x).setCode(x);
         }
 
-        InvoiceListAdapter ila =new InvoiceListAdapter(this, this, ilm);
+        InvoiceListAdapter ila = new InvoiceListAdapter(this, this, ilm);
         lv_invoice.setAdapter(ila);
     }
 
-/*
+    /*
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getApplicationContext(), "TAB 1"+tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+
+            if (tabLayout.getSelectedTabPosition()== 0) {
+                Toast.makeText(getApplicationContext(), "TAB 1", Toast.LENGTH_LONG).show();
+
+            } else {
+                Toast.makeText(getApplicationContext(), "TAB 2", Toast.LENGTH_LONG).show();
+
+            }
+        }
+
+     */
     @Override
     public void onClick(View v) {
-        Toast.makeText(getApplicationContext(), "TAB 1"+tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
+        int choice = v.getId();
+        switch (v.getId()) {
+            case R.id.ibAdd:
+                btManual.setVisibility(View.VISIBLE);
+                btOCR.setVisibility(View.VISIBLE);
 
-        if (tabLayout.getSelectedTabPosition()== 0) {
-            Toast.makeText(getApplicationContext(), "TAB 1", Toast.LENGTH_LONG).show();
+                // Para verse las sombras de los botones, provoca un back negro, cambiar el método back
+                //  getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        } else {
-            Toast.makeText(getApplicationContext(), "TAB 2", Toast.LENGTH_LONG).show();
-
-        }
-    }
-
- */
-@Override
-public void onClick(View v) {
-    int choice = v.getId();
-    switch (v.getId()) {
-        case R.id.ibAdd:
-            btManual.setVisibility(View.VISIBLE);
-            btOCR.setVisibility(View.VISIBLE);
-
-            // Para verse las sombras de los botones, provoca un back negro, cambiar el método back
-          //  getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-            //  Toast.makeText(getApplicationContext(), "idGroup "+idGroup, Toast.LENGTH_LONG).show();
+                //  Toast.makeText(getApplicationContext(), "idGroup "+idGroup, Toast.LENGTH_LONG).show();
 
  /*            TODO: que la actividad se torne en escala grises
                new AlertDialog.Builder(this)
@@ -241,21 +265,70 @@ public void onClick(View v) {
                     }).create().show();
 */
 
-            break;
+                break;
 
-        case R.id.btManual:
-            // abre activity para añadir nuevas facturas manuales
-            Intent intent = new Intent(getApplicationContext(), GroupInvoiceAdd.class);
-            intent.putExtra("idGroup",idGroup);
-            intent.putExtra("groupName",groupName);
-            intent.putExtra("userEmail",userEmail);
-            startActivity(intent);
-            break;
+            case R.id.btManual:
+                // abre activity para añadir nuevas facturas manuales
+                Intent intent = new Intent(getApplicationContext(), GroupInvoiceAdd.class);
+                intent.putExtra("idGroup", idGroup);
+                intent.putExtra("groupName", groupName);
+                intent.putExtra("userEmail", userEmail);
+                startActivity(intent);
+                break;
 
-        case R.id.btOCR:
-            //TODO: lectura factura por OCR
-            break;
+            case R.id.btOCR:
+                //TODO: lectura factura por OCR
+                break;
+        }
     }
-}
+
+    //Datos para las barras
+    private BarDataSet getDataSet() {
+        ArrayList dataSets = null;
+
+        ArrayList valueSet1 = new ArrayList();
+        valueSet1.add(new BarEntry(0f, 30f));
+        valueSet1.add(new BarEntry(1f, 80f));
+        valueSet1.add(new BarEntry(2f, 60f));
+        valueSet1.add(new BarEntry(3f, 50f));
+        // gap of 2f
+        valueSet1.add(new BarEntry(5f, 70f));
+        valueSet1.add(new BarEntry(6f, 60f));
+
+        ArrayList valueSet2 = new ArrayList();
+        BarEntry v2e1 = new BarEntry(150.000f, 0); // Jan
+        valueSet2.add(v2e1);
+        BarEntry v2e2 = new BarEntry(90.000f, 1); // Feb
+        valueSet2.add(v2e2);
+        BarEntry v2e3 = new BarEntry(120.000f, 2); // Mar
+        valueSet2.add(v2e3);
+        BarEntry v2e4 = new BarEntry(60.000f, 3); // Apr
+        valueSet2.add(v2e4);
+        BarEntry v2e5 = new BarEntry(20.000f, 4); // May
+        valueSet2.add(v2e5);
+        BarEntry v2e6 = new BarEntry(80.000f, 5); // Jun
+        valueSet2.add(v2e6);
+
+        BarDataSet barDataSet1 = new BarDataSet(valueSet1, "Brand 1");
+        barDataSet1.setColor(Color.rgb(0, 155, 0));
+        BarDataSet barDataSet2 = new BarDataSet(valueSet2, "Brand 2");
+        barDataSet2.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        dataSets = new ArrayList();
+        dataSets.add(barDataSet1);
+        dataSets.add(barDataSet2);
+        return new BarDataSet(valueSet1, "BarDataSet");
+    }
+
+//    private IBarDataSet getXAxisValues() {
+//        ArrayList xAxis = new ArrayList();
+//        xAxis.add("JAN");
+//        xAxis.add("FEB");
+//        xAxis.add("MAR");
+//        xAxis.add("APR");
+//        xAxis.add("MAY");
+//        xAxis.add("JUN");
+//        return new IBarDataSet(xAxis);
+//    }
 
 }
