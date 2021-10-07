@@ -16,7 +16,7 @@
         <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd" />
         <activity android:name=".home.homeui.group_invoice.GroupInvoiceTab"
             android:parentActivityName=".home.HomeActivity"/>
-        <activity android:name=".home.homeui.group_invoice.GroupInvoiceHomeActivity"
+        <activity android:name=".home.homeui.group_invoice.GroupInvoiceEmptyActivity"
             android:parentActivityName=".home.HomeActivity"/>
         <activity android:name=".home.homeui.groupui.GroupAddActivity"
             android:windowSoftInputMode="adjustPan"

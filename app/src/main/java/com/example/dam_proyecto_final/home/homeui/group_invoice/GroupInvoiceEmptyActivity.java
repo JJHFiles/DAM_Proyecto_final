@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 
 import java.util.ArrayList;
 
-public class GroupInvoiceHomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView txtv_EmptyDescription, txtv_EmptyTitle;
     private ImageButton ibAdd;
@@ -89,7 +89,7 @@ public class GroupInvoiceHomeActivity extends AppCompatActivity implements View.
                 btOCR.setVisibility(View.VISIBLE);
 
                 // Para verse las sombras de los botones, provoca un back negro, cambiar el método back
-              getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+              //getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                 //  Toast.makeText(getApplicationContext(), "idGroup "+idGroup, Toast.LENGTH_LONG).show();
 

@@ -17,10 +17,10 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceEmptyActivity;
 import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.R;
-import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceHomeActivity;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceTab;
 import com.example.dam_proyecto_final.home.homeui.groupui.GroupAdapter;
 import com.example.dam_proyecto_final.home.homeui.groupui.GroupAddActivity;
@@ -142,7 +142,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                         //  Toast.makeText(context, "Seleccionado grupo: "+groupModels.get(position).getNombre(), Toast.LENGTH_LONG).show();
 
                         /*TODO: Si hay facturas debe visualizar GroupInvoiceTab, un ListView con las facturas de ese grupo, si se hace click sobre la factura, mostrarla.
-                                Si no las hay visualizar GroupInvoiceHomeActivity, activity con seleccion por Tabs (listado y gráficas)
+                                Si no las hay visualizar GroupInvoiceEmptyActivity, activity con seleccion por Tabs (listado y gráficas)
                         */
 
                     //    role=groupModels.get(position).getRole();
@@ -206,14 +206,12 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     intent.putExtra("currency", groupModel.get(position).getCurrency());
                     intent.putExtra("role", groupModel.get(position).getRole());
 
-
-
                     startActivity(intent);
 
                 } else if (id == 223) {
                     Log.d("DEBUGME", "Sin facturas en el grupo: " + groupId + ", id:" + id);
                     //     Toast.makeText(context, "Sin facturas en el grupo " + id, Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(context, GroupInvoiceHomeActivity.class);
+                    Intent intent = new Intent(context, GroupInvoiceEmptyActivity.class);
                     intent.putExtra("idGroup", groupModel.get(position).getId() + "");
                     intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
                     intent.putExtra("userEmail", userEmail);

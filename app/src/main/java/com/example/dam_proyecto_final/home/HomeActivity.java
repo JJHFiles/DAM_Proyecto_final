@@ -34,7 +34,6 @@ public class HomeActivity extends FragmentActivity implements NavigationBarView.
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fcvHome, GroupFragment.class, null)
-                .addToBackStack(null) // name can be null
                 .commit();
     }
 

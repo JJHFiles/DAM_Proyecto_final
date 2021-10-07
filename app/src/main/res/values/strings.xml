@@ -60,5 +60,7 @@
     <string name="txtv_AGAMemberLabel">Miembros del grupo</string>
     <string name="filter">Filtrar</string>
     <string name="edit">Editar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
