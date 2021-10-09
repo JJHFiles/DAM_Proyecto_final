@@ -124,9 +124,10 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                     tiet_date.getText().toString(),
                     tiet_startPeriod.getText().toString(),
                     tiet_endPeriod.getText().toString(),
-                    tiet_Consumption.getText().toString(),
-                    tiet_Amount.getText().toString(),
-                    idGroup
+                    Double.parseDouble(tiet_Consumption.getText().toString()),
+                    Double.parseDouble(tiet_Amount.getText().toString()),
+                    "0",
+                    Integer.parseInt(idGroup)
             );
             insertInvoice(invoiceModel);
         }

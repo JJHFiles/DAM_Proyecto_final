@@ -105,36 +105,36 @@ public class GroupInvoiceTabChartFragment extends Fragment {
         ArrayList dataSets = null;
 
         ArrayList valueSet1 = new ArrayList();
-        valueSet1.add(new BarEntry(0f, 30f));
-        valueSet1.add(new BarEntry(1f, 80f));
-        valueSet1.add(new BarEntry(2f, 60f));
-        valueSet1.add(new BarEntry(3f, 50f));
+        valueSet1.add(new BarEntry(0f, 30));
+        valueSet1.add(new BarEntry(1f, 80));
+        valueSet1.add(new BarEntry(2f, 60));
+        valueSet1.add(new BarEntry(3f, 50));
         // gap of 2f
-        valueSet1.add(new BarEntry(5f, 70f));
-        valueSet1.add(new BarEntry(6f, 60f));
+        valueSet1.add(new BarEntry(5f, 70));
+        valueSet1.add(new BarEntry(6f, 60));
 
-        ArrayList valueSet2 = new ArrayList();
-        BarEntry v2e1 = new BarEntry(150.000f, 0); // Jan
-        valueSet2.add(v2e1);
-        BarEntry v2e2 = new BarEntry(90.000f, 1); // Feb
-        valueSet2.add(v2e2);
-        BarEntry v2e3 = new BarEntry(120.000f, 2); // Mar
-        valueSet2.add(v2e3);
-        BarEntry v2e4 = new BarEntry(60.000f, 3); // Apr
-        valueSet2.add(v2e4);
-        BarEntry v2e5 = new BarEntry(20.000f, 4); // May
-        valueSet2.add(v2e5);
-        BarEntry v2e6 = new BarEntry(80.000f, 5); // Jun
-        valueSet2.add(v2e6);
+//        ArrayList valueSet2 = new ArrayList();
+//        BarEntry v2e1 = new BarEntry(150.000f, 0); // Jan
+//        valueSet2.add(v2e1);
+//        BarEntry v2e2 = new BarEntry(90.000f, 1); // Feb
+//        valueSet2.add(v2e2);
+//        BarEntry v2e3 = new BarEntry(120.000f, 2); // Mar
+//        valueSet2.add(v2e3);
+//        BarEntry v2e4 = new BarEntry(60.000f, 3); // Apr
+//        valueSet2.add(v2e4);
+//        BarEntry v2e5 = new BarEntry(20.000f, 4); // May
+//        valueSet2.add(v2e5);
+//        BarEntry v2e6 = new BarEntry(80.000f, 5); // Jun
+//        valueSet2.add(v2e6);
 
-        BarDataSet barDataSet1 = new BarDataSet(valueSet1, "Brand 1");
+        BarDataSet barDataSet1 = new BarDataSet(valueSet1, "Electricidad");
         barDataSet1.setColor(Color.rgb(0, 155, 0));
-        BarDataSet barDataSet2 = new BarDataSet(valueSet2, "Brand 2");
-        barDataSet2.setColors(ColorTemplate.COLORFUL_COLORS);
+//        BarDataSet barDataSet2 = new BarDataSet(valueSet2, "Brand 2");
+//        barDataSet2.setColors(ColorTemplate.COLORFUL_COLORS);
 
         dataSets = new ArrayList();
         dataSets.add(barDataSet1);
-        dataSets.add(barDataSet2);
+//        dataSets.add(barDataSet2);
         return new BarDataSet(valueSet1, "BarDataSet");
     }
 

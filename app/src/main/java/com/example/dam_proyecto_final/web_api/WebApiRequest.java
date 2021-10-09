@@ -631,17 +631,22 @@ public class WebApiRequest {
                         for (int i=0; i<jsonArrayInvoice.length(); i++){
                             //Obtenemos el objeto JSONObjet de Activity individual
                             JSONObject jsonObjectInvoice = jsonArrayInvoice.getJSONObject(i);
+
+//                            double consumption = -1;
+//                            if (!jsonObjectInvoice.getString("consumption").equals("null")){
+//                                consumption = jsonObjectInvoice.getDouble("consumption");
+//                            }
+
                             invoiceModel.add(new InvoiceModel(
                                     jsonObjectInvoice.getString("identifier"),
                                     jsonObjectInvoice.getString("type"),
                                     jsonObjectInvoice.getString("date"),
                                     jsonObjectInvoice.getString("start_period"),
                                     jsonObjectInvoice.getString("end_period"),
-                                    jsonObjectInvoice.getString("consumption"),
-                                    jsonObjectInvoice.getString("amount"),
+                                    jsonObjectInvoice.getDouble("consumption"),
+                                    jsonObjectInvoice.getDouble("amount"),
                                     jsonObjectInvoice.getString("filetype"),
-                                    jsonObjectInvoice.getString("idgroup")
-
+                                    jsonObjectInvoice.getInt("idgroup")
 
                             ));
                         }
@@ -654,7 +659,7 @@ public class WebApiRequest {
                     }
 
                 } catch (JSONException e) {
-                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getInvoiceByGroup JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getInvoiceByGroup JSONException: Error al generar el objeto JSON" + e.getMessage()));
                 }
 
             }
@@ -767,9 +772,9 @@ public class WebApiRequest {
                 params.put("date",im.getDate() );
                 params.put("start_period", im.getStart_period());
                 params.put("end_period", im.getEnd_period());
-                params.put("consumption", im.getConsumption());
-                params.put("amount",im.getAmount() );
-                params.put("idgroup", im.getIdgroup());
+                params.put("consumption", String.valueOf(im.getConsumption()));
+                params.put("amount", String.valueOf(im.getAmount()));
+                params.put("idgroup", String.valueOf(im.getIdgroup()));
 
 
 

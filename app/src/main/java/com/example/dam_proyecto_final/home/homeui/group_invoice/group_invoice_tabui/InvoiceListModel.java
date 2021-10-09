@@ -1,10 +1,14 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.Date;
+
 public class InvoiceListModel {
 
-private int code;
-
-private String type;
+    private int code;
+    private String type;
     private String amount;
     private String date;
     private String consumption;
@@ -48,4 +52,6 @@ private String type;
     public void setConsumption(String consumption) {
         this.consumption = consumption;
     }
+
+
 }

@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceAdd;
@@ -110,29 +111,13 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         tabLayout = getActivity().findViewById(R.id.tabLayout);
         tabLayout.getTabAt(0).select();
 
-        //Cogemos group info
-        Bundle parametros = getActivity().getIntent().getExtras();
 
-        if (parametros != null) {
-            idGroup = parametros.getString("idGroup", "vacio");
-            groupName = parametros.getString("groupName", "vacio");
-            userEmail = parametros.getString("userEmail", "vacio");
-            currency = parametros.getString("currency", "vacioCurrency");
-            role = parametros.getString("role", "vacioRole");
-
-//            Toast.makeText(context, "idGroup " + idGroup, Toast.LENGTH_LONG).show();
-            Log.d("DEBUGME", "GroupInvoiceTabListFragment: grupo " + idGroup);
-
-        } else {
-            Log.d("DEBUGME", "GroupInvoiceTabListFragment: ERROR GRAVE idGroup = null");
-//            Toast.makeText(context, "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
+        if (getArguments() != null) {
+            ArrayList<InvoiceModel> arrIM = getArguments().getParcelableArrayList("invoices");
+            currency = getArguments().getString("currency");
+            fillListViewCustomAdapter(arrIM);
         }
 
-
-        // tab1 index -> tab.getPosition()==0, tab2 -> 1
-        getInvoiceByGroup(idGroup);
-
-        //fillListViewCustomAdapter(); Se le llama desde getInvoiceByGroup, error si descomento
 
         return view;
     }
@@ -144,36 +129,10 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
     public void getInvoiceByGroup(String idGroup) {
         Log.d("DEBUGME", "GroupInvoiceTabListFragment");
         webApiRequest = new WebApiRequest(context);
-        webApiRequest.getInvoiceByGroup(idGroup, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
-            @Override
-            public void onSuccess(JsonResponseModel response, List<?> data) {
-                Log.d("DEBUGME", "GroupInvoiceTabListFragment: " + response.getId() + " " + response.getMessage());
 
-                arrIM = (ArrayList<InvoiceModel>) data;
-
-                // fillListViewSimpleAdapter(arrIM);
-                fillListViewCustomAdapter(); //Llama a
-
-
-            }
-
-            @Override
-            public void onError(JsonResponseModel response) {
-                if (response.getId() == -253) {
-                    //Si es -252 es que el usuario no tiene actividades
-                    //Toast.makeText(getApplicationContext(), "Error " + response.getId() + " ?", Toast.LENGTH_LONG).show();
-                    Log.d("DEBUGME", "GroupInvoiceTabListFragment: " + response.getId() + " " + response.getMessage());
-
-                } else {
-                    //Si no ha podido ser cualquier error
-                    //Toast.makeText(getApplicationContext(), "Error " + response.getId(), Toast.LENGTH_LONG).show();
-                    Log.d("DEBUGME", "GroupInvoiceTabListFragment: " + response.getId() + " " + response.getMessage());
-                }
-            }
-        });
     }
 
-    private void fillListViewSimpleAdapter(ArrayList<InvoiceModel> al) {
+/*    private void fillListViewSimpleAdapter(ArrayList<InvoiceModel> al) {
 
         ArrayList<String> arr = new ArrayList<>();
         for (int x = 0; x < al.size(); x++) {
@@ -188,34 +147,36 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, arr);
         lv_invoice.setAdapter(arrayAdapter);
-/*
+
         AdapterView.OnItemClickListener lvClick = new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 Toast.makeText(getApplicationContext(), "Seleccionado elemento: "+position, Toast.LENGTH_LONG).show();
             }
         };
         lv_invoice.setOnItemClickListener(lvClick);
-*/
-    }
 
-    private void fillListViewCustomAdapter() {
+    }*/
+
+    private void fillListViewCustomAdapter(ArrayList<InvoiceModel> arrIM) {
         ArrayList<InvoiceListModel> ilm = new ArrayList<InvoiceListModel>();
         for (int x = 0; x < arrIM.size(); x++) {
             String measure = "";
 
-            if (arrIM.get(x).getType().equals("electricidad")) {
-                measure = "KW";
-            } else if (arrIM.get(x).getType().equals("gas")) {
-                measure = "Litros";
-            } else if (arrIM.get(x).getType().equals("agua")) {
-                measure = "Litros";
+            //Obtenemos measure
+            if (arrIM.get(x).getType().equals("Electricidad")) {
+                measure = " KW";
+            } else if (arrIM.get(x).getType().equals("Gas")) {
+                measure = " KW";
+            } else if (arrIM.get(x).getType().equals("Agua")) {
+                measure = " M3";
             } else if (arrIM.get(x).getType().equals("Telefonia")) {
-                measure = "Mes";
+                measure = " Mes";
             } else if (arrIM.get(x).getType().equals("Renting Coche")) {
-                measure = "Mes";
+                measure = " Mes";
             } else if (arrIM.get(x).getType().equals("IBI")) {
-                measure = "Mes";
+                measure = " Mes";
             }
+
 
             ilm.add(new InvoiceListModel());
             ilm.get(x).setType("Tipo: " + arrIM.get(x).getType());
