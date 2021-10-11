@@ -210,11 +210,15 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         int choice = v.getId();
         switch (v.getId()) {
             case R.id.ibAdd:
-                //TODO permitir que se esconda al pulsarlo o pulsar fuera de él
-                //FAB Principal
-                btManual.setVisibility(View.VISIBLE);
-                btOCR.setVisibility(View.VISIBLE);
 
+                //FAB Principal
+                if(btManual.getVisibility() == View.INVISIBLE) {
+                    btManual.setVisibility(View.VISIBLE);
+                    btOCR.setVisibility(View.VISIBLE);
+                }else{
+                    btManual.setVisibility(View.INVISIBLE);
+                    btOCR.setVisibility(View.INVISIBLE);
+                }
                 // Para verse las sombras de los botones, provoca un back negro, cambiar el método back
                 //  getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
