@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -37,6 +38,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
     private String userEmail, idGroup, groupName, currency, role;
     private WebApiRequest webApiRequest;
     private ListView lv_invoice;
+    private ConstraintLayout root_background;
     private TabLayout tabLayout;
     private ImageView iv;
     private ImageButton ibAdd;
@@ -106,6 +108,9 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         //ListView
         lv_invoice = view.findViewById(R.id.lv_invoice);
         iv = view.findViewById(R.id.iv);
+
+        root_background=view.findViewById(R.id.root_background);
+        root_background.setOnClickListener(this);
 
         //TabLayout, seleccionamos la tab correspondiente por si venimos de hacer back
         tabLayout = getActivity().findViewById(R.id.tabLayout);
@@ -249,6 +254,12 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
             case R.id.btOCR:
                 //TODO: lectura factura por OCR
                 break;
+
+            case R.id.root_background:
+
+                    btManual.setVisibility(View.INVISIBLE);
+                    btOCR.setVisibility(View.INVISIBLE);
+
         }
     }
 
