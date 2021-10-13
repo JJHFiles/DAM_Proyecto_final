@@ -182,8 +182,12 @@ public class GroupInvoiceTab extends AppCompatActivity {
             case R.id.mnu_GIHAEditGroup:
                 //TODO crear flujo de grupo
 
-                Intent edit = new Intent(getApplicationContext(), GroupInvoiceEditGroup.class);
-                startActivity(edit);
+                Intent intent = new Intent(getApplicationContext(), GroupInvoiceEditGroup.class);
+                intent.putExtra("idGroup", idGroup);
+                intent.putExtra("groupName", groupName);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("currency", currency);
+                startActivity(intent);
 
 
 

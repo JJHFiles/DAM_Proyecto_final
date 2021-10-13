@@ -43,7 +43,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     private ArrayAdapter rolesAdapter;
     private String roleSelection;
     private String currencySelection;
-    private String userEmail;
+    private String userEmail,idGroup,groupName,currency;
     private String userPass;
     private WebApiRequest webApiRequest;
     private Context context;
@@ -56,8 +56,25 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         context = this;
         webApiRequest = new WebApiRequest(context);
 
+        //Cogemos la información de grupo obtenida del GroupFragment
+        Bundle parametros = getIntent().getExtras();
+        if (parametros != null) {
+            idGroup = parametros.getString("idGroup", "vacio");
+            groupName = parametros.getString("groupName", "vacio");
+            userEmail = parametros.getString("userEmail", "vacio");
+            currency = parametros.getString("currency", "vacioCurrency");
+
+
+//            Toast.makeText(context, "idGroup " + idGroup, Toast.LENGTH_LONG).show();
+            Log.d("DEBUGME", "GroupInvoiceTab: grupo " + idGroup);
+
+        } else {
+            Log.d("DEBUGME", "GroupInvoiceTab: ERROR GRAVE idGroup = null");
+//            Toast.makeText(context, "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
+        }
+
         //Editamos la barra superior con nombre y botón back
-        getSupportActionBar().setTitle("Crear grupo");
+        getSupportActionBar().setTitle("Editar grupo "+ groupName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Cogemos el usuario/contraseña para las consultas
