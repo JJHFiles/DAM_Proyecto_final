@@ -1,16 +1,12 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
-import android.app.AlertDialog;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,7 +44,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
         webApiRequest = new WebApiRequest(getApplicationContext());
 
-        tiet_invoiceNum = findViewById(R.id.tiet_invoiceNum);
+        tiet_invoiceNum = findViewById(R.id.tiet_GIFStarPeriod);
         tiet_provider = findViewById(R.id.tiet_provider);
         tiet_date = findViewById(R.id.tiet_date);
         tiet_startPeriod = findViewById(R.id.tiet_startPeriod);

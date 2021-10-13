@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DAM_Proyecto_final</string>
+    <string name="app_name">BLIST</string>
     <string name="edtpass_text">Escribe tu contraseña</string>
     <string name="btnsignin_text">Iniciar sesión con email</string>
     <string name="btnsigngoogle">Acceder con Google</string>
@@ -62,5 +62,7 @@
     <string name="edit">Editar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_date">Selecciona una fecha</string>
+    <string name="cleanButton">Limpiar</string>
 
 </resources>

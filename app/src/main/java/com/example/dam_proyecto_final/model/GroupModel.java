@@ -1,6 +1,8 @@
 package com.example.dam_proyecto_final.model;
 
-public class GroupModel {
+import java.io.Serializable;
+
+public class GroupModel implements Serializable {
 
     private int id;
     private String nombre;

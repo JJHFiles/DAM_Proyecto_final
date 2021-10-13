@@ -52,7 +52,8 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     //Graficas
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-
+    //Flexbot
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.0'

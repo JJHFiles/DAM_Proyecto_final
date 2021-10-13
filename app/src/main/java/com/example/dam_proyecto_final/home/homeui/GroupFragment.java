@@ -45,12 +45,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    private TextView txtv;
 
     private String email = "vacioEmail";
     private String pass = "vacioPass";
-   // private String currency="vacioCurrency";
-   // private String role="vacioRole";
 
     private Button btn_FGEAddGroup;
     private TextView txtv_FGEmptyTitle;
@@ -124,12 +121,10 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         webApiRequest.getGroupsByEmail(userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
             @Override
             public void onSuccess(JsonResponseModel response, List<?> data) {
+
                 Log.d("DEBUGME", response.getId() + " " + response.getMessage());
+
                 ArrayList<GroupModel> groupModels = (ArrayList<GroupModel>) data;
-//                for (GroupModel g: groupModels){
-//                    Log.d("DEBUGME groupModels", g.getDescripción());
-//                }
-                //lstv_FGGroups
                 GroupAdapter groupAdapter = new GroupAdapter(context, groupModels);
                 lstv_FGGroups.setAdapter(groupAdapter);
                 imgv_FGEmptyAnimation.setVisibility(View.INVISIBLE);
@@ -138,15 +133,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                 AdapterView.OnItemClickListener lvClick = new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView parent, View v, int position, long id) {
 
-                        //  Toast.makeText(context, "Seleccionado elemento: "+position, Toast.LENGTH_LONG).show();
-                        //  Toast.makeText(context, "Seleccionado grupo: "+groupModels.get(position).getNombre(), Toast.LENGTH_LONG).show();
-
-                        /*TODO: Si hay facturas debe visualizar GroupInvoiceTab, un ListView con las facturas de ese grupo, si se hace click sobre la factura, mostrarla.
-                                Si no las hay visualizar GroupInvoiceEmptyActivity, activity con seleccion por Tabs (listado y gráficas)
-                        */
-
-                    //    role=groupModels.get(position).getRole();
-                      //  currency=groupModels.get(position).getCurrency();
                         idGroup = groupModels.get(position).getId() + "";
                         isInvoiceByGroup(idGroup, groupModels, position);
 
@@ -163,7 +149,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     imgv_FGEmptyAnimation.setVisibility(View.VISIBLE);
                     txtv_FGEmptyTitle.setVisibility(View.VISIBLE);
                     txtv_FGEmptyDescription.setVisibility(View.VISIBLE);
-                    //txtv_FGEmptyDescription.setText(response.getMessage() + " " + pass);
+
 
                 } else {
                     //Si no ha podido ser cualquier error
@@ -183,11 +169,11 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         pass = preferencias.getString("pass", "vacio4");
     }
 
+    //Método on click del botón añadir grupo
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(view.getContext(), GroupAddActivity.class);
         startActivity(intent);
-
     }
 
     // Comprueba si existe el usuario en la bd
@@ -197,20 +183,21 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             public void onSuccess(int id, String message) {
                 if (id == 222) {
                     Log.d("DEBUGME", "Con facturas en el grupo:" + groupId + ", " + message);
-                    //    Toast.makeText(context, "Con facturas en el grupo, mensa: " + message, Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(context, GroupInvoiceTab.class);
-                    intent.putExtra("idGroup", groupModel.get(position).getId() + "");
+                    /*intent.putExtra("idGroup", groupModel.get(position).getId() + "");
                     intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("currency", groupModel.get(position).getCurrency());
-                    intent.putExtra("role", groupModel.get(position).getRole());
+                    intent.putExtra("role", groupModel.get(position).getRole());*/
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("group", groupModel.get(position));
 
                     startActivity(intent);
 
                 } else if (id == 223) {
                     Log.d("DEBUGME", "Sin facturas en el grupo: " + groupId + ", id:" + id);
-                    //     Toast.makeText(context, "Sin facturas en el grupo " + id, Toast.LENGTH_LONG).show();
+
                     Intent intent = new Intent(context, GroupInvoiceEmptyActivity.class);
                     intent.putExtra("idGroup", groupModel.get(position).getId() + "");
                     intent.putExtra("groupName", groupModel.get(position).getNombre() + "");

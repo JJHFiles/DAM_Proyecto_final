@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_invoiceNum"
+            android:id="@+id/tiet_GIFStarPeriod"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:inputType="text" />

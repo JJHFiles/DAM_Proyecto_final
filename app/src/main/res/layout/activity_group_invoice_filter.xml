@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="24dp"
+    android:layout_marginRight="24dp"
+    android:fitsSystemWindows="true"
+    tools:context=".home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter">
+
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+
+        android:background="@color/white"
+        app:contentInsetStart="0dp"
+        app:elevation="0.1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_GIFClear"
+                style="@style/SecondaryButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="24dp"
+                android:layout_weight="1"
+                android:text="@string/cleanButton" />
+            <Button
+                android:id="@+id/btn_GIFFilter"
+                style="@style/PrimaryButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="24dp"
+                android:layout_weight="1"
+                android:text="@string/filter" />
+        </LinearLayout>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="84dp"
+        android:fitsSystemWindows="true">
+
+        <!-- YOUR MAIN SCROLLING CONTENT HERE -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/txtv_GIFTypeInvoice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Tipo de factura"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/fl_GIFCheckTypeInvoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:flexWrap="wrap"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtv_GIFTypeInvoice">
+
+                <!--                        <CheckBox-->
+                <!--                            style="@style/CheckRadio"-->
+                <!--                            android:text="Luz" />-->
+
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+            <TextView
+                android:id="@+id/txtv_GIFTypeChart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Tipo de dato a representar"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fl_GIFCheckTypeInvoice" />
+
+            <RadioGroup
+                android:id="@+id/fl_GIFCheckTypeChart"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                app:flexWrap="wrap"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtv_GIFTypeChart">
+
+
+                <RadioButton
+                    android:id="@+id/rb_GIFConsumption"
+                    style="@style/CheckRadio"
+                    android:text="Consumo" />
+
+                <RadioButton
+                    android:id="@+id/rb_GIFCost"
+                    style="@style/CheckRadio"
+                    android:text="Coste" />
+
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/txtv_GIFStartPeriod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Rango de fechas"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fl_GIFCheckTypeChart" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtv_GIFStartPeriod">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_GIFStartPeriod"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="0dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:hint="Desde">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tiet_GIFStartPeriod"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:focusable="false"
+                        android:inputType="date" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_GIFEndPeriod"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="0dp"
+
+                    android:layout_marginLeft="6dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:hint="Hasta">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tiet_GIFEndPeriod"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:clickable="true"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:focusable="false"
+                        android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

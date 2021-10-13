@@ -6,21 +6,29 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_blistico"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DAM_Proyecto_final"
         android:usesCleartextTraffic="true">
-        <activity android:name=".registry.RegistryGoogleActivity"></activity>
-        <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd" />
-        <activity android:name=".home.homeui.group_invoice.GroupInvoiceTab"
-            android:parentActivityName=".home.HomeActivity"/>
-        <activity android:name=".home.homeui.group_invoice.GroupInvoiceEmptyActivity"
-            android:parentActivityName=".home.HomeActivity"/>
-        <activity android:name=".home.homeui.groupui.GroupAddActivity"
+        <activity
+            android:name=".home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter"
             android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".home.HomeActivity"/>
+            android:parentActivityName=".home.homeui.group_invoice.GroupInvoiceTab"
+            android:exported="true" />
+        <activity android:name=".registry.RegistryGoogleActivity" />
+        <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd" />
+        <activity
+            android:name=".home.homeui.group_invoice.GroupInvoiceTab"
+            android:parentActivityName=".home.HomeActivity" />
+        <activity
+            android:name=".home.homeui.group_invoice.GroupInvoiceEmptyActivity"
+            android:parentActivityName=".home.HomeActivity" />
+        <activity
+            android:name=".home.homeui.groupui.GroupAddActivity"
+            android:parentActivityName=".home.HomeActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".registry.RegistryActivity" />
         <activity android:name=".home.HomeActivity" />
         <activity android:name=".LoginActivity">

@@ -10,7 +10,9 @@
     <color name="gray">#ACACAC</color>
     <color name="primary_color">#0D2B79</color>
     <color name="primary_textcolor">#FFFFFF</color>
+    <color name="primary_textcolorgraydark">#333333</color>
     <color name="secondary_color">#8EE697</color>
     <color name="background_lay_gray">#F6F6F6</color>
+    <color name="background_chechbox">#F0F0F0</color>
     <color name="background_shadow_gray">#5BE6E4E4</color>
 </resources>

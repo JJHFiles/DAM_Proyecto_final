@@ -52,17 +52,26 @@
         <item name="boxBackgroundMode">filled</item>
     </style>
 
-    <!--    Button google-->
-<!--    <style name="GoogleButton" parent="Widget.AppCompat.Button">-->
-<!--        <item name="backgroundTint">@color/secondary_color</item>-->
-<!--        <item name="android:textColor">@color/primary_textcolor</item>-->
-<!--        <item name="android:textSize">14sp</item>-->
-<!--        <item name="android:fontFamily">@font/roboto_medium</item>-->
-<!--        <item name="android:letterSpacing">-0</item>-->
-<!--        <item name="android:background">@drawable/round_button</item>-->
-<!--        <item name="android:height">48dp</item>-->
-<!--        <item name="android:text">@string/btnsigngoogle</item>-->
-<!--    </style>-->
+    <style name="CheckRadio" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@drawable/round_checkradio</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@drawable/round_checkradio</item>
+    </style>
 
 
+    <!--    <CheckBox-->
+    <!--        android:layout_marginLeft="5dp"-->
+    <!--        android:layout_marginRigth="5dp"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="40dp"-->
+    <!--        android:textAlignment="center"-->
+    <!--        android:background="background"-->
+    <!--        android:button="@null"-->
+    <!--        android:text="Consumo"-->
+    <!--        />-->
 </resources>

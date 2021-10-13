@@ -1,5 +1,7 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -8,12 +10,19 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabChartFragment;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabListFragment;
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
@@ -25,11 +34,19 @@ import java.util.List;
 //https://material.io/components/tabs/android#fixed-tabs
 
 public class GroupInvoiceTab extends AppCompatActivity {
-    private String userEmail, idGroup, groupName, currency, role;
+
+
+    private String userEmail;
+    private int idGroup;
+    private String groupName;
+    private String currency;
+    private String role;
 
     private TabLayout tabLayout;
     private ImageView iv;
     private ArrayList<InvoiceModel> arrIM;
+
+    ActivityResultLauncher<Intent> intentForResult;
 
 
     @Override
@@ -47,18 +64,17 @@ public class GroupInvoiceTab extends AppCompatActivity {
         //Cogemos la información de grupo obtenida del GroupFragment
         Bundle parametros = getIntent().getExtras();
         if (parametros != null) {
-            idGroup = parametros.getString("idGroup", "vacio");
-            groupName = parametros.getString("groupName", "vacio");
             userEmail = parametros.getString("userEmail", "vacio");
-            currency = parametros.getString("currency", "vacioCurrency");
-            role = parametros.getString("role", "vacioRole");
+            GroupModel group = (GroupModel) parametros.getSerializable("group");
+            idGroup = group.getId();
+            groupName = group.getNombre();
+            currency = group.getCurrency();
+            role = group.getRole();
 
-//            Toast.makeText(context, "idGroup " + idGroup, Toast.LENGTH_LONG).show();
             Log.d("DEBUGME", "GroupInvoiceTab: grupo " + idGroup);
 
         } else {
             Log.d("DEBUGME", "GroupInvoiceTab: ERROR GRAVE idGroup = null");
-//            Toast.makeText(context, "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
         }
 
         //Establecemos titulo al banner y flecha de back
@@ -156,7 +172,19 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 }
         );
 
+        // Register
+        intentForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Bundle bundle = result.getData().getExtras();
+                            // Handle the bundle
+                            Log.d("DEBUGME", "GIT: " + bundle.getString("result"));
 
+                        }
+                    }
+                });
     }
 
 
@@ -175,6 +203,10 @@ public class GroupInvoiceTab extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.mnu_GIHAFilter:
                 //TODO crear flujo de filtro
+                Intent intent = new Intent(this, GroupInvoiceFilter.class);
+                intent.putExtra("invoices", arrIM);
+                intent.putExtra("currency", currency);
+                intentForResult.launch(intent);
                 return true;
             case R.id.mnu_GIHAEditGroup:
                 //TODO crear flujo de grupo
@@ -183,5 +215,6 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }
