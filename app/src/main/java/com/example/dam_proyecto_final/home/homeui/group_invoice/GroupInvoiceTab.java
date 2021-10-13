@@ -1,5 +1,6 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,9 +12,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabChartFragment;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabListFragment;
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup;
 import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
@@ -178,6 +181,13 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 return true;
             case R.id.mnu_GIHAEditGroup:
                 //TODO crear flujo de grupo
+
+                Intent edit = new Intent(getApplicationContext(), GroupInvoiceEditGroup.class);
+                startActivity(edit);
+
+
+
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -12,15 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DAM_Proyecto_final"
         android:usesCleartextTraffic="true">
-        <activity android:name=".registry.RegistryGoogleActivity"></activity>
+        <activity
+            android:name=".home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup"
+            android:exported="true" />
+        <activity android:name=".registry.RegistryGoogleActivity" />
         <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd" />
-        <activity android:name=".home.homeui.group_invoice.GroupInvoiceTab"
-            android:parentActivityName=".home.HomeActivity"/>
-        <activity android:name=".home.homeui.group_invoice.GroupInvoiceEmptyActivity"
-            android:parentActivityName=".home.HomeActivity"/>
-        <activity android:name=".home.homeui.groupui.GroupAddActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".home.HomeActivity"/>
+        <activity
+            android:name=".home.homeui.group_invoice.GroupInvoiceTab"
+            android:parentActivityName=".home.HomeActivity" />
+        <activity
+            android:name=".home.homeui.group_invoice.GroupInvoiceEmptyActivity"
+            android:parentActivityName=".home.HomeActivity" />
+        <activity
+            android:name=".home.homeui.groupui.GroupAddActivity"
+            android:parentActivityName=".home.HomeActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".registry.RegistryActivity" />
         <activity android:name=".home.HomeActivity" />
         <activity android:name=".LoginActivity">
