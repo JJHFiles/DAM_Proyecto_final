@@ -121,7 +121,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
         //Invocamos los grupos
         webApiRequest = new WebApiRequest(context);
-        webApiRequest.getGroupsByEmail(userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
+        webApiRequest.getGroupsByEmail
+                (userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
             @Override
             public void onSuccess(JsonResponseModel response, List<?> data) {
                 Log.d("DEBUGME", response.getId() + " " + response.getMessage());

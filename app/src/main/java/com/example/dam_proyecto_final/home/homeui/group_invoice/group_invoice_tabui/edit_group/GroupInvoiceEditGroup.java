@@ -1,10 +1,7 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.edit_group;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -18,15 +15,20 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.dam_proyecto_final.home.homeui.groupui.MembersAdapter;
-import com.example.dam_proyecto_final.model.JsonResponseModel;
-import com.example.dam_proyecto_final.model.MemberModel;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.HomeActivity;
+import com.example.dam_proyecto_final.home.homeui.groupui.GroupAdapter;
+import com.example.dam_proyecto_final.home.homeui.groupui.MembersAdapter;
+import com.example.dam_proyecto_final.model.GroupModel;
+import com.example.dam_proyecto_final.model.JsonResponseModel;
+import com.example.dam_proyecto_final.model.MemberModel;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,10 +45,11 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     private ArrayAdapter rolesAdapter;
     private String roleSelection;
     private String currencySelection;
-    private String userEmail,idGroup,groupName,currency;
+    private String userEmail, idGroup, groupName, currency;
     private String userPass;
     private WebApiRequest webApiRequest;
     private Context context;
+   private  ArrayList<GroupModel> groupModels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,26 +77,43 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         }
 
         //Editamos la barra superior con nombre y botón back
-        getSupportActionBar().setTitle("Editar grupo "+ groupName);
+        getSupportActionBar().setTitle("Editar grupo " + groupName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Cogemos el usuario/contraseña para las consultas
-        SharedPreferences preferencias = context.getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        userEmail = preferencias.getString("email", "vacio");
-        userPass = preferencias.getString("pass", "vacio");
 
         //Asignamos lista a DropDowns
         String[] currencys = {"EUR", "USD", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "BRL"};
-        ArrayAdapter currencyAdapter = new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, currencys);
+        ArrayAdapter currencyAdapter =
+                new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, currencys);
         dd_AGACurrency = findViewById(R.id.dd_AGACurrency);
+        Toast.makeText(context, R.string.userNoDB, Toast.LENGTH_LONG).show();
+
+        dd_AGACurrency.setText(currency);
         dd_AGACurrency.setAdapter(currencyAdapter);
+
+
+
+       int selectedCurrency = 0;
+
+        for (int x = 0; x < dd_AGACurrency.getAdapter().getCount(); x++) {
+            if (dd_AGACurrency.getAdapter().getItem(x).toString().equals(currency)) {
+                dd_AGACurrency.setListSelection(x);
+                selectedCurrency=x;
+            }
+        }
+
         dd_AGACurrency.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 currencySelection = (String) parent.getItemAtPosition(position);
             }
         });
 
-        String[] roles = {getString(R.string.role_admin), getString(R.string.role_editor), getString(R.string.role_reader)};
+        String[] roles = {
+                getString(R.string.role_admin),
+                getString(R.string.role_editor),
+                getString(R.string.role_reader)
+        };
+
         rolesAdapter = new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, roles);
         dd_AGARole = findViewById(R.id.dd_AGARole);
         dd_AGARole.setAdapter(rolesAdapter);
@@ -110,6 +130,9 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         edt_AGAGroupName = findViewById(R.id.edt_AGAGroupName);
         edt_AGADescription = findViewById(R.id.edt_AGADescription);
 
+        edt_AGAGroupName.setText(groupName);
+
+
         //ListView de miembros
         lstv_Members = findViewById(R.id.lstv_AGAMembers);
         members = new ArrayList<MemberModel>();
@@ -117,8 +140,6 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         lstv_Members.setAdapter(membersAdapter);
 
         //Buttons
-//        btn_AGACancel = findViewById(R.id.btn_AGACancel);
-//        btn_AGACancel.setOnClickListener(this);
         btn_AGAAdd = findViewById(R.id.btn_AGAAdd);
         btn_AGAAdd.setOnClickListener(this);
 
@@ -128,10 +149,10 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         //TODO revisar que el elemento no esté ya en la lista
-        if (view.getId() == R.id.imgb_AGAAddMember){
+        if (view.getId() == R.id.imgb_AGAAddMember) {
             //Comprobamos que el email y el rol no esten vacios y que el email se ajuste formato. Tambien que el miembro no esté ya en la lista
             if (Patterns.EMAIL_ADDRESS.matcher(edt_AddMember.getText().toString()).matches()) {
-                if (!edt_AddMember.getText().toString().equals("") && roleSelection != null ){
+                if (!edt_AddMember.getText().toString().equals("") && roleSelection != null) {
                     //Comprobamos que no haya ya 10 usuario en la lista (máximo 10 usuarios por grupo)
                     if (members.size() < 10) {
                         //Comprobamos que el mail no esté ya en la lista
@@ -142,17 +163,17 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                             }
                         }
                         //Si no existe ok si existe toast
-                        if (!memberExist){
+                        if (!memberExist) {
                             //Comprobar si el mail existe en BD
                             webApiRequest.getIfEmailExist(edt_AddMember.getText().toString(), new WebApiRequest.WebApiRequestJsonResponseListener() {
                                 @Override
                                 public void onSuccess(JsonResponseModel response) {
                                     int role = 2;
-                                    if (roleSelection.toString().equals(getString(R.string.role_admin))){
+                                    if (roleSelection.toString().equals(getString(R.string.role_admin))) {
                                         role = 0;
-                                    } else if (roleSelection.toString().equals(getString(R.string.role_editor))){
+                                    } else if (roleSelection.toString().equals(getString(R.string.role_editor))) {
                                         role = 1;
-                                    } else if (roleSelection.toString().equals(getString(R.string.role_reader))){
+                                    } else if (roleSelection.toString().equals(getString(R.string.role_reader))) {
                                         role = 2;
                                     }
                                     members.add(new MemberModel(edt_AddMember.getText().toString(), role));
@@ -179,13 +200,13 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
             } else {
                 Toast.makeText(this, R.string.email_NoMatch, Toast.LENGTH_LONG).show();
             }
-        } else if ( view.getId() == R.id.btn_AGAAdd ){
+        } else if (view.getId() == R.id.btn_AGAAdd) {
             //Revisar elementos no nulos y si no nulos insertar en BBDD
-            Log.d("DEBUGME", userEmail + " " + userPass + " " +  edt_AGAGroupName.getText().toString() + " " +
-                    edt_AGADescription.getText().toString() + " " +  currencySelection);
+            Log.d("DEBUGME", userEmail + " " + userPass + " " + edt_AGAGroupName.getText().toString() + " " +
+                    edt_AGADescription.getText().toString() + " " + currencySelection);
             if (!edt_AGAGroupName.getText().toString().equals("") &&
                     !edt_AGADescription.getText().toString().equals("") &&
-                    currencySelection != null){
+                    currencySelection != null) {
                 webApiRequest.addGroup(userEmail, userPass, edt_AGAGroupName.getText().toString(),
                         edt_AGADescription.getText().toString(), currencySelection, members, new WebApiRequest.WebApiRequestJsonResponseListener() {
                             @Override
@@ -234,5 +255,29 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    private void getGroupsByEmail(){
+        webApiRequest.getGroupsByEmail
+                (userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
+                    @Override
+                    public void onSuccess(JsonResponseModel response, List<?> data) {
+                        Log.d("DEBUGME", response.getId() + " " + response.getMessage());
+                        ArrayList<GroupModel> groupModels = (ArrayList<GroupModel>) data;
+
+                    }
+
+                    @Override
+                    public void onError(JsonResponseModel response) {
+                        if (response.getId() == -252) {
+
+
+                        } else {
+                            //Si no ha podido ser cualquier error
+                            Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG);
+                        }
+                    }
+                });
+
     }
 }
