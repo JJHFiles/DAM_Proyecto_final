@@ -46,9 +46,9 @@ public class GroupAdapter extends BaseAdapter {
         view = layoutInflater.inflate(R.layout.fragment_group_listview_group_item, null);
 
         TextView txtv_GITitle = view.findViewById(R.id.txtv_GITitle);
-        txtv_GITitle.setText(groupModels.get(i).getNombre());
+        txtv_GITitle.setText(groupModels.get(i).getName());
         TextView txtv_GIDescription = view.findViewById(R.id.txtv_GIDescription);
-        txtv_GIDescription.setText(groupModels.get(i).getDescripción());
+        txtv_GIDescription.setText(groupModels.get(i).getDescription());
 
         return view;
     }

@@ -47,11 +47,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     private TextView txtv;
 
-    private String email = "vacioEmail";
-    private String pass = "vacioPass";
-   // private String currency="vacioCurrency";
-   // private String role="vacioRole";
-
     private Button btn_FGEAddGroup;
     private TextView txtv_FGEmptyTitle;
     private TextView txtv_FGEmptyDescription;
@@ -94,8 +89,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        readSharedPreferences();
     }
 
     @Override
@@ -176,13 +169,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void readSharedPreferences() {
 
-        SharedPreferences preferencias;
-        preferencias = getActivity().getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        email = preferencias.getString("email", "vacio3");
-        pass = preferencias.getString("pass", "vacio4");
-    }
 
     @Override
     public void onClick(View view) {
@@ -202,8 +189,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
                     Intent intent = new Intent(context, GroupInvoiceTab.class);
                     intent.putExtra("idGroup", groupModel.get(position).getId() + "");
-                    intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
+                    intent.putExtra("groupName", groupModel.get(position).getName() + "");
                     intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("userPass", userPass);
                     intent.putExtra("currency", groupModel.get(position).getCurrency());
                     intent.putExtra("role", groupModel.get(position).getRole());
 
@@ -214,7 +202,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     //     Toast.makeText(context, "Sin facturas en el grupo " + id, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(context, GroupInvoiceEmptyActivity.class);
                     intent.putExtra("idGroup", groupModel.get(position).getId() + "");
-                    intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
+                    intent.putExtra("groupName", groupModel.get(position).getName() + "");
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("currency",groupModel.get(position).getCurrency());
                     intent.putExtra("role", groupModel.get(position).getRole());

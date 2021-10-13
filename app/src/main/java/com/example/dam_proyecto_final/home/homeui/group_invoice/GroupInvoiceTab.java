@@ -28,7 +28,7 @@ import java.util.List;
 //https://material.io/components/tabs/android#fixed-tabs
 
 public class GroupInvoiceTab extends AppCompatActivity {
-    private String userEmail, idGroup, groupName, currency, role;
+    private String userEmail, idGroup, groupName, currency, role,userPass;
 
     private TabLayout tabLayout;
     private ImageView iv;
@@ -53,6 +53,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
             idGroup = parametros.getString("idGroup", "vacio");
             groupName = parametros.getString("groupName", "vacio");
             userEmail = parametros.getString("userEmail", "vacio");
+            userPass = parametros.getString("userPass", "vacio");
             currency = parametros.getString("currency", "vacioCurrency");
             role = parametros.getString("role", "vacioRole");
 
@@ -186,6 +187,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 intent.putExtra("idGroup", idGroup);
                 intent.putExtra("groupName", groupName);
                 intent.putExtra("userEmail", userEmail);
+                intent.putExtra("userPass", userPass);
                 intent.putExtra("currency", currency);
                 startActivity(intent);
 

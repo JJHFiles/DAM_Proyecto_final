@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.HomeActivity;
-import com.example.dam_proyecto_final.home.homeui.groupui.GroupAdapter;
 import com.example.dam_proyecto_final.home.homeui.groupui.MembersAdapter;
 import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
@@ -46,10 +45,11 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     private String roleSelection;
     private String currencySelection;
     private String userEmail, idGroup, groupName, currency;
+    private String description = "vacio";
     private String userPass;
     private WebApiRequest webApiRequest;
     private Context context;
-   private  ArrayList<GroupModel> groupModels;
+    private ArrayList<GroupModel> groupModels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
             idGroup = parametros.getString("idGroup", "vacio");
             groupName = parametros.getString("groupName", "vacio");
             userEmail = parametros.getString("userEmail", "vacio");
+            userPass = parametros.getString("userPass", "vacio");
             currency = parametros.getString("currency", "vacioCurrency");
 
 
@@ -80,6 +81,10 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         getSupportActionBar().setTitle("Editar grupo " + groupName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //Almacena a informacion en ArrayList<GroupModel> groupModels
+        getGroupsByEmail();
+
+
 
         //Asignamos lista a DropDowns
         String[] currencys = {"EUR", "USD", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "BRL"};
@@ -92,13 +97,12 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         dd_AGACurrency.setAdapter(currencyAdapter);
 
 
-
-       int selectedCurrency = 0;
+        int selectedCurrency = 0;
 
         for (int x = 0; x < dd_AGACurrency.getAdapter().getCount(); x++) {
             if (dd_AGACurrency.getAdapter().getItem(x).toString().equals(currency)) {
                 dd_AGACurrency.setListSelection(x);
-                selectedCurrency=x;
+                selectedCurrency = x;
             }
         }
 
@@ -257,14 +261,19 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         listView.requestLayout();
     }
 
-    private void getGroupsByEmail(){
+    private void getGroupsByEmail() {
         webApiRequest.getGroupsByEmail
                 (userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
                     @Override
                     public void onSuccess(JsonResponseModel response, List<?> data) {
                         Log.d("DEBUGME", response.getId() + " " + response.getMessage());
-                        ArrayList<GroupModel> groupModels = (ArrayList<GroupModel>) data;
+                        groupModels = (ArrayList<GroupModel>) data;
 
+                        for (int x=0;x<groupModels.size();x++) {
+                            if (groupModels.get(x).getId()==Integer.parseInt(idGroup)) {
+                                edt_AGADescription.setText(description);
+                            }
+                        }
                     }
 
                     @Override
@@ -280,4 +289,5 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                 });
 
     }
+
 }
