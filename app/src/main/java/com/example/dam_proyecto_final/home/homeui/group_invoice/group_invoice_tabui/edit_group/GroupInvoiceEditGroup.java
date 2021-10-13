@@ -45,7 +45,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     private String roleSelection;
     private String currencySelection;
     private String userEmail, idGroup, groupName, currency;
-    private String description = "vacio";
+
     private String userPass;
     private WebApiRequest webApiRequest;
     private Context context;
@@ -271,7 +271,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                         for (int x=0;x<groupModels.size();x++) {
                             if (groupModels.get(x).getId()==Integer.parseInt(idGroup)) {
-                                edt_AGADescription.setText(description);
+                                edt_AGADescription.setText(groupModels.get(x).getDescription());
                             }
                         }
                     }
