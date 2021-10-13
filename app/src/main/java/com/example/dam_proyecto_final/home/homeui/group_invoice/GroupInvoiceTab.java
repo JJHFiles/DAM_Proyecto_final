@@ -71,7 +71,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
             userEmail = parametros.getString("userEmail", "vacio");
             GroupModel group = (GroupModel) parametros.getSerializable("group");
             idGroup = group.getId();
-            groupName = group.getNombre();
+            groupName = group.getName();
             currency = group.getCurrency();
             role = group.getRole();
             userPass = parametros.getString("userPass", "vacio");
@@ -211,10 +211,10 @@ public class GroupInvoiceTab extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.mnu_GIHAFilter:
                 //TODO crear flujo de filtro
-                Intent intent = new Intent(this, GroupInvoiceFilter.class);
-                intent.putExtra("invoices", arrIM);
-                intent.putExtra("currency", currency);
-                intentForResult.launch(intent);
+                Intent intentFilter = new Intent(this, GroupInvoiceFilter.class);
+                intentFilter.putExtra("invoices", arrIM);
+                intentFilter.putExtra("currency", currency);
+                intentForResult.launch(intentFilter);
                 return true;
             case R.id.mnu_GIHAEditGroup:
                 //TODO crear flujo de grupo
