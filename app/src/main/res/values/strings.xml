@@ -60,9 +60,34 @@
     <string name="txtv_AGAMemberLabel">Miembros del grupo</string>
     <string name="filter">Filtrar</string>
     <string name="edit">Editar</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="select_date">Selecciona una fecha</string>
     <string name="cleanButton">Limpiar</string>
+
+    <!-- TODO: los siguientes Strings afectan a GroupInvoiceTabListFragment y su XML, sin aplicar-->
+    <string name="tab_Graphics">Gráficas</string>
+    <string name="tab_Invoice">Listado</string>
+    <string name="tab_ManualAdd">Añadir de forma manual</string>
+    <string name="tab_OCR_Add">Añadir escaneando, OCR</string>
+    <string name="tab_Kw">Kw</string>
+    <string name="tab_m3">m3</string>
+    <string name="tab_Hour">Hour(s)</string>
+    <string name="tab_Day">Day(s)</string>
+    <string name="tab_Month">Month(s)</string>
+    <string name="tab_Year">Year(s)</string>
+    <string name="tab_Type">Tipo: </string>
+    <string name="tab_Amount">Gasto: </string>
+    <string name="tab_Date">Fecha: </string>
+    <string name="tab_consumption">Consumo: </string>
+    <string name="tab_Init">Inicio de facturación: </string>
+    <string name="tab_End">Fin de facturación: </string>
+    <string name="tab_Electricity">Electricidad</string>
+    <string name="tab_Gas">Electricidad</string>
+    <string name="tab_Water">Agua</string>
+    <string name="tab_Telephone">Telephonia</string>
+    <string name="tab_CarRenting">Renting de coche</string>
+    <string name="tab_IBI">IBI</string>
 
 </resources>

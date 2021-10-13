@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="8dp">
 
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:orientation="vertical"
         android:background="@drawable/round_item"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,19 +24,20 @@
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
-                android:padding="10dp"
-                android:text="tipo"
-                android:textStyle="bold"/>
+                android:gravity="bottom"
+                android:paddingLeft="16dp"
+                android:text="@string/tab_Type"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvAmount"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:padding="10dp"
-                android:text="gasto"
-                android:textStyle="bold"/>
+                android:gravity="bottom|right"
+                android:paddingRight="16dp"
+                android:text="@string/tab_Amount"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -52,18 +54,18 @@
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
-                android:padding="10dp"
-                android:text="fecha"
-                 />
+                android:gravity="top"
+                android:paddingLeft="16dp"
+                android:text="@string/tab_Date" />
 
             <TextView
                 android:id="@+id/tvConsumption"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:padding="10dp"
-                android:text="cantConsum-pecio/unidad" />
+                android:gravity="top|right"
+                android:paddingRight="16dp"
+                android:text="@string/tab_consumption" />
 
         </LinearLayout>
     </LinearLayout>

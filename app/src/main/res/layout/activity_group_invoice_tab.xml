@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.homeui.group_invoice.GroupInvoiceTab">
+    tools:context=".home.homeui.group_invoice.GroupInvoiceTab"
+    android:background="@color/background_lay_gray">
 
 
     <com.google.android.material.tabs.TabLayout
@@ -15,7 +16,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:background="@color/background_lay_gray">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/ti_List"

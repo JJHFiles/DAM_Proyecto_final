@@ -2,6 +2,7 @@ package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,10 +20,12 @@ import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter;
+import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabChartFragment;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabListFragment;
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.model.GroupModel;
+import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup;
 import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
@@ -41,6 +44,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
     private String groupName;
     private String currency;
     private String role;
+    private String userPass;
 
     private TabLayout tabLayout;
     private ImageView iv;
@@ -70,11 +74,15 @@ public class GroupInvoiceTab extends AppCompatActivity {
             groupName = group.getNombre();
             currency = group.getCurrency();
             role = group.getRole();
+            userPass = parametros.getString("userPass", "vacio");
+            role = parametros.getString("role", "vacioRole");
 
+//            Toast.makeText(context, "idGroup " + idGroup, Toast.LENGTH_LONG).show();
             Log.d("DEBUGME", "GroupInvoiceTab: grupo " + idGroup);
 
         } else {
             Log.d("DEBUGME", "GroupInvoiceTab: ERROR GRAVE idGroup = null");
+//            Toast.makeText(context, "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
         }
 
         //Establecemos titulo al banner y flecha de back
@@ -210,6 +218,18 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 return true;
             case R.id.mnu_GIHAEditGroup:
                 //TODO crear flujo de grupo
+
+                Intent intent = new Intent(getApplicationContext(), GroupInvoiceEditGroup.class);
+                intent.putExtra("idGroup", idGroup);
+                intent.putExtra("groupName", groupName);
+                intent.putExtra("userEmail", userEmail);
+                intent.putExtra("userPass", userPass);
+                intent.putExtra("currency", currency);
+                startActivity(intent);
+
+
+
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

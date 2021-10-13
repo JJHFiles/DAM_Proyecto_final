@@ -91,8 +91,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        readSharedPreferences();
     }
 
     @Override
@@ -118,7 +116,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
         //Invocamos los grupos
         webApiRequest = new WebApiRequest(context);
-        webApiRequest.getGroupsByEmail(userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
+        webApiRequest.getGroupsByEmail
+                (userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
             @Override
             public void onSuccess(JsonResponseModel response, List<?> data) {
 
@@ -161,19 +160,14 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void readSharedPreferences() {
 
-        SharedPreferences preferencias;
-        preferencias = getActivity().getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        email = preferencias.getString("email", "vacio3");
-        pass = preferencias.getString("pass", "vacio4");
-    }
 
     //Método on click del botón añadir grupo
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(view.getContext(), GroupAddActivity.class);
         startActivity(intent);
+
     }
 
     // Comprueba si existe el usuario en la bd
@@ -191,6 +185,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     intent.putExtra("currency", groupModel.get(position).getCurrency());
                     intent.putExtra("role", groupModel.get(position).getRole());*/
                     intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("userPass", userPass);
                     intent.putExtra("group", groupModel.get(position));
 
                     startActivity(intent);
@@ -200,7 +195,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
                     Intent intent = new Intent(context, GroupInvoiceEmptyActivity.class);
                     intent.putExtra("idGroup", groupModel.get(position).getId() + "");
-                    intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
+                    intent.putExtra("groupName", groupModel.get(position).getName() + "");
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("currency",groupModel.get(position).getCurrency());
                     intent.putExtra("role", groupModel.get(position).getRole());
