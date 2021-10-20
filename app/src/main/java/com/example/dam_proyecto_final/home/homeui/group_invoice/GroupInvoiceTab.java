@@ -2,7 +2,6 @@ package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,11 +15,9 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter;
-import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabChartFragment;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabListFragment;
 import com.example.dam_proyecto_final.R;
@@ -56,7 +53,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
     //Filter parameters
     ArrayList<String> cbSelectedFilter;
-    int rbSelectedFilter;
+    int typeChart;
     Calendar dateFromFilter;
     Calendar dateTofilter;
 
@@ -85,21 +82,20 @@ public class GroupInvoiceTab extends AppCompatActivity {
             userPass = parametros.getString("userPass", "vacio");
             role = parametros.getString("role", "vacioRole");
 
-//            Toast.makeText(context, "idGroup " + idGroup, Toast.LENGTH_LONG).show();
+
             Log.d("DEBUGME", "GroupInvoiceTab: grupo " + idGroup);
 
         } else {
             Log.d("DEBUGME", "GroupInvoiceTab: ERROR GRAVE idGroup = null");
-//            Toast.makeText(context, "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
         }
 
         //Establecemos titulo al banner y flecha de back
         this.setTitle(groupName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Inicializo parametros de filtro
+        //Inicializamos parametros de filtro
         cbSelectedFilter = null;
-        rbSelectedFilter = -1;
+        typeChart = -1;
         dateFromFilter = null;
         dateTofilter = null;
 
@@ -152,32 +148,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
                         //Toast.makeText(getApplicationContext(), "TAB: " + tab.getPosition(), Toast.LENGTH_LONG).show();
                         Log.d("DEBUGME", "TAB: " + tab.getPosition());
 
-                        // Elegimos la lista a pasar como parametro priorizando la filtrada
-                        Bundle bundle = new Bundle();
-                        bundle.putString("currency", currency);
-                        if (arrIMFilter != null){
-                            bundle.putParcelableArrayList("invoices", arrIMFilter);
-                        } else {
-                            bundle.putParcelableArrayList("invoices", arrIM);
-                        }
-
-                        if (tab.getPosition() == 0) {
-                            GroupInvoiceTabListFragment fragment = new GroupInvoiceTabListFragment();
-                            fragment.setArguments(bundle);
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.fcv_AGITListChart, fragment, null)
-                                    .addToBackStack(null) // name can be null
-                                    .commit();
-                        }
-
-                        if (tab.getPosition() == 1) {
-                            GroupInvoiceTabChartFragment fragment = new GroupInvoiceTabChartFragment();
-                            fragment.setArguments(bundle);
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.fcv_AGITListChart, fragment, null)
-                                    .addToBackStack(null) // name can be null
-                                    .commit();
-                        }
+                        replaceFragment(tab.getPosition(), fragmentManager);
 
                     }
 
@@ -205,48 +176,48 @@ public class GroupInvoiceTab extends AppCompatActivity {
                             arrIMFilter = bundle.getParcelableArrayList("arrIMFilter");
 
                             cbSelectedFilter  = bundle.getStringArrayList("cbSelected");
-                            rbSelectedFilter = bundle.getInt("rbSelected");
+                            typeChart = bundle.getInt("typeChart");
                             dateFromFilter = (Calendar) bundle.getSerializable("dateFrom");
                             dateTofilter = (Calendar) bundle.getSerializable("dateTo");
 
 
                             // Refrescamos el fragment previamente seleccionado con los nuevos parametros
                             TabLayout.Tab tab = tabLayout.getTabAt(tabLayout.getSelectedTabPosition());
-                            if (tab.getPosition() == 0) {
-
-                                GroupInvoiceTabListFragment fragment = new GroupInvoiceTabListFragment();
-                                //Creamos el bundle y pasamos las facturas
-                                bundle = new Bundle();
-                                bundle.putParcelableArrayList("invoices", arrIMFilter);
-                                bundle.putString("currency", currency);
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.fcv_AGITListChart, fragment, null)
-                                        //.addToBackStack(null) // name can be null
-                                        .commit();
-
-                            }
-                            if (tab.getPosition() == 1) {
-
-                                GroupInvoiceTabChartFragment fragment = new GroupInvoiceTabChartFragment();
-                                //Creamos el bundle y asignamos
-                                //Creamos el bundle y pasamos las facturas
-                                bundle = new Bundle();
-                                bundle.putParcelableArrayList("invoices", arrIMFilter);
-                                bundle.putString("currency", currency);
-                                fragment.setArguments(bundle);
-                                fragmentManager.beginTransaction()
-                                        .replace(R.id.fcv_AGITListChart, fragment, null)
-                                        //.addToBackStack(null) // name can be null
-                                        .commit();
-
-                            }
+                            replaceFragment(tab.getPosition(), fragmentManager);
                         }
                     }
                 });
     }
 
+    private void replaceFragment(int position, FragmentManager fragmentManager) {
+        // Elegimos la lista a pasar como parametro priorizando la filtrada
+        Bundle bundle = new Bundle();
+        if (arrIMFilter != null){
+            bundle.putParcelableArrayList("invoices", arrIMFilter);
+        } else {
+            bundle.putParcelableArrayList("invoices", arrIM);
+        }
 
+        if (position == 0) {
+            bundle.putString("currency", currency);
+            GroupInvoiceTabListFragment fragment = new GroupInvoiceTabListFragment();
+            fragment.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fcv_AGITListChart, fragment, null)
+                    .addToBackStack(null) // name can be null
+                    .commit();
+        }
+
+        if (position == 1) {
+            bundle.putInt("typeChart", typeChart);
+            GroupInvoiceTabChartFragment fragment = new GroupInvoiceTabChartFragment();
+            fragment.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fcv_AGITListChart, fragment, null)
+                    .addToBackStack(null) // name can be null
+                    .commit();
+        }
+    }
 
 
     @Override
@@ -269,8 +240,8 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 if (cbSelectedFilter != null){
                     intentFilter.putExtra("cbSelected", cbSelectedFilter);
                 }
-                if (rbSelectedFilter != -1){
-                    intentFilter.putExtra("rbSelected", rbSelectedFilter);
+                if (typeChart != -1){
+                    intentFilter.putExtra("typeChart", typeChart);
                 }
                 if (dateFromFilter != null){
                     intentFilter.putExtra("dateFrom", dateFromFilter);

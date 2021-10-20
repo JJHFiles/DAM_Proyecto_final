@@ -78,12 +78,12 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
 
         //Inicializar calendarios
         dateFrom = Calendar.getInstance();
-            dateFrom.setTimeInMillis(Long.MIN_VALUE);
+        dateFrom.setTimeInMillis(Long.MIN_VALUE);
         dateTo = Calendar.getInstance();
 
 
         //Obtenemos la lista de facturas
-       invoices = getIntent().getExtras().getParcelableArrayList("invoices");
+        invoices = getIntent().getExtras().getParcelableArrayList("invoices");
 
         //Instanciamos los Checkbox programáticamente en base a los tipos de facturas obtenidos
         ArrayList<String> types = new ArrayList<>();
@@ -116,7 +116,7 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
 
         // Obtenemos si había un tipo a representar marcado previamente
         int typeChart = getIntent().getExtras().getInt("typeChart", -1);
-        if (typeChart == -1){
+        if (typeChart == -1) {
             rb_GIFConsumption.setChecked(true);
         } else {
             RadioButton rbSelected = findViewById(typeChart);
@@ -125,9 +125,9 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
 
         // Obtenemos los typeInvoices marcados previamente
         ArrayList<String> typeInvoices = getIntent().getExtras().getStringArrayList("cbSelected");
-        if (typeInvoices != null){
-            for (CheckBox cb: checkbox){
-                if (typeInvoices.contains(cb.getText().toString())){
+        if (typeInvoices != null) {
+            for (CheckBox cb : checkbox) {
+                if (typeInvoices.contains(cb.getText().toString())) {
                     cb.setChecked(true);
                 }
             }
@@ -135,7 +135,7 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
         // Obtenemos las fechas marcadas previamente
         Calendar dateFromPrevious = (Calendar) getIntent().getExtras().getSerializable("dateFrom");
         Calendar dateToPrevious = (Calendar) getIntent().getExtras().getSerializable("dateTo");
-        if (dateFromPrevious != null && dateToPrevious != null ){
+        if (dateFromPrevious != null && dateToPrevious != null) {
             dateFrom = dateFromPrevious;
             dateTo = dateToPrevious;
 
@@ -182,17 +182,18 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
                 }
                 // Comprobamos que radio button está seleccionado
                 int rbSelected = -1;
-                if (rb_GIFConsumption.isChecked()){
+                if (rb_GIFConsumption.isChecked()) {
                     rbSelected = rb_GIFConsumption.getId();
                 } else if (rb_GIFCost.isChecked()) {
-                    rbSelected = rb_GIFConsumption.getId();
+                    rbSelected = rb_GIFCost.getId();
                 }
                 if (cbChecked) {
                     //Comprobamos que la fecha desde no sea superior a hasta
                     if (dateFrom.before(dateTo)) {
+                        // Cogemos las facturas filtradas según parametros
                         ArrayList<InvoiceModel> arrIMFilter = filterInvoice(cbSelected);
-                        if (!(arrIMFilter.size() == 0)){
-                            // TODO devolver al padre los resultados
+                        if (!(arrIMFilter.size() == 0)) {
+                            // Si el filtro no es 0 pasamos los parametros filtrados a la activity
                             Intent returnIntent = new Intent();
                             returnIntent.putExtra("arrIMFilter", arrIMFilter);
                             returnIntent.putExtra("typeChart", rbSelected);
@@ -200,7 +201,7 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
                             // Comprobamos que las fechas no sean por defecto para pasarlas
                             Calendar cal = Calendar.getInstance();
                             cal.setTimeInMillis(Long.MIN_VALUE);
-                            if (!dateFrom.equals(cal)){
+                            if (!dateFrom.equals(cal)) {
                                 returnIntent.putExtra("dateFrom", dateFrom);
                                 returnIntent.putExtra("dateTo", dateTo);
                             }
@@ -222,22 +223,22 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
 
     }
 
-    private ArrayList<InvoiceModel> filterInvoice(ArrayList<String> cbSelected ) {
+    private ArrayList<InvoiceModel> filterInvoice(ArrayList<String> cbSelected) {
         ArrayList<InvoiceModel> invoicesFilter = new ArrayList<>();
-        for (InvoiceModel i : invoices){
+        for (InvoiceModel i : invoices) {
             //Creamos el campo Calendar para comparar fecha emision con rango establecido
             String[] dateEmitionStr = i.getDate().split("-");
             Calendar dateEmition = Calendar.getInstance(Locale.getDefault());
             dateEmition.set(Integer.parseInt(dateEmitionStr[0]),
-                            Integer.parseInt(dateEmitionStr[1]),
-                            Integer.parseInt(dateEmitionStr[2]));
-
+                    Integer.parseInt(dateEmitionStr[1])-1,
+                    Integer.parseInt(dateEmitionStr[2]));
+            dateEmition.getTime();
             //Si la factura está en rango la incorporamos a nueva lista de retorno
-            if (dateFrom.before(dateEmition) &&  dateTo.after(dateEmition)){
+            if (dateFrom.before(dateEmition) && dateTo.after(dateEmition)) {
                 // Si la factura es de algún tipo seleccionado
-                    if (cbSelected.contains(i.getType())){
-                        invoicesFilter.add(i);
-                    }
+                if (cbSelected.contains(i.getType())) {
+                    invoicesFilter.add(i);
+                }
             }
         }
         return invoicesFilter;
