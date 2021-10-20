@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.registry.RegistryActivity;
@@ -71,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(getResources().getString(R.string.default_firebase_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -122,34 +123,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("DEBUGME ", "firebaseAuthWithGoogle:" + account.getEmail());
 
 
-                        webApiRequest.userInsertG(account.getEmail(), account.getDisplayName(), account.getId(), new WebApiRequest.WebApiRequestJsonObjectListener() {
-                            @Override
-                            public void onSuccess(int id, String message) {
-                                if (id > 0) {
-                                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+                webApiRequest.userInsertG(account.getEmail(), account.getDisplayName(), account.getId(), new WebApiRequest.WebApiRequestJsonObjectListener() {
+                    @Override
+                    public void onSuccess(int id, String message) {
+                        if (id > 0) {
+                            Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
 
-                                    //Guardamos el usuario en las SharedPreferences
-                                    SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = preferences.edit();
-                                    editor.putString("email", account.getEmail());
-                                    editor.putString("name", account.getDisplayName());
-                                    editor.putString("pass", account.getId());
-                                    editor.apply();
+                            //Guardamos el usuario en las SharedPreferences
+                            SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("email", account.getEmail());
+                            editor.putString("name", account.getDisplayName());
+                            editor.putString("pass", account.getId());
+                            editor.apply();
 
-                                    //Iniciamos sesión
-                                    signIn();
-                                } else if (id < 0) {
-                                    Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
-                                    Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
-                                }
-                            }
+                            //Iniciamos sesión
+                            signIn();
+                        } else if (id < 0) {
+                            Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
+                            Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                        }
+                    }
 
-                            @Override
-                            public void onError(int id, String message) {
-                                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
-                                Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
-                            }
-                        });
+                    @Override
+                    public void onError(int id, String message) {
+                        Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+                        Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                    }
+                });
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -184,7 +185,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         && edtUserPass.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4
                 {
                     userEmail = edtUserEmail.getText().toString();
-                    userPass=edtUserPass.getText().toString();
+                    userPass = edtUserPass.getText().toString();
                     validateUser(edtUserEmail.getText().toString());
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.login_failure), Toast.LENGTH_LONG).show();
@@ -228,7 +229,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return true; // con true puede entrar en sesion si posteriormente se comprueba que el ususario existe en la bd
 
         } else {
-          //  Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
+//  Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
             return false;
         }
     }
@@ -245,11 +246,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onError(JsonResponseModel response) {
-                if (response.getId() == -210){
-                    Log.d("DEBUGME", "loginActivity: "+ response.getId());
+                if (response.getId() == -210) {
+                    Log.d("DEBUGME", "loginActivity: " + response.getId());
                     Toast.makeText(context, "Usuario o contraseña incorrectos", Toast.LENGTH_LONG).show();
                 } else {
-                    Log.d("DEBUGME", "loginActivity: "+ response.getId());
+                    Log.d("DEBUGME", "loginActivity: " + response.getId());
                     Toast.makeText(context, "Error" + response.getId(), Toast.LENGTH_LONG).show();
                 }
             }
@@ -264,7 +265,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onSuccess(int id, String message, String name) {
                 if (id > 0) {
                     Log.d("DEBUGME", "recibido nombre: " + name);
-               //     Toast.makeText(context, "recibido nombre: " + name, Toast.LENGTH_LONG).show();
+                    //     Toast.makeText(context, "recibido nombre: " + name, Toast.LENGTH_LONG).show();
                     SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("email", userEmail);
@@ -275,14 +276,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 } else if (id < 0) {
                     Log.d("DEBUGME", "No encontrado nombre para ese email");
-                 //   Toast.makeText(context, "No encontrado nombre para ese email " + id, Toast.LENGTH_LONG).show();
+                    //   Toast.makeText(context, "No encontrado nombre para ese email " + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "Volley error: " + id + " " + message);
-             //   Toast.makeText(context, "Volley error. Codigo de error: " + id + "message: " + message, Toast.LENGTH_LONG).show();
+                //   Toast.makeText(context, "Volley error. Codigo de error: " + id + "message: " + message, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -292,7 +293,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void deleteAllSharedPreferences() {
         SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
         preferencias.edit().clear().apply();
-     //   Toast.makeText(this, "Shared Preferences eliminadas", Toast.LENGTH_LONG).show();
+        //   Toast.makeText(this, "Shared Preferences eliminadas", Toast.LENGTH_LONG).show();
     }
 
 

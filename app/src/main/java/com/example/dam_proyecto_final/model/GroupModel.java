@@ -17,6 +17,13 @@ public class GroupModel implements Serializable {
         this.description = description;
     }
 
+    public GroupModel(int id, String name, String description, String currency) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.currency = currency;
+
+    }
     public GroupModel(int id, String name, String description, String currency, String role) {
         this.id = id;
         this.name = name;

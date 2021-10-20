@@ -44,12 +44,14 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     private ArrayAdapter rolesAdapter;
     private String roleSelection;
     private String currencySelection;
-    private String userEmail, idGroup, groupName, currency;
-
+    private String userEmail, groupName, currency;
+    private int idGroup;
     private String userPass;
     private WebApiRequest webApiRequest;
     private Context context;
     private ArrayList<GroupModel> groupModels;
+    private GroupModel groupModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         //Cogemos la información de grupo obtenida del GroupFragment
         Bundle parametros = getIntent().getExtras();
         if (parametros != null) {
-            idGroup = parametros.getString("idGroup", "vacio");
+            idGroup = parametros.getInt("idGroup", -1);
             groupName = parametros.getString("groupName", "vacio");
             userEmail = parametros.getString("userEmail", "vacio");
             userPass = parametros.getString("userPass", "vacio");
@@ -82,9 +84,9 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Almacena a informacion en ArrayList<GroupModel> groupModels
-        getGroupsByEmail();
+        //getGroupsByEmail();
 
-
+        getGroupAndShared();
 
         //Asignamos lista a DropDowns
         String[] currencys = {"EUR", "USD", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "BRL"};
@@ -269,8 +271,8 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                         Log.d("DEBUGME", response.getId() + " " + response.getMessage());
                         groupModels = (ArrayList<GroupModel>) data;
 
-                        for (int x=0;x<groupModels.size();x++) {
-                            if (groupModels.get(x).getId()==Integer.parseInt(idGroup)) {
+                        for (int x = 0; x < groupModels.size(); x++) {
+                            if (groupModels.get(x).getId() == idGroup) {
                                 edt_AGADescription.setText(groupModels.get(x).getDescription());
                             }
                         }
@@ -280,6 +282,30 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                     public void onError(JsonResponseModel response) {
                         if (response.getId() == -252) {
 
+
+                        } else {
+                            //Si no ha podido ser cualquier error
+                            Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG);
+                        }
+                    }
+                });
+
+    }
+
+    private void getGroupAndShared() {
+        webApiRequest.getGroupAndShared
+                (userEmail, userPass, idGroup, new WebApiRequest.WebApiRequestJsonObjectArrayListenerV2() {
+                    @Override
+                    public void onSuccess(JsonResponseModel response, GroupModel group, List<?> data2) {
+                        Log.d("DEBUGME", response.getId() + " " + response.getMessage());
+
+                        edt_AGADescription.setText(group.getDescription());
+                    }
+
+                    @Override
+                    public void onError(JsonResponseModel response) {
+                        if (response.getId() == -252) {
+                            Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
 
                         } else {
                             //Si no ha podido ser cualquier error
