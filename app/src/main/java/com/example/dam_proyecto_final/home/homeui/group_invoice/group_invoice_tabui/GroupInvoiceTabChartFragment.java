@@ -5,27 +5,28 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.flexbox.FlexboxLayout;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,12 +44,9 @@ public class GroupInvoiceTabChartFragment extends Fragment {
     private static final String INVOICES = "invoices";
     private static final String TYPECHART = "typeChart";
 
-    /*    // TODO: Rename and change types of parameters
-        private String mParam1;
-        private String mParam2;*/
     ArrayList<InvoiceModel> invoices;
     private int typeChart;
-
+    private int groupInvoicesMaxValue;
 
     public GroupInvoiceTabChartFragment() {
         // Required empty public constructor
@@ -85,6 +83,9 @@ public class GroupInvoiceTabChartFragment extends Fragment {
         tabLayout.getTabAt(1).select();
 
 
+        // Inicializamos valores
+        groupInvoicesMaxValue = -1;
+
         //Ordenamos invoices
 //        ArrayList<InvoiceModel> invoicesSorted;
         if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
@@ -96,28 +97,84 @@ public class GroupInvoiceTabChartFragment extends Fragment {
             });
         }
 
-//Obtenemos los grupos de las facturas obtenidas
-        ArrayList<String> types = new ArrayList<>();
-        for (InvoiceModel i : invoices) {
-            if (!types.contains(i.getType())) {
-                types.add(i.getType());
-            }
-        }
+
 
         //BarChart
         chart_AGITAmount = view.findViewById(R.id.chart_AGITAmount);
 
         //Definición de datos y parametros
         BarData data = new BarData();
-        data.addDataSet(getDataSet("Agua"));
-        data.addDataSet(getDataSet("Electricidad"));
+            //Obtenemos los grupos de las facturas obtenidas
+        ArrayList<String> types = new ArrayList<>();
+        for (InvoiceModel i : invoices) {
+            if (!types.contains(i.getType())) {
+                types.add(i.getType());
+            }
+        }
+        //Solicitamos un DataSet por cada tipo de facturas
+        for (String type: types){
+            data.addDataSet(getDataSet(type));
+        }
+
         chart_AGITAmount.setData(data);
+
+        // Definimos los campos X
+        String[] months = new String[]{
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre"};
+
+        // Barra X
+        XAxis xAxis = chart_AGITAmount.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(months));
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawAxisLine(false); // no axis line
+        xAxis.setDrawGridLines(false); // no grid lines
+        xAxis.setTextSize(16);
+
+        //Barra Y
+        chart_AGITAmount.getAxisRight().setEnabled(false);
+
+
+        // TODO Controlar el tipo de gráfico para pintar uno u otro
+
+        if (types.size() > 1){
+            // Calculamos los tamaños de los campos
+            float groupSpace = 0.06f;
+            float barSpace = 0.04f / types.size(); //x2
+            float barWidth = 0.90f / types.size(); //x2
+            // (0.02 + 0.45) * 2 + 0.06 = 1.00 -> interval per "group"
+            data.setBarWidth(barWidth);
+            chart_AGITAmount.getXAxis().setAxisMinimum(0);
+            chart_AGITAmount.getXAxis().setAxisMaximum(0+chart_AGITAmount.getBarData().getGroupWidth(groupSpace, barSpace)*groupInvoicesMaxValue);
+            chart_AGITAmount.getAxisLeft().setAxisMinimum(0);
+            chart_AGITAmount.groupBars(0, groupSpace, barSpace);
+            chart_AGITAmount.setDragEnabled(true);
+
+            xAxis.setCenterAxisLabels(true);
+        }
+
+        // Opciones de la leyenda de tipo de factura
+        chart_AGITAmount.getLegend().setTextSize(18);
+        chart_AGITAmount.getLegend().setXEntrySpace(24);
+        chart_AGITAmount.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        chart_AGITAmount.getLegend().setWordWrapEnabled(true);
+
+        //Opciones de gráfico
+        chart_AGITAmount.setVisibleXRangeMaximum(3);
+        chart_AGITAmount.setExtraBottomOffset(12);
+
         Description description = new Description();
-        description.setText("Mi gráfico");
+        description.setText("");
         chart_AGITAmount.setDescription(description);
-        chart_AGITAmount.setFitBars(true);
+
         chart_AGITAmount.animateXY(1000, 1000);
         chart_AGITAmount.invalidate();
+
         return view;
     }
 
@@ -127,49 +184,26 @@ public class GroupInvoiceTabChartFragment extends Fragment {
         ArrayList dataSets = null;
 
 
-        ArrayList<BarEntry> valueSet1 = new ArrayList<BarEntry>();
-        int c = 0;
+        ArrayList<BarEntry> valueSet = new ArrayList<BarEntry>();
+        String[] dateEmitionStr = invoices.get(0).getDate().split("-");
+        int firstMonth = Integer.parseInt(dateEmitionStr[1]);
+        int c = firstMonth-1;
         for (InvoiceModel i : invoices) {
             if (tipo.equals(i.getType())){
-                String[] dateEmitionStr = i.getDate().split("-");
-                valueSet1.add(new BarEntry(c, (float) i.getConsumption()));
+                valueSet.add(new BarEntry(c, (float) i.getConsumption()));
                 c++;
             }
         }
 
+        if (groupInvoicesMaxValue == -1 || groupInvoicesMaxValue < valueSet.size()){
+            groupInvoicesMaxValue = valueSet.size();
+        }
 
-/*
-        valueSet1.add(new BarEntry(0f, 30));
-        valueSet1.add(new BarEntry(1f, 80));
-        valueSet1.add(new BarEntry(2f, 60));
-        valueSet1.add(new BarEntry(3f, 50));
-        // gap of 2f
-        valueSet1.add(new BarEntry(5f, 70));
-        valueSet1.add(new BarEntry(6f, 60));
-*/
 
-//        ArrayList valueSet2 = new ArrayList();
-//        BarEntry v2e1 = new BarEntry(150.000f, 0); // Jan
-//        valueSet2.add(v2e1);
-//        BarEntry v2e2 = new BarEntry(90.000f, 1); // Feb
-//        valueSet2.add(v2e2);
-//        BarEntry v2e3 = new BarEntry(120.000f, 2); // Mar
-//        valueSet2.add(v2e3);
-//        BarEntry v2e4 = new BarEntry(60.000f, 3); // Apr
-//        valueSet2.add(v2e4);
-//        BarEntry v2e5 = new BarEntry(20.000f, 4); // May
-//        valueSet2.add(v2e5);
-//        BarEntry v2e6 = new BarEntry(80.000f, 5); // Jun
-//        valueSet2.add(v2e6);
+        BarDataSet barDataSet1 = new BarDataSet(valueSet, tipo);
+        Random r = new Random();
+        barDataSet1.setColor(Color.rgb(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 
-        BarDataSet barDataSet1 = new BarDataSet(valueSet1, tipo);
-        //barDataSet1.setColor(Color.rgb(0, 155, 0));
-//        BarDataSet barDataSet2 = new BarDataSet(valueSet2, "Brand 2");
-//        barDataSet2.setColors(ColorTemplate.COLORFUL_COLORS);
-
-//        dataSets = new ArrayList();
-//        dataSets.add(barDataSet1);
-//        dataSets.add(barDataSet2);
         return barDataSet1;
     }
 

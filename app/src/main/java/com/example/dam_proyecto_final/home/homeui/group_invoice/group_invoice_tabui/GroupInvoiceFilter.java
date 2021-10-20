@@ -131,6 +131,10 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
                     cb.setChecked(true);
                 }
             }
+        } else {
+            for (CheckBox cb : checkbox) {
+                cb.setChecked(true);
+            }
         }
         // Obtenemos las fechas marcadas previamente
         Calendar dateFromPrevious = (Calendar) getIntent().getExtras().getSerializable("dateFrom");
