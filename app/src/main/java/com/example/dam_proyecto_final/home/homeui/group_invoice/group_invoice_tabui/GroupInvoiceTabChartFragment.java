@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.BarData;
@@ -19,6 +20,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,36 +32,30 @@ public class GroupInvoiceTabChartFragment extends Fragment {
 
     private TabLayout tabLayout;
 
-    //Grafic panel
+
     private BarChart chart_AGITAmount;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    private static final String INVOICES = "invoices";
+    private static final String TYPECHART = "typeChart";
+
+/*    // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
+    private String mParam2;*/
+    ArrayList<InvoiceModel> invoices;
+    private int typeChart;
+
 
     public GroupInvoiceTabChartFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GroupInvoiceTabChartFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static GroupInvoiceTabChartFragment newInstance(String param1, String param2) {
+
+    public static GroupInvoiceTabChartFragment newInstance(ArrayList<InvoiceModel> invoices, int typeChart) {
         GroupInvoiceTabChartFragment fragment = new GroupInvoiceTabChartFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelableArrayList(INVOICES, invoices);
+        args.putInt(TYPECHART, typeChart);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,8 +64,8 @@ public class GroupInvoiceTabChartFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            invoices = getArguments().getParcelableArrayList(INVOICES);
+            typeChart = getArguments().getInt(TYPECHART);
         }
 
     }
@@ -82,6 +79,19 @@ public class GroupInvoiceTabChartFragment extends Fragment {
         //TabLayout, seleccionamos la tab correspondiente por si venimos de hacer back
         tabLayout = getActivity().findViewById(R.id.tabLayout);
         tabLayout.getTabAt(1).select();
+
+
+        //Ordenamos invoices
+//        ArrayList<InvoiceModel> invoicesSorted;
+        if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
+            Collections.sort(invoices, new Comparator<InvoiceModel>() {
+                @Override
+                public int compare(InvoiceModel i1, InvoiceModel i2) {
+                    return new String(i1.getDate()).compareTo(new String(i2.getDate()));
+                }
+            });
+        }
+
 
 
         //BarChart
@@ -105,6 +115,13 @@ public class GroupInvoiceTabChartFragment extends Fragment {
         ArrayList dataSets = null;
 
         ArrayList valueSet1 = new ArrayList();
+        for (InvoiceModel i : invoices){
+            String[] dateEmitionStr = i.getDate().split("-");
+            valueSet1.add(new BarEntry(Float.parseFloat(dateEmitionStr[0].concat(dateEmitionStr[1])), (float) (i.getConsumption())));
+        }
+
+
+/*
         valueSet1.add(new BarEntry(0f, 30));
         valueSet1.add(new BarEntry(1f, 80));
         valueSet1.add(new BarEntry(2f, 60));
@@ -112,6 +129,7 @@ public class GroupInvoiceTabChartFragment extends Fragment {
         // gap of 2f
         valueSet1.add(new BarEntry(5f, 70));
         valueSet1.add(new BarEntry(6f, 60));
+*/
 
 //        ArrayList valueSet2 = new ArrayList();
 //        BarEntry v2e1 = new BarEntry(150.000f, 0); // Jan
