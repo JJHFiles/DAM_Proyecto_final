@@ -1,4 +1,6 @@
 <resources>
+   <string name="default_firebase_web_client_id">1063203604183-2a5kiq3trli8ui513b0eeufie7dvokho.apps.googleusercontent.com</string>
+
     <string name="app_name">BLIST</string>
     <string name="edtpass_text">Escribe tu contraseña</string>
     <string name="btnsignin_text">Iniciar sesión con email</string>
@@ -61,6 +63,7 @@
     <string name="filter">Filtrar</string>
     <string name="edit">Editar</string>
 
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="select_date">Selecciona una fecha</string>
@@ -89,5 +92,6 @@
     <string name="tab_Telephone">Telephonia</string>
     <string name="tab_CarRenting">Renting de coche</string>
     <string name="tab_IBI">IBI</string>
+
 
 </resources>

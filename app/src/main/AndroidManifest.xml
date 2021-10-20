@@ -18,6 +18,7 @@
             android:parentActivityName=".home.homeui.group_invoice.GroupInvoiceTab"
             android:exported="true" />
         <activity android:name=".registry.RegistryGoogleActivity" />
+        <activity android:name=".home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup" />
         <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd" />
         <activity
             android:name=".home.homeui.group_invoice.GroupInvoiceTab"

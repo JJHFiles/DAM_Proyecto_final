@@ -4,7 +4,6 @@
     <string name="edtpass_text">Escribe tu contraseña</string>
     <string name="btnsignin_text">Iniciar sesión</string>
     <string name="btnsigngoogle">Inicia con Google</string>
-    <string name="btnsignup_text">Registrarse</string>
     <string name="txtvpass_text">Password</string>
     <string name="edtuseremail_text">Escribe tu correo electrónico</string>
     <string name="txtvuseremail_text">Usuario</string>
