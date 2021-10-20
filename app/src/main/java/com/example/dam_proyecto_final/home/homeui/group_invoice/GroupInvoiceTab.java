@@ -2,7 +2,6 @@ package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,11 +15,9 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter;
-import com.example.dam_proyecto_final.home.HomeActivity;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabChartFragment;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabListFragment;
 import com.example.dam_proyecto_final.R;
@@ -32,6 +29,7 @@ import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 //https://material.io/components/tabs/android#fixed-tabs
@@ -49,8 +47,15 @@ public class GroupInvoiceTab extends AppCompatActivity {
     private TabLayout tabLayout;
     private ImageView iv;
     private ArrayList<InvoiceModel> arrIM;
+    private ArrayList<InvoiceModel> arrIMFilter;
 
     ActivityResultLauncher<Intent> intentForResult;
+
+    //Filter parameters
+    ArrayList<String> cbSelectedFilter;
+    int typeChart;
+    Calendar dateFromFilter;
+    Calendar dateTofilter;
 
 
     @Override
@@ -77,17 +82,22 @@ public class GroupInvoiceTab extends AppCompatActivity {
             userPass = parametros.getString("userPass", "vacio");
             role = parametros.getString("role", "vacioRole");
 
-//            Toast.makeText(context, "idGroup " + idGroup, Toast.LENGTH_LONG).show();
+
             Log.d("DEBUGME", "GroupInvoiceTab: grupo " + idGroup);
 
         } else {
             Log.d("DEBUGME", "GroupInvoiceTab: ERROR GRAVE idGroup = null");
-//            Toast.makeText(context, "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
         }
 
         //Establecemos titulo al banner y flecha de back
         this.setTitle(groupName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Inicializamos parametros de filtro
+        cbSelectedFilter = null;
+        typeChart = -1;
+        dateFromFilter = null;
+        dateTofilter = null;
 
         //Obtenemos la lista de facturas que pasaremos a los fragment, al ser la carga inicial tambien invocamos al fragment de lista principal
         WebApiRequest webApiRequest = new WebApiRequest(this);
@@ -135,36 +145,10 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 new TabLayout.OnTabSelectedListener() {
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
-                        Toast.makeText(getApplicationContext(), "TAB: " + tab.getPosition(), Toast.LENGTH_LONG).show();
-                        if (tab.getPosition() == 0) {
+                        //Toast.makeText(getApplicationContext(), "TAB: " + tab.getPosition(), Toast.LENGTH_LONG).show();
+                        Log.d("DEBUGME", "TAB: " + tab.getPosition());
 
-                            GroupInvoiceTabListFragment fragment = new GroupInvoiceTabListFragment();
-                            //Creamos el bundle y pasamos las facturas
-                            Bundle bundle = new Bundle();
-                            bundle.putParcelableArrayList("invoices", arrIM);
-                            bundle.putString("currency", currency);
-                            fragment.setArguments(bundle);
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.fcv_AGITListChart, fragment, null)
-                                    .addToBackStack(null) // name can be null
-                                    .commit();
-
-                        }
-                        if (tab.getPosition() == 1) {
-
-                            GroupInvoiceTabChartFragment fragment = new GroupInvoiceTabChartFragment();
-                            //Creamos el bundle y asignamos
-                            //Creamos el bundle y pasamos las facturas
-                            Bundle bundle = new Bundle();
-                            bundle.putParcelableArrayList("invoices", arrIM);
-                            bundle.putString("currency", currency);
-                            fragment.setArguments(bundle);
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.fcv_AGITListChart, fragment, null)
-                                    .addToBackStack(null) // name can be null
-                                    .commit();
-
-                        }
+                        replaceFragment(tab.getPosition(), fragmentManager);
 
                     }
 
@@ -187,15 +171,53 @@ public class GroupInvoiceTab extends AppCompatActivity {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Bundle bundle = result.getData().getExtras();
-                            // Handle the bundle
-                            Log.d("DEBUGME", "GIT: " + bundle.getString("result"));
 
+                            // Obtenemos los parametros de filtro
+                            arrIMFilter = bundle.getParcelableArrayList("arrIMFilter");
+
+                            cbSelectedFilter  = bundle.getStringArrayList("cbSelected");
+                            typeChart = bundle.getInt("typeChart");
+                            dateFromFilter = (Calendar) bundle.getSerializable("dateFrom");
+                            dateTofilter = (Calendar) bundle.getSerializable("dateTo");
+
+
+                            // Refrescamos el fragment previamente seleccionado con los nuevos parametros
+                            TabLayout.Tab tab = tabLayout.getTabAt(tabLayout.getSelectedTabPosition());
+                            replaceFragment(tab.getPosition(), fragmentManager);
                         }
                     }
                 });
     }
 
+    private void replaceFragment(int position, FragmentManager fragmentManager) {
+        // Elegimos la lista a pasar como parametro priorizando la filtrada
+        Bundle bundle = new Bundle();
+        if (arrIMFilter != null){
+            bundle.putParcelableArrayList("invoices", arrIMFilter);
+        } else {
+            bundle.putParcelableArrayList("invoices", arrIM);
+        }
 
+        if (position == 0) {
+            bundle.putString("currency", currency);
+            GroupInvoiceTabListFragment fragment = new GroupInvoiceTabListFragment();
+            fragment.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fcv_AGITListChart, fragment, null)
+                    .addToBackStack(null) // name can be null
+                    .commit();
+        }
+
+        if (position == 1) {
+            bundle.putInt("typeChart", typeChart);
+            GroupInvoiceTabChartFragment fragment = new GroupInvoiceTabChartFragment();
+            fragment.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fcv_AGITListChart, fragment, null)
+                    .addToBackStack(null) // name can be null
+                    .commit();
+        }
+    }
 
 
     @Override
@@ -207,6 +229,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.mnu_GIHAFilter:
@@ -214,6 +237,18 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 Intent intentFilter = new Intent(this, GroupInvoiceFilter.class);
                 intentFilter.putExtra("invoices", arrIM);
                 intentFilter.putExtra("currency", currency);
+                if (cbSelectedFilter != null){
+                    intentFilter.putExtra("cbSelected", cbSelectedFilter);
+                }
+                if (typeChart != -1){
+                    intentFilter.putExtra("typeChart", typeChart);
+                }
+                if (dateFromFilter != null){
+                    intentFilter.putExtra("dateFrom", dateFromFilter);
+                }
+                if (dateTofilter != null){
+                    intentFilter.putExtra("dateTo", dateTofilter);
+                }
                 intentForResult.launch(intentFilter);
                 return true;
             case R.id.mnu_GIHAEditGroup:

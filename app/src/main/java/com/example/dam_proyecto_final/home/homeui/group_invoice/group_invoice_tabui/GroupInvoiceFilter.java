@@ -1,6 +1,6 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice.group_invoice_tabui;
 
-import androidx.activity.result.contract.ActivityResultContracts;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -13,10 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.dam_proyecto_final.R;
@@ -27,18 +24,18 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClickListener {
 
-    private FlexboxLayout fl_GIFCheckTypeInvoice;
     private TextInputEditText tiet_GIFStartPeriod;
     private TextInputEditText tiet_GIFEndPeriod;
-    private TextInputLayout til_GIFStartPeriod;
-    private TextInputLayout til_GIFEndPeriod;
 
     private Calendar dateFrom;
     private Calendar dateTo;
@@ -48,8 +45,7 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
     private RadioButton rb_GIFConsumption;
     private RadioButton rb_GIFCost;
 
-    private Button btn_GIFClear;
-    private Button btn_GIFFilter;
+    private ArrayList<InvoiceModel> invoices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +55,15 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
 
         //Establecemos titulo al banner y flecha de back
         this.setTitle(getResources().getString(R.string.filter));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         //Instanciamos vistas
-        fl_GIFCheckTypeInvoice = findViewById(R.id.fl_GIFCheckTypeInvoice);
-        til_GIFStartPeriod = findViewById(R.id.til_GIFStartPeriod);
+        FlexboxLayout fl_GIFCheckTypeInvoice = findViewById(R.id.fl_GIFCheckTypeInvoice);
+        TextInputLayout til_GIFStartPeriod = findViewById(R.id.til_GIFStartPeriod);
         til_GIFStartPeriod.setOnClickListener(this);
         tiet_GIFStartPeriod = findViewById(R.id.tiet_GIFStartPeriod);
         tiet_GIFStartPeriod.setOnClickListener(this);
-        til_GIFEndPeriod = findViewById(R.id.til_GIFEndPeriod);
+        TextInputLayout til_GIFEndPeriod = findViewById(R.id.til_GIFEndPeriod);
         til_GIFEndPeriod.setOnClickListener(this);
         tiet_GIFEndPeriod = findViewById(R.id.tiet_GIFEndPeriod);
         tiet_GIFEndPeriod.setOnClickListener(this);
@@ -75,33 +71,35 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
         rb_GIFConsumption = findViewById(R.id.rb_GIFConsumption);
         rb_GIFCost = findViewById(R.id.rb_GIFCost);
 
-        btn_GIFClear = findViewById(R.id.btn_GIFClear);
+        Button btn_GIFClear = findViewById(R.id.btn_GIFClear);
         btn_GIFClear.setOnClickListener(this);
-        btn_GIFFilter = findViewById(R.id.btn_GIFFilter);
+        Button btn_GIFFilter = findViewById(R.id.btn_GIFFilter);
         btn_GIFFilter.setOnClickListener(this);
 
         //Inicializar calendarios
-        dateFrom  = Calendar.getInstance();
-        dateTo  = Calendar.getInstance();
+        dateFrom = Calendar.getInstance();
+        dateFrom.setTimeInMillis(Long.MIN_VALUE);
+        dateTo = Calendar.getInstance();
+
 
         //Obtenemos la lista de facturas
-        ArrayList<InvoiceModel> invoices = getIntent().getExtras().getParcelableArrayList("invoices");
+        invoices = getIntent().getExtras().getParcelableArrayList("invoices");
 
         //Instanciamos los Checkbox programáticamente en base a los tipos de facturas obtenidos
-        ArrayList<String> types = new ArrayList<String>();
-        checkbox = new ArrayList<CheckBox>();
-        for (InvoiceModel i : invoices){
-            if (!types.contains(i.getType())){
+        ArrayList<String> types = new ArrayList<>();
+        checkbox = new ArrayList<>();
+        for (InvoiceModel i : invoices) {
+            if (!types.contains(i.getType())) {
                 types.add(i.getType());
 
                 //Añadimos los checkbox
                 CheckBox cb = new CheckBox(new ContextThemeWrapper(getBaseContext(), R.style.CheckRadio), null, 0);
-                int pixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+                int pixels = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
                 FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
-                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                        FlexboxLayout.LayoutParams.WRAP_CONTENT,
                         pixels
                 );
-                pixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+                pixels = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
                 params.bottomMargin = pixels;
                 params.rightMargin = pixels;
                 cb.setLayoutParams(params);
@@ -116,12 +114,42 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
 
         }
 
+        // Obtenemos si había un tipo a representar marcado previamente
+        int typeChart = getIntent().getExtras().getInt("typeChart", -1);
+        if (typeChart == -1) {
+            rb_GIFConsumption.setChecked(true);
+        } else {
+            RadioButton rbSelected = findViewById(typeChart);
+            rbSelected.setChecked(true);
+        }
+
+        // Obtenemos los typeInvoices marcados previamente
+        ArrayList<String> typeInvoices = getIntent().getExtras().getStringArrayList("cbSelected");
+        if (typeInvoices != null) {
+            for (CheckBox cb : checkbox) {
+                if (typeInvoices.contains(cb.getText().toString())) {
+                    cb.setChecked(true);
+                }
+            }
+        }
+        // Obtenemos las fechas marcadas previamente
+        Calendar dateFromPrevious = (Calendar) getIntent().getExtras().getSerializable("dateFrom");
+        Calendar dateToPrevious = (Calendar) getIntent().getExtras().getSerializable("dateTo");
+        if (dateFromPrevious != null && dateToPrevious != null) {
+            dateFrom = dateFromPrevious;
+            dateTo = dateToPrevious;
+
+            DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
+            tiet_GIFStartPeriod.setText(format.format(dateFrom.getTime()));
+            tiet_GIFEndPeriod.setText(format.format(dateTo.getTime()));
+        }
+
 
     }
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
+        switch (view.getId()) {
             //DatePicker
             case R.id.tiet_GIFStartPeriod:
                 Log.d("DEBUGME", "GroupInvoiceFilter onclick! desde");
@@ -133,52 +161,61 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
                 break;
             //BottomAppBar
             case R.id.btn_GIFClear:
-                    for (CheckBox cb : checkbox){
-                        cb.setChecked(false);
-                    }
-                    rb_GIFConsumption.setChecked(false);
-                    rb_GIFCost.setChecked(false);
-                    tiet_GIFStartPeriod.setText("");
-                    tiet_GIFEndPeriod.setText("");
+                for (CheckBox cb : checkbox) {
+                    cb.setChecked(false);
+                }
+                rb_GIFConsumption.setChecked(false);
+                rb_GIFCost.setChecked(false);
+                tiet_GIFStartPeriod.setText("");
+                tiet_GIFEndPeriod.setText("");
                 break;
             case R.id.btn_GIFFilter:
 
                 //Comprueba si algún checkbox de tipo está seleccionado
+                ArrayList<String> cbSelected = new ArrayList<>();
                 boolean cbChecked = false;
-                for (CheckBox cb : checkbox){
-                    if (cb.isChecked()){
+                for (CheckBox cb : checkbox) {
+                    if (cb.isChecked()) {
                         cbChecked = true;
+                        cbSelected.add(cb.getText().toString());
                     }
                 }
-                if(cbChecked){
-                    // Comprueba si hay un tipo de gráfica seleccionada
-                    if ((rb_GIFConsumption.isChecked() || rb_GIFCost.isChecked())){
-                        // Comprueba si las fechas no están vacias
-                        if (!tiet_GIFStartPeriod.getText().toString().equals("") && tiet_GIFStartPeriod.getText().toString() != null &&
-                                !tiet_GIFEndPeriod.getText().toString().equals("") && tiet_GIFEndPeriod.getText().toString() != null) {
-                            //Comprobamos que la fecha desde no sea superior a hasta
-                            if (dateFrom.before(dateTo)){
-                                // TODO recrear la lista con las fechas comprendidas
-                                // TODO devolver al padre los resultados
-                                Intent returnIntent = new Intent();
-                                returnIntent.putExtra("result", "aaa");
-                                setResult(Activity.RESULT_OK, returnIntent);
-                                finish();
-                            } else {
-                                Toast.makeText(this, "La fecha \"Desde\" no puede ser superior a la fecha \"Hasta\"", Toast.LENGTH_LONG).show();
+                // Comprobamos que radio button está seleccionado
+                int rbSelected = -1;
+                if (rb_GIFConsumption.isChecked()) {
+                    rbSelected = rb_GIFConsumption.getId();
+                } else if (rb_GIFCost.isChecked()) {
+                    rbSelected = rb_GIFCost.getId();
+                }
+                if (cbChecked) {
+                    //Comprobamos que la fecha desde no sea superior a hasta
+                    if (dateFrom.before(dateTo)) {
+                        // Cogemos las facturas filtradas según parametros
+                        ArrayList<InvoiceModel> arrIMFilter = filterInvoice(cbSelected);
+                        if (!(arrIMFilter.size() == 0)) {
+                            // Si el filtro no es 0 pasamos los parametros filtrados a la activity
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("arrIMFilter", arrIMFilter);
+                            returnIntent.putExtra("typeChart", rbSelected);
+                            returnIntent.putExtra("cbSelected", cbSelected);
+                            // Comprobamos que las fechas no sean por defecto para pasarlas
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTimeInMillis(Long.MIN_VALUE);
+                            if (!dateFrom.equals(cal)) {
+                                returnIntent.putExtra("dateFrom", dateFrom);
+                                returnIntent.putExtra("dateTo", dateTo);
                             }
+                            setResult(Activity.RESULT_OK, returnIntent);
+                            finish();
                         } else {
-                            Toast.makeText(this, "No ha seleccionado el rango de fechas", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "No hay ninguna factura que coincida con los parametros establecidos", Toast.LENGTH_LONG).show();
                         }
-                    } else{
-                        Toast.makeText(this, "No ha seleccionado ningún tipo de dato a representar", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(this, "La fecha \"Desde\" no puede ser superior a la fecha \"Hasta\"", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(this, "No ha seleccionado ningún tipo de factura", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "No ha seleccionado ningún tipo de dato a representar en gráficas", Toast.LENGTH_LONG).show();
                 }
-
-
-
 
                 break;
         }
@@ -186,7 +223,28 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void addCalendar(Calendar calendar, TextInputEditText tiet){
+    private ArrayList<InvoiceModel> filterInvoice(ArrayList<String> cbSelected) {
+        ArrayList<InvoiceModel> invoicesFilter = new ArrayList<>();
+        for (InvoiceModel i : invoices) {
+            //Creamos el campo Calendar para comparar fecha emision con rango establecido
+            String[] dateEmitionStr = i.getDate().split("-");
+            Calendar dateEmition = Calendar.getInstance(Locale.getDefault());
+            dateEmition.set(Integer.parseInt(dateEmitionStr[0]),
+                    Integer.parseInt(dateEmitionStr[1])-1,
+                    Integer.parseInt(dateEmitionStr[2]));
+            dateEmition.getTime();
+            //Si la factura está en rango la incorporamos a nueva lista de retorno
+            if (dateFrom.before(dateEmition) && dateTo.after(dateEmition)) {
+                // Si la factura es de algún tipo seleccionado
+                if (cbSelected.contains(i.getType())) {
+                    invoicesFilter.add(i);
+                }
+            }
+        }
+        return invoicesFilter;
+    }
+
+    private void addCalendar(Calendar calendar, TextInputEditText tiet) {
         //TODO cambiar idioma de los textos
         MaterialDatePicker materialDatePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(R.string.select_date)
@@ -195,7 +253,7 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
             @Override
             public void onPositiveButtonClick(Object selection) {
                 calendar.setTimeInMillis((Long) selection);
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
                 String formatted = format.format(calendar.getTime());
                 tiet.setText(formatted);
             }
@@ -207,10 +265,9 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return false;
     }
