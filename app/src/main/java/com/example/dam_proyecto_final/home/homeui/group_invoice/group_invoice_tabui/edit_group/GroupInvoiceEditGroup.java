@@ -23,6 +23,7 @@ import com.example.dam_proyecto_final.home.homeui.groupui.MembersAdapter;
 import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.model.MemberModel;
+import com.example.dam_proyecto_final.model.SharedModel;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -86,6 +87,8 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         //Almacena a informacion en ArrayList<GroupModel> groupModels
         //getGroupsByEmail();
 
+        members = new ArrayList<MemberModel>();
+
         getGroupAndShared();
 
         //Asignamos lista a DropDowns
@@ -141,7 +144,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
         //ListView de miembros
         lstv_Members = findViewById(R.id.lstv_AGAMembers);
-        members = new ArrayList<MemberModel>();
+      //  members = new ArrayList<MemberModel>();
         membersAdapter = new MembersAdapter(this, members, lstv_Members);
         lstv_Members.setAdapter(membersAdapter);
 
@@ -263,43 +266,26 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         listView.requestLayout();
     }
 
-    private void getGroupsByEmail() {
-        webApiRequest.getGroupsByEmail
-                (userEmail, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
-                    @Override
-                    public void onSuccess(JsonResponseModel response, List<?> data) {
-                        Log.d("DEBUGME", response.getId() + " " + response.getMessage());
-                        groupModels = (ArrayList<GroupModel>) data;
-
-                        for (int x = 0; x < groupModels.size(); x++) {
-                            if (groupModels.get(x).getId() == idGroup) {
-                                edt_AGADescription.setText(groupModels.get(x).getDescription());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(JsonResponseModel response) {
-                        if (response.getId() == -252) {
-
-
-                        } else {
-                            //Si no ha podido ser cualquier error
-                            Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG);
-                        }
-                    }
-                });
-
-    }
 
     private void getGroupAndShared() {
         webApiRequest.getGroupAndShared
                 (userEmail, userPass, idGroup, new WebApiRequest.WebApiRequestJsonObjectArrayListenerV2() {
                     @Override
-                    public void onSuccess(JsonResponseModel response, GroupModel group, List<?> data2) {
+                    public void onSuccess(JsonResponseModel response, GroupModel group, List<?> shared) {
                         Log.d("DEBUGME", response.getId() + " " + response.getMessage());
 
                         edt_AGADescription.setText(group.getDescription());
+
+                        ArrayList sharedModel = (ArrayList)  shared;
+
+                        for (int x = 0; x < sharedModel.size(); x++) {
+                           if( ((SharedModel)(sharedModel.get(x))).getIdgroup()==idGroup){
+
+                           }
+
+                        }
+
+
                     }
 
                     @Override
