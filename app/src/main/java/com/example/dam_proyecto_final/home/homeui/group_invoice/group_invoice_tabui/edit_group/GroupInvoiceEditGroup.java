@@ -93,11 +93,11 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
         //Asignamos lista a DropDowns
         String[] currencys = {"EUR", "USD", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "BRL"};
+
         ArrayAdapter currencyAdapter =
                 new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, currencys);
-        dd_AGACurrency = findViewById(R.id.dd_AGACurrency);
-        Toast.makeText(context, R.string.userNoDB, Toast.LENGTH_LONG).show();
 
+        dd_AGACurrency = findViewById(R.id.dd_AGACurrency);
         dd_AGACurrency.setText(currency);
         dd_AGACurrency.setAdapter(currencyAdapter);
 
@@ -141,13 +141,13 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
         edt_AGAGroupName.setText(groupName);
 
-
+/*
         //ListView de miembros
         lstv_Members = findViewById(R.id.lstv_AGAMembers);
-      //  members = new ArrayList<MemberModel>();
+        //  members = new ArrayList<MemberModel>();
         membersAdapter = new MembersAdapter(this, members, lstv_Members);
         lstv_Members.setAdapter(membersAdapter);
-
+*/
         //Buttons
         btn_AGAAdd = findViewById(R.id.btn_AGAAdd);
         btn_AGAAdd.setOnClickListener(this);
@@ -276,15 +276,22 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                         edt_AGADescription.setText(group.getDescription());
 
-                        ArrayList sharedModel = (ArrayList)  shared;
+                        ArrayList sharedModel = (ArrayList) shared;
 
-                        for (int x = 0; x < sharedModel.size(); x++) {
-                           if( ((SharedModel)(sharedModel.get(x))).getIdgroup()==idGroup){
+                      for (int x = 0; x < sharedModel.size(); x++) {
+                                members.add(new MemberModel(
+                                        ((SharedModel) (sharedModel.get(x))).getEmail(),
+                                        ((SharedModel) (sharedModel.get(x))).getRole())
+                                );
+                     }
+                        //ListView de miembros
+                        lstv_Members = findViewById(R.id.lstv_AGAMembers);
+                        //  members = new ArrayList<MemberModel>();
+                        membersAdapter = new MembersAdapter(getApplicationContext(), members, lstv_Members);
+                        lstv_Members.setAdapter(membersAdapter);
 
-                           }
-
-                        }
-
+                        membersAdapter.notifyDataSetChanged();
+                        setListViewHeightBasedOnChildren(lstv_Members);
 
                     }
 
