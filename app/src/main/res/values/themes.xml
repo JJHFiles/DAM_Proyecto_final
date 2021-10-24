@@ -40,6 +40,7 @@
         <item name="android:height">48dp</item>
     </style>
 
+
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/secondary_color</item>
         <item name="boxStrokeWidth">1dp</item>
