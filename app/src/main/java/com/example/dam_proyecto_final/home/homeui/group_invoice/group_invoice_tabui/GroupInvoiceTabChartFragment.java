@@ -30,23 +30,16 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.material.tabs.TabLayout;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link GroupInvoiceTabChartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class GroupInvoiceTabChartFragment extends Fragment implements View.OnClickListener {
 
     private BarChart barChart;
@@ -121,7 +114,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         invoices.sort(new Comparator<InvoiceModel>() {
             @Override
             public int compare(InvoiceModel i1, InvoiceModel i2) {
-                return new String(i1.getDate()).compareTo(new String(i2.getDate()));
+                return i1.getDate().compareTo(i2.getDate());
             }
         });
 
@@ -348,7 +341,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
         //Cogemos a partir de la fecha mínima la cadena Año mes para establecerla como eje X y sumandole 1 mes por iteración
         SimpleDateFormat formater = new SimpleDateFormat("yyyy MMM", Locale.getDefault());
-        ArrayList<String> itemsXAsis = new ArrayList<String>();
+        ArrayList<String> itemsXAsis = new ArrayList<>();
         for (int m = 0; m<numMonths; m++){
             itemsXAsis.add(formater.format(firstCal.getTime()));
             firstCal.add(Calendar.MONTH, 1);
@@ -361,12 +354,8 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
     //Datos para las barras
     private BarDataSet getBarDataSet(String tipo) {
 
-        ArrayList dataSets = null;
-
         // Creamos la lista y le incorporamos el dato requerido del tipo requerido
-        ArrayList<BarEntry> valueSet = new ArrayList<BarEntry>();
-        String[] dateEmitionStr = invoices.get(0).getDate().split("-");
-        int firstMonth = Integer.parseInt(dateEmitionStr[1]);
+        ArrayList<BarEntry> valueSet = new ArrayList<>();
         int c = 0;
         if (typeChart == R.id.rb_GIFConsumption || typeChart == -1){
             for (InvoiceModel i : invoices) {
@@ -399,12 +388,8 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
     private LineDataSet getLineDataSet(String tipo) {
 
-        ArrayList dataSets = null;
-
         // Creamos la lista y le incorporamos el dato requerido del tipo requerido
-        ArrayList<Entry> valueSet = new ArrayList<Entry>();
-        String[] dateEmitionStr = invoices.get(0).getDate().split("-");
-        int firstMonth = Integer.parseInt(dateEmitionStr[1]);
+        ArrayList<Entry> valueSet = new ArrayList<>();
         int c = 0;
         if (typeChart == R.id.rb_GIFConsumption || typeChart == -1){
             for (InvoiceModel i : invoices) {
@@ -439,17 +424,14 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
     private PieDataSet getPieDataSet(ArrayList<String> types) {
 
-        ArrayList dataSets = null;
-
         // Creamos la lista y le incorporamos el dato requerido del tipo requerido
-        ArrayList<PieEntry> valueSet = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> valueSet = new ArrayList<>();
 
         float typeSum = 0; //Valor de suma de tipo
-        float sum = 0; // Valor de suma de todos los tipos unidos
         String cad = ""; // Valor del tipo
 
         // Obtenemos la lista de tipos con su suma de valores
-        HashMap<String, Float> values = new HashMap<String, Float>();
+        HashMap<String, Float> values = new HashMap<>();
         if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
             cad = "Consumo";
             for (int t = 0; t < types.size(); t++) {
@@ -475,21 +457,20 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
                     // Inicializamos typeSum por cada tipo y sumamos elemento al total
                     values.put(type, typeSum);
-                    sum += typeSum;
                     typeSum = 0;
                 }
             }
         }
 
-            // Calculamos a partir de la suma total de los tipo y la suma individual de cada tipo su procentaje
-            HashMap<String, Float> percentValues = new HashMap<String, Float>();
-            for (Map.Entry<String, Float> entry : values.entrySet()) {
-                float percent = (entry.getValue() * 100) / sum;
-                percentValues.put(entry.getKey(), percent);
-            }
+//            // Calculamos a partir de la suma total de los tipo y la suma individual de cada tipo su procentaje
+//            HashMap<String, Float> percentValues = new HashMap<String, Float>();
+//            for (Map.Entry<String, Float> entry : values.entrySet()) {
+//                float percent = (entry.getValue() * 100) / sum;
+//                percentValues.put(entry.getKey(), percent);
+//            }
 
-            // Asignamos a la lista de pieEntry los valores en porcentaje y su tipo y creamos una lista de colores
-            ArrayList<Integer> colors = new ArrayList<Integer>();
+            // Asignamos a la lista de pieEntry los valores y su tipo y creamos una lista de colores
+            ArrayList<Integer> colors = new ArrayList<>();
             Random r = new Random();
             for (Map.Entry<String, Float> entry : values.entrySet()) {
                 valueSet.add(new PieEntry(entry.getValue(), entry.getKey()));
