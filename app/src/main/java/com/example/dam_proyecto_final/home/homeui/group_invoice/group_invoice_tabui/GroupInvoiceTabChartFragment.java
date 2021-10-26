@@ -30,10 +30,15 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.material.tabs.TabLayout;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -43,8 +48,6 @@ import java.util.Random;
  * create an instance of this fragment.
  */
 public class GroupInvoiceTabChartFragment extends Fragment implements View.OnClickListener {
-
-    private TabLayout tabLayout;
 
     private BarChart barChart;
     private LineChart lineChart;
@@ -68,6 +71,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
     }
 
 
+    // TODO realizar la llamada al fragment mediante newInstance y no con Bundle/Constructor
     public static GroupInvoiceTabChartFragment newInstance(ArrayList<InvoiceModel> invoices, int typeChart) {
         GroupInvoiceTabChartFragment fragment = new GroupInvoiceTabChartFragment();
         Bundle args = new Bundle();
@@ -94,7 +98,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         View view = inflater.inflate(R.layout.fragment_group_invoice_tab_chart, container, false);
 
         //TabLayout, seleccionamos la tab correspondiente por si venimos de hacer back
-        tabLayout = getActivity().findViewById(R.id.tabLayout);
+        TabLayout tabLayout = getActivity().findViewById(R.id.tabLayout);
         tabLayout.getTabAt(1).select();
 
         //Instanciamos Vistas
@@ -113,8 +117,8 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         // Inicializamos valores
         groupInvoicesMaxValue = -1;
 
-        //Ordenamos invoices
-        Collections.sort(invoices, new Comparator<InvoiceModel>() {
+        //Ordenamos invoices por fecha
+        invoices.sort(new Comparator<InvoiceModel>() {
             @Override
             public int compare(InvoiceModel i1, InvoiceModel i2) {
                 return new String(i1.getDate()).compareTo(new String(i2.getDate()));
@@ -128,28 +132,31 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         return view;
     }
 
+    //Método para cambiar el tipo de gráfico a mostrar
     private void changeChart() {
+        barChart.setVisibility(View.INVISIBLE);
+        lineChart.setVisibility(View.INVISIBLE);
+        pieChart.setVisibility(View.INVISIBLE);
+
         if (rbChartBar.isChecked()){
+            barChart.setVisibility(View.VISIBLE);
             barChart();
         } else if (rbChartLine.isChecked()) {
+            lineChart.setVisibility(View.VISIBLE);
             lineChart();
         } else if(rbChartCircle.isChecked()){
+            pieChart.setVisibility(View.VISIBLE);
             pieChart();
         } else {
             rbChartBar.setChecked(true);
+            barChart.setVisibility(View.VISIBLE);
             barChart();
         }
     }
 
 
+    // Método para mostrar gráfico de barras
     private void barChart() {
-
-        barChart.setVisibility(View.VISIBLE);
-        lineChart.setVisibility(View.INVISIBLE);
-        pieChart.setVisibility(View.INVISIBLE);
-
-        //Definición de datos y parametros
-        BarData data = new BarData();
 
         //Obtenemos los grupos de las facturas obtenidas
         ArrayList<String> types = new ArrayList<>();
@@ -159,39 +166,32 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
             }
         }
 
+        //Definición de datos y parametros
+        BarData data = new BarData();
 
-        //Solicitamos un DataSet por cada tipo de factura
+        //Solicitamos un DataSet por cada tipo de factura y le asignamos la coleccion de datos al gráfico
         for (String type: types){
             data.addDataSet(getBarDataSet(type));
         }
 
         barChart.setData(data);
 
-        // TODO ver manera de asignar tan manualmente los meses mediante bucle y de añadir el año correspondiente
-        // Definimos los campos X
-        String[] months = new String[]{
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre"};
+        // Obtenemos los campos para el eje X
+        ArrayList<String>itemsXAsix = collectionXAsis(invoices);
 
         // Barra X
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(months));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(itemsXAsix));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false); // no axis line
         xAxis.setDrawGridLines(false); // no grid lines
         xAxis.setTextSize(16);
+        xAxis.setGranularityEnabled(true);
 
         //Barra Y
         barChart.getAxisRight().setEnabled(false);
 
-
-        // TODO Controlar el tipo de gráfico para pintar uno u otro
-
+        // Aplicamos los tamaños en funcion de los tipos obtenidos
         if (types.size() > 1){
             // Calculamos los tamaños de los campos
             float groupSpace = 0.06f;
@@ -213,28 +213,27 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         barChart.getLegend().setXEntrySpace(24);
         barChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         barChart.getLegend().setWordWrapEnabled(true);
+        barChart.setExtraOffsets(0f,16f,0f,0f);
 
         //Opciones de gráfico
         barChart.setVisibleXRangeMaximum(3);
         barChart.setExtraBottomOffset(12);
-        lineChart.setNoDataText("No hay datos que representar");
+        barChart.setNoDataText("No hay datos que representar");
 
+        //Descripción
         Description description = new Description();
         description.setText("");
         barChart.setDescription(description);
 
+        // Establecemos animación y refrescamos
         barChart.animateXY(1000, 1000);
         barChart.invalidate();
     }
 
+
+    // Método para mostrar gráfico
     private void lineChart() {
 
-        barChart.setVisibility(View.INVISIBLE);
-        lineChart.setVisibility(View.VISIBLE);
-        pieChart.setVisibility(View.INVISIBLE);
-
-        //Definición de datos y parametros
-        LineData data = new LineData();
 
         //Obtenemos los grupos de las facturas obtenidas
         ArrayList<String> types = new ArrayList<>();
@@ -244,83 +243,53 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
             }
         }
 
-
-        //Solicitamos un DataSet por cada tipo de factura
-        for (String type: types){
-            data.addDataSet(getLineDataSet(type));
-        }
-
-        lineChart.setData(data);
-
-        // TODO ver manera de asignar tan manualmente los meses mediante bucle y de añadir el año correspondiente
-        // Definimos los campos X
-        String[] months = new String[]{
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre",
-                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Noviembre", "Diciembre"};
+        // Obtenemos los campos para el eje X
+        ArrayList<String>itemsXAsix = collectionXAsis(invoices);
 
         // Barra X
         XAxis xAxis = lineChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(months));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(itemsXAsix));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(false); // no axis line
         xAxis.setDrawGridLines(false); // no grid lines
         xAxis.setTextSize(16);
+        xAxis.setGranularityEnabled(true);
 
         //Barra Y
         lineChart.getAxisRight().setEnabled(false);
 
-
-        // TODO Controlar el tipo de gráfico para pintar uno u otro
-
-//        if (types.size() > 1){
-//            // Calculamos los tamaños de los campos
-//            float groupSpace = 0.06f;
-//            float barSpace = 0.04f / types.size(); //x2
-//            float barWidth = 0.90f / types.size(); //x2
-//            // (0.02 + 0.45) * 2 + 0.06 = 1.00 -> interval per "group"
-//            data.setBarWidth(barWidth);
-//            lineChart.getXAxis().setAxisMinimum(0);
-//            lineChart.getXAxis().setAxisMaximum(0+ barChart.getBarData().getGroupWidth(groupSpace, barSpace)*groupInvoicesMaxValue);
-//            lineChart.getAxisLeft().setAxisMinimum(0);
-//            lineChart.groupBars(0, groupSpace, barSpace);
-//            lineChart.setDragEnabled(true);
-//
-//            xAxis.setCenterAxisLabels(true);
-//        }
-
         // Opciones de la leyenda de tipo de factura
-        lineChart.getLegend().setWordWrapEnabled(true);
         lineChart.getLegend().setTextSize(18);
         lineChart.getLegend().setXEntrySpace(24);
         lineChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-
+        lineChart.getLegend().setWordWrapEnabled(true);
+        lineChart.setExtraOffsets(0f,16f,0f,0f);
 
         //Opciones de gráfico
         lineChart.setVisibleXRangeMaximum(3);
         lineChart.setExtraBottomOffset(12);
         lineChart.setNoDataText("No hay datos que representar");
 
+        //Descripción
         Description description = new Description();
         description.setText("");
         lineChart.setDescription(description);
 
+        //Solicitamos un DataSet por cada tipo de factura y le asignamos la coleccion de datos al gráfico
+        LineData data = new LineData();
+        for (String type: types){
+            data.addDataSet(getLineDataSet(type));
+        }
+        lineChart.setData(data);
+        lineChart.setData(data); //Duplicada intencioandamente para cargar correctamente la legenda en wrap
+
+        // Establecemos animación y refrescamos
         lineChart.animateXY(1000, 1000);
         lineChart.invalidate();
     }
 
     private void pieChart() {
 
-        barChart.setVisibility(View.INVISIBLE);
-        lineChart.setVisibility(View.INVISIBLE);
-        pieChart.setVisibility(View.VISIBLE);
-
-        //Definición de datos y parametros
-        PieData data = new PieData();
 
         //Obtenemos los grupos de las facturas obtenidas
         ArrayList<String> types = new ArrayList<>();
@@ -330,63 +299,62 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
             }
         }
 
-
-        //Solicitamos un DataSet por cada tipo de factura
-        data.addDataSet(getPieDataSet(types));
-
-        pieChart.setData(data);
-
-        // TODO ver manera de asignar tan manualmente los meses mediante bucle y de añadir el año correspondiente
-        // Definimos los campos X
-
-
-        // Barra X
-//        XAxis xAxis = pieChart.getXAxis();
-//        xAxis.setValueFormatter(new IndexAxisValueFormatter(months));
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setDrawAxisLine(false); // no axis line
-//        xAxis.setDrawGridLines(false); // no grid lines
-//        xAxis.setTextSize(16);
-
-        //Barra Y
-//        pieChart.getAxisRight().setEnabled(false);
-
-
-        // TODO Controlar el tipo de gráfico para pintar uno u otro
-
-//        if (types.size() > 1){
-//            // Calculamos los tamaños de los campos
-//            float groupSpace = 0.06f;
-//            float barSpace = 0.04f / types.size(); //x2
-//            float barWidth = 0.90f / types.size(); //x2
-//            // (0.02 + 0.45) * 2 + 0.06 = 1.00 -> interval per "group"
-//            data.setBarWidth(barWidth);
-//            lineChart.getXAxis().setAxisMinimum(0);
-//            lineChart.getXAxis().setAxisMaximum(0+ barChart.getBarData().getGroupWidth(groupSpace, barSpace)*groupInvoicesMaxValue);
-//            lineChart.getAxisLeft().setAxisMinimum(0);
-//            lineChart.groupBars(0, groupSpace, barSpace);
-//            lineChart.setDragEnabled(true);
-//
-//            xAxis.setCenterAxisLabels(true);
-//        }
-
         // Opciones de la leyenda de tipo de factura
         pieChart.getLegend().setWordWrapEnabled(true);
         pieChart.getLegend().setTextSize(18);
         pieChart.getLegend().setXEntrySpace(24);
         pieChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-
+        pieChart.setExtraOffsets(18f,0f,18f,0f);
 
         //Opciones de gráfico
         pieChart.setExtraBottomOffset(12);
         pieChart.setNoDataText("No hay datos que representar");
 
+        //Descripción
         Description description = new Description();
         description.setText("");
         pieChart.setDescription(description);
 
+        //Definición de datos y DataSet por cada tipo de factura
+        PieData data = new PieData();
+        data.addDataSet(getPieDataSet(types));
+        pieChart.setData(data);
+        pieChart.setData(data);
+
+        // Establecemos animación y refrescamos
         pieChart.animateXY(1000, 1000);
         pieChart.invalidate();
+    }
+
+    //Método para obtener los elementos de la barra X
+    private ArrayList<String> collectionXAsis(ArrayList<InvoiceModel> invoices) {
+
+        //Creamos dos calendarios con la fecha mínima de las facturas
+        Calendar firstCal = Calendar.getInstance();
+        Calendar lastCal = Calendar.getInstance();
+
+        //Establecemos el valor a los calendarios a partir de las facturas
+        String[] dateSplit;
+        dateSplit = invoices.get(0).getDate().split("-");
+        firstCal.set(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
+        dateSplit = invoices.get(invoices.size()-1).getDate().split("-");
+        lastCal.set(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
+
+        //Cogemos el valor númerico para calcular la diferencia de meses
+        int nMonth1=12*firstCal.get(Calendar.YEAR)+firstCal.get(Calendar.MONTH);
+        int nMonth2=12*lastCal.get(Calendar.YEAR)+lastCal.get(Calendar.MONTH);
+
+        int numMonths = (nMonth2 - nMonth1) + 1; //Diferencia de meses más 1
+
+        //Cogemos a partir de la fecha mínima la cadena Año mes para establecerla como eje X y sumandole 1 mes por iteración
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy MMM", Locale.getDefault());
+        ArrayList<String> itemsXAsis = new ArrayList<String>();
+        for (int m = 0; m<numMonths; m++){
+            itemsXAsis.add(formater.format(firstCal.getTime()));
+            firstCal.add(Calendar.MONTH, 1);
+        }
+
+        return itemsXAsis;
     }
 
 
@@ -395,10 +363,11 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
         ArrayList dataSets = null;
 
+        // Creamos la lista y le incorporamos el dato requerido del tipo requerido
         ArrayList<BarEntry> valueSet = new ArrayList<BarEntry>();
         String[] dateEmitionStr = invoices.get(0).getDate().split("-");
         int firstMonth = Integer.parseInt(dateEmitionStr[1]);
-        int c = firstMonth-1;
+        int c = 0;
         if (typeChart == R.id.rb_GIFConsumption || typeChart == -1){
             for (InvoiceModel i : invoices) {
                 if (tipo.equals(i.getType())){
@@ -415,26 +384,28 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
             }
         }
 
+        // Establecemos el valor del grupo con más facturas (nos permite calcular tamaño del gráfico)
         if (groupInvoicesMaxValue == -1 || groupInvoicesMaxValue < valueSet.size()){
             groupInvoicesMaxValue = valueSet.size();
         }
 
-
-        BarDataSet barDataSet1 = new BarDataSet(valueSet, tipo);
+        //Creamos el elemento de datos para la gráfica y establecemos colores
+        BarDataSet barDataSet = new BarDataSet(valueSet, tipo);
         Random r = new Random();
-        barDataSet1.setColor(Color.rgb(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+        barDataSet.setColor(Color.rgb(r.nextFloat(), r.nextFloat(), r.nextFloat()));
 
-        return barDataSet1;
+        return barDataSet;
     }
 
     private LineDataSet getLineDataSet(String tipo) {
 
         ArrayList dataSets = null;
 
+        // Creamos la lista y le incorporamos el dato requerido del tipo requerido
         ArrayList<Entry> valueSet = new ArrayList<Entry>();
         String[] dateEmitionStr = invoices.get(0).getDate().split("-");
         int firstMonth = Integer.parseInt(dateEmitionStr[1]);
-        int c = firstMonth-1;
+        int c = 0;
         if (typeChart == R.id.rb_GIFConsumption || typeChart == -1){
             for (InvoiceModel i : invoices) {
                 if (tipo.equals(i.getType())){
@@ -451,11 +422,12 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
             }
         }
 
+        // Establecemos el valor del grupo con más facturas (nos permite calcular tamaño del gráfico)
         if (groupInvoicesMaxValue == -1 || groupInvoicesMaxValue < valueSet.size()){
             groupInvoicesMaxValue = valueSet.size();
         }
 
-
+        //Creamos el elemento de datos para la gráfica, establecemos colores y tamaños
         LineDataSet lineDataSet = new LineDataSet(valueSet, tipo);
         Random r = new Random();
         lineDataSet.setColor(Color.rgb(r.nextFloat(), r.nextFloat(), r.nextFloat()));
@@ -469,14 +441,13 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
         ArrayList dataSets = null;
 
+        // Creamos la lista y le incorporamos el dato requerido del tipo requerido
         ArrayList<PieEntry> valueSet = new ArrayList<PieEntry>();
-        String[] dateEmitionStr = invoices.get(0).getDate().split("-");
-        int firstMonth = Integer.parseInt(dateEmitionStr[1]);
-        int c = firstMonth - 1;
 
         float typeSum = 0; //Valor de suma de tipo
         float sum = 0; // Valor de suma de todos los tipos unidos
-        String cad = "";
+        String cad = ""; // Valor del tipo
+
         // Obtenemos la lista de tipos con su suma de valores
         HashMap<String, Float> values = new HashMap<String, Float>();
         if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
@@ -486,7 +457,6 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
                 for (InvoiceModel i : invoices) {
                     if (type.equals(i.getType())) {
                         typeSum += i.getConsumption();
-                        c++;
                     }
                 }
                 values.put(type, typeSum);
@@ -500,9 +470,10 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
                     for (InvoiceModel i : invoices) {
                         if (type.equals(i.getType())) {
                             typeSum += i.getAmount();
-                            c++;
                         }
                     }
+
+                    // Inicializamos typeSum por cada tipo y sumamos elemento al total
                     values.put(type, typeSum);
                     sum += typeSum;
                     typeSum = 0;
@@ -525,24 +496,20 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
                 colors.add(Color.rgb(r.nextFloat(), r.nextFloat(), r.nextFloat()));
             }
 
-
+            // Establecemos el valor del grupo con más facturas (nos permite calcular tamaño del gráfico)
             if (groupInvoicesMaxValue == -1 || groupInvoicesMaxValue < valueSet.size()) {
                 groupInvoicesMaxValue = valueSet.size();
             }
 
-
+            //Creamos el elemento de datos para la gráfica, establecemos colores y tamaños
             PieDataSet pieDataSet = new PieDataSet(valueSet, cad);
-
-
-//            pieDataSet.setColor(Color.rgb(r.nextFloat(), r.nextFloat(), r.nextFloat()));
             pieDataSet.setColors(colors);
-
-
             pieDataSet.setValueTextSize(10);
 
             return pieDataSet;
     }
 
+    // Método de click para cambiar de tipo de gráfica
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rb_gitc_chartbar ||
@@ -552,18 +519,5 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
             changeChart();
         }
     }
-
-
-    // En teoría datos para establecer los campos de coordenadas X (a priori no funciona)
-//    private IBarDataSet getXAxisValues() {
-//        ArrayList xAxis = new ArrayList();
-//        xAxis.add("JAN");
-//        xAxis.add("FEB");
-//        xAxis.add("MAR");
-//        xAxis.add("APR");
-//        xAxis.add("MAY");
-//        xAxis.add("JUN");
-//        return new IBarDataSet(xAxis);
-//    }
 
 }
