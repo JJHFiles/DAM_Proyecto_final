@@ -27,9 +27,13 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.android.material.tabs.TabLayout;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +43,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+// BUG GroupBars doesn't respect missing data
+// BUG https://github.com/PhilJay/MPAndroidChart/issues/3076
 
 public class GroupInvoiceTabChartFragment extends Fragment implements View.OnClickListener {
 
@@ -49,7 +55,6 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
     private RadioButton rbChartCircle;
     private RadioButton rbChartBar;
     private RadioButton rbChartLine;
-
 
 
     private static final String INVOICES = "invoices";
@@ -131,13 +136,13 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         lineChart.setVisibility(View.INVISIBLE);
         pieChart.setVisibility(View.INVISIBLE);
 
-        if (rbChartBar.isChecked()){
+        if (rbChartBar.isChecked()) {
             barChart.setVisibility(View.VISIBLE);
             barChart();
         } else if (rbChartLine.isChecked()) {
             lineChart.setVisibility(View.VISIBLE);
             lineChart();
-        } else if(rbChartCircle.isChecked()){
+        } else if (rbChartCircle.isChecked()) {
             pieChart.setVisibility(View.VISIBLE);
             pieChart();
         } else {
@@ -162,15 +167,8 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         //Definición de datos y parametros
         BarData data = new BarData();
 
-        //Solicitamos un DataSet por cada tipo de factura y le asignamos la coleccion de datos al gráfico
-        for (String type: types){
-            data.addDataSet(getBarDataSet(type));
-        }
-
-        barChart.setData(data);
-
         // Obtenemos los campos para el eje X
-        ArrayList<String>itemsXAsix = collectionXAsis(invoices);
+        ArrayList<String> itemsXAsix = collectionXAsis(invoices);
 
         // Barra X
         XAxis xAxis = barChart.getXAxis();
@@ -184,16 +182,25 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         //Barra Y
         barChart.getAxisRight().setEnabled(false);
 
+        //Solicitamos un DataSet por cada tipo de factura y le asignamos la coleccion de datos al gráfico
+        for (String type : types) {
+            data.addDataSet(getBarDataSet(type, itemsXAsix));
+        }
+
+        data.setValueFormatter(new MyValueFormatter());
+        barChart.setData(data);
+
+
         // Aplicamos los tamaños en funcion de los tipos obtenidos
-        if (types.size() > 1){
+        if (types.size() > 1) {
             // Calculamos los tamaños de los campos
             float groupSpace = 0.06f;
-            float barSpace = 0.04f / types.size(); //x2
-            float barWidth = 0.90f / types.size(); //x2
+            float barSpace = 0.04f / types.size();
+            float barWidth = 0.90f / types.size();
             // (0.02 + 0.45) * 2 + 0.06 = 1.00 -> interval per "group"
             data.setBarWidth(barWidth);
             barChart.getXAxis().setAxisMinimum(0);
-            barChart.getXAxis().setAxisMaximum(0+ barChart.getBarData().getGroupWidth(groupSpace, barSpace)*groupInvoicesMaxValue);
+            barChart.getXAxis().setAxisMaximum(0 + barChart.getBarData().getGroupWidth(groupSpace, barSpace) * itemsXAsix.size());
             barChart.getAxisLeft().setAxisMinimum(0);
             barChart.groupBars(0, groupSpace, barSpace);
             barChart.setDragEnabled(true);
@@ -206,7 +213,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         barChart.getLegend().setXEntrySpace(24);
         barChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         barChart.getLegend().setWordWrapEnabled(true);
-        barChart.setExtraOffsets(0f,16f,0f,0f);
+        barChart.setExtraOffsets(0f, 16f, 0f, 0f);
 
         //Opciones de gráfico
         barChart.setVisibleXRangeMaximum(3);
@@ -227,7 +234,6 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
     // Método para mostrar gráfico
     private void lineChart() {
 
-
         //Obtenemos los grupos de las facturas obtenidas
         ArrayList<String> types = new ArrayList<>();
         for (InvoiceModel i : invoices) {
@@ -237,7 +243,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         }
 
         // Obtenemos los campos para el eje X
-        ArrayList<String>itemsXAsix = collectionXAsis(invoices);
+        ArrayList<String> itemsXAsix = collectionXAsis(invoices);
 
         // Barra X
         XAxis xAxis = lineChart.getXAxis();
@@ -256,7 +262,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         lineChart.getLegend().setXEntrySpace(24);
         lineChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         lineChart.getLegend().setWordWrapEnabled(true);
-        lineChart.setExtraOffsets(0f,16f,0f,0f);
+        lineChart.setExtraOffsets(0f, 16f, 0f, 0f);
 
         //Opciones de gráfico
         lineChart.setVisibleXRangeMaximum(3);
@@ -270,8 +276,8 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
         //Solicitamos un DataSet por cada tipo de factura y le asignamos la coleccion de datos al gráfico
         LineData data = new LineData();
-        for (String type: types){
-            data.addDataSet(getLineDataSet(type));
+        for (String type : types) {
+            data.addDataSet(getLineDataSet(type, itemsXAsix));
         }
         lineChart.setData(data);
         lineChart.setData(data); //Duplicada intencioandamente para cargar correctamente la legenda en wrap
@@ -297,7 +303,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         pieChart.getLegend().setTextSize(18);
         pieChart.getLegend().setXEntrySpace(24);
         pieChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        pieChart.setExtraOffsets(18f,0f,18f,0f);
+        pieChart.setExtraOffsets(18f, 0f, 18f, 0f);
 
         //Opciones de gráfico
         pieChart.setExtraBottomOffset(12);
@@ -329,20 +335,20 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         //Establecemos el valor a los calendarios a partir de las facturas
         String[] dateSplit;
         dateSplit = invoices.get(0).getDate().split("-");
-        firstCal.set(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
-        dateSplit = invoices.get(invoices.size()-1).getDate().split("-");
-        lastCal.set(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[2]));
+        firstCal.set(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]) - 1, Integer.parseInt(dateSplit[2]));
+        dateSplit = invoices.get(invoices.size() - 1).getDate().split("-");
+        lastCal.set(Integer.parseInt(dateSplit[0]), Integer.parseInt(dateSplit[1]) - 1, Integer.parseInt(dateSplit[2]));
 
         //Cogemos el valor númerico para calcular la diferencia de meses
-        int nMonth1=12*firstCal.get(Calendar.YEAR)+firstCal.get(Calendar.MONTH);
-        int nMonth2=12*lastCal.get(Calendar.YEAR)+lastCal.get(Calendar.MONTH);
+        int nMonth1 = 12 * firstCal.get(Calendar.YEAR) + firstCal.get(Calendar.MONTH);
+        int nMonth2 = 12 * lastCal.get(Calendar.YEAR) + lastCal.get(Calendar.MONTH);
 
         int numMonths = (nMonth2 - nMonth1) + 1; //Diferencia de meses más 1
 
         //Cogemos a partir de la fecha mínima la cadena Año mes para establecerla como eje X y sumandole 1 mes por iteración
         SimpleDateFormat formater = new SimpleDateFormat("yyyy MMM", Locale.getDefault());
         ArrayList<String> itemsXAsis = new ArrayList<>();
-        for (int m = 0; m<numMonths; m++){
+        for (int m = 0; m < numMonths; m++) {
             itemsXAsis.add(formater.format(firstCal.getTime()));
             firstCal.add(Calendar.MONTH, 1);
         }
@@ -350,33 +356,51 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         return itemsXAsis;
     }
 
-
     //Datos para las barras
-    private BarDataSet getBarDataSet(String tipo) {
+    private BarDataSet getBarDataSet(String tipo, ArrayList<String> itemsXAsix) {
 
         // Creamos la lista y le incorporamos el dato requerido del tipo requerido
-        ArrayList<BarEntry> valueSet = new ArrayList<>();
-        int c = 0;
-        if (typeChart == R.id.rb_GIFConsumption || typeChart == -1){
-            for (InvoiceModel i : invoices) {
-                if (tipo.equals(i.getType())){
-                    valueSet.add(new BarEntry(c, (float) i.getConsumption()));
-                    c++;
-                }
-            }
-        } else if (typeChart == R.id.rb_GIFCost){
-            for (InvoiceModel i : invoices) {
-                if (tipo.equals(i.getType())){
-                    valueSet.add(new BarEntry(c, (float) i.getAmount()));
-                    c++;
-                }
-            }
-        }
+        ArrayList<BarEntry> valueSet = new ArrayList<BarEntry>();
 
-        // Establecemos el valor del grupo con más facturas (nos permite calcular tamaño del gráfico)
-        if (groupInvoicesMaxValue == -1 || groupInvoicesMaxValue < valueSet.size()){
-            groupInvoicesMaxValue = valueSet.size();
-        }
+        // Valores de control para posición del ejeX
+        int posX;
+        String[] dateEmitionStr;
+        Calendar dateEmition;
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy MMM", Locale.getDefault());
+        // Valor de control de la última posición insertada (valido para lineas vacias)
+        int lastInsert = 0;
+
+        for (InvoiceModel i : invoices) {
+                if (tipo.equals(i.getType())) {
+
+                    // Cogemos el valor fecha con formato yyyy MMM par coger el valor de posición en la lista de ejeX
+                    dateEmitionStr = i.getDate().split("-");
+                    dateEmition = Calendar.getInstance();
+                    dateEmition.set(Integer.parseInt(dateEmitionStr[0]), Integer.parseInt(dateEmitionStr[1]) - 1, Integer.parseInt(dateEmitionStr[2]));
+                    String dateEmitionParse = formater.format(dateEmition.getTime());
+                    posX = itemsXAsix.indexOf(dateEmitionParse);
+
+
+                    // BUG Line #46
+                    // Se comprueba si el siguiente valor tiene una posición de EjeX no correlativo al anterior
+                    // de ser así se introducen valores 0 en las posiciones vacias para rellenar, sólo aplica a gráfico de barras agrupadas
+                    if (valueSet.size() < posX) {
+                        for (int o = lastInsert; o < posX; o++) {
+                            valueSet.add(new BarEntry(o, null));
+                            lastInsert++;
+                        }
+                    }
+
+                    // Escogemos según el tipo de gráfico escogido el valor a representar
+                    if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
+                        valueSet.add(new BarEntry(posX, (float) i.getConsumption()));
+                    } else {
+                        valueSet.add(new BarEntry(posX, (float) i.getAmount()));
+                    }
+                    lastInsert++;
+                }
+            }
+
 
         //Creamos el elemento de datos para la gráfica y establecemos colores
         BarDataSet barDataSet = new BarDataSet(valueSet, tipo);
@@ -386,31 +410,50 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         return barDataSet;
     }
 
-    private LineDataSet getLineDataSet(String tipo) {
+    private LineDataSet getLineDataSet(String tipo, ArrayList<String> itemsXAsix) {
 
         // Creamos la lista y le incorporamos el dato requerido del tipo requerido
         ArrayList<Entry> valueSet = new ArrayList<>();
-        int c = 0;
-        if (typeChart == R.id.rb_GIFConsumption || typeChart == -1){
-            for (InvoiceModel i : invoices) {
-                if (tipo.equals(i.getType())){
-                    valueSet.add(new Entry(c, (float) i.getConsumption()));
-                    c++;
+
+        // Valores de control para posición del ejeX
+        int posX;
+        String[] dateEmitionStr;
+        Calendar dateEmition;
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy MMM", Locale.getDefault());
+        // Valor de control de la última posición insertada (valido para lineas vacias)
+        int lastInsert = 0;
+
+        for (InvoiceModel i : invoices) {
+
+            // Cogemos el valor fecha con formato yyyy MMM par coger el valor de posición en la lista de ejeX
+            dateEmitionStr = i.getDate().split("-");
+            dateEmition = Calendar.getInstance();
+            dateEmition.set(Integer.parseInt(dateEmitionStr[0]), Integer.parseInt(dateEmitionStr[1]) - 1, Integer.parseInt(dateEmitionStr[2]));
+            String dateEmitionParse = formater.format(dateEmition.getTime());
+            posX = itemsXAsix.indexOf(dateEmitionParse);
+
+            // BUG Line #46
+            // Se comprueba si el siguiente valor tiene una posición de EjeX no correlativo al anterior
+            // de ser así se introducen valores 0 en las posiciones vacias para rellenar, sólo aplica a gráfico de barras agrupadas
+            if (valueSet.size() < posX) {
+                for (int o = lastInsert; o < posX; o++) {
+                    valueSet.add(new Entry(o, 0));
+                    lastInsert++;
                 }
             }
-        } else if (typeChart == R.id.rb_GIFCost){
-            for (InvoiceModel i : invoices) {
-                if (tipo.equals(i.getType())){
-                    valueSet.add(new Entry(c, (float) i.getAmount()));
-                    c++;
+
+
+            if (tipo.equals(i.getType())) {
+                if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
+                    valueSet.add(new Entry(posX, (float) i.getConsumption()));
+                } else if (typeChart == R.id.rb_GIFCost){
+                    valueSet.add(new Entry(posX, (float) i.getAmount()));
                 }
+                lastInsert++;
+
             }
         }
 
-        // Establecemos el valor del grupo con más facturas (nos permite calcular tamaño del gráfico)
-        if (groupInvoicesMaxValue == -1 || groupInvoicesMaxValue < valueSet.size()){
-            groupInvoicesMaxValue = valueSet.size();
-        }
 
         //Creamos el elemento de datos para la gráfica, establecemos colores y tamaños
         LineDataSet lineDataSet = new LineDataSet(valueSet, tipo);
@@ -428,66 +471,71 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         ArrayList<PieEntry> valueSet = new ArrayList<>();
 
         float typeSum = 0; //Valor de suma de tipo
+        float sum = 0; // Valor de suma de todos los tipos unidos
         String cad = ""; // Valor del tipo
 
         // Obtenemos la lista de tipos con su suma de valores
         HashMap<String, Float> values = new HashMap<>();
-        if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
             cad = "Consumo";
             for (int t = 0; t < types.size(); t++) {
                 String type = types.get(t);
                 for (InvoiceModel i : invoices) {
                     if (type.equals(i.getType())) {
-                        typeSum += i.getConsumption();
+                        if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
+                            typeSum += i.getConsumption();
+                        } else if (typeChart == R.id.rb_GIFCost) {
+                            typeSum += i.getAmount();
+                        }
                     }
                 }
                 values.put(type, typeSum);
                 typeSum = 0;
             }
-        } else if (typeChart == R.id.rb_GIFCost) {
-            cad = "Coste";
-            if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
-                for (int t = 0; t < types.size(); t++) {
-                    String type = types.get(t);
-                    for (InvoiceModel i : invoices) {
-                        if (type.equals(i.getType())) {
-                            typeSum += i.getAmount();
-                        }
-                    }
+//        } else if (typeChart == R.id.rb_GIFCost) {
+//            cad = "Coste";
+//            if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
+//                for (int t = 0; t < types.size(); t++) {
+//                    String type = types.get(t);
+//                    for (InvoiceModel i : invoices) {
+//                        if (type.equals(i.getType())) {
+//                            typeSum += i.getAmount();
+//                        }
+//                    }
+//
+//                    // Inicializamos typeSum por cada tipo y sumamos elemento al total
+//                    values.put(type, typeSum);
+//                    sum += typeSum;
+//                    typeSum = 0;
+//                }
+//            }
+//        }
 
-                    // Inicializamos typeSum por cada tipo y sumamos elemento al total
-                    values.put(type, typeSum);
-                    typeSum = 0;
-                }
-            }
+        // Calculamos a partir de la suma total de los tipo y la suma individual de cada tipo su procentaje
+        HashMap<String, Float> percentValues = new HashMap<>();
+        for (Map.Entry<String, Float> entry : values.entrySet()) {
+            float percent = (entry.getValue() * 100) / sum;
+            percentValues.put(entry.getKey(), percent);
         }
 
-//            // Calculamos a partir de la suma total de los tipo y la suma individual de cada tipo su procentaje
-//            HashMap<String, Float> percentValues = new HashMap<String, Float>();
-//            for (Map.Entry<String, Float> entry : values.entrySet()) {
-//                float percent = (entry.getValue() * 100) / sum;
-//                percentValues.put(entry.getKey(), percent);
-//            }
+        // Asignamos a la lista de pieEntry los valores y su tipo y creamos una lista de colores
+        ArrayList<Integer> colors = new ArrayList<>();
+        Random r = new Random();
+        for (Map.Entry<String, Float> entry : values.entrySet()) {
+            valueSet.add(new PieEntry(entry.getValue(), entry.getKey()));
+            colors.add(Color.rgb(r.nextFloat(), r.nextFloat(), r.nextFloat()));
+        }
 
-            // Asignamos a la lista de pieEntry los valores y su tipo y creamos una lista de colores
-            ArrayList<Integer> colors = new ArrayList<>();
-            Random r = new Random();
-            for (Map.Entry<String, Float> entry : values.entrySet()) {
-                valueSet.add(new PieEntry(entry.getValue(), entry.getKey()));
-                colors.add(Color.rgb(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-            }
+        // Establecemos el valor del grupo con más facturas (nos permite calcular tamaño del gráfico)
+        if (groupInvoicesMaxValue == -1 || groupInvoicesMaxValue < valueSet.size()) {
+            groupInvoicesMaxValue = valueSet.size();
+        }
 
-            // Establecemos el valor del grupo con más facturas (nos permite calcular tamaño del gráfico)
-            if (groupInvoicesMaxValue == -1 || groupInvoicesMaxValue < valueSet.size()) {
-                groupInvoicesMaxValue = valueSet.size();
-            }
+        //Creamos el elemento de datos para la gráfica, establecemos colores y tamaños
+        PieDataSet pieDataSet = new PieDataSet(valueSet, cad);
+        pieDataSet.setColors(colors);
+        pieDataSet.setValueTextSize(10);
 
-            //Creamos el elemento de datos para la gráfica, establecemos colores y tamaños
-            PieDataSet pieDataSet = new PieDataSet(valueSet, cad);
-            pieDataSet.setColors(colors);
-            pieDataSet.setValueTextSize(10);
-
-            return pieDataSet;
+        return pieDataSet;
     }
 
     // Método de click para cambiar de tipo de gráfica
@@ -495,10 +543,30 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
     public void onClick(View view) {
         if (view.getId() == R.id.rb_gitc_chartbar ||
                 view.getId() == R.id.rb_gitc_chartline ||
-                view.getId() == R.id.rb_gitc_chartpie){
+                view.getId() == R.id.rb_gitc_chartpie) {
 
             changeChart();
         }
     }
 
+    private class MyValueFormatter extends ValueFormatter {
+
+        private DecimalFormat mFormat;
+
+        public MyValueFormatter() {
+            mFormat = new DecimalFormat("###,###,##0.0"); // use one decimal
+        }
+
+        @Override
+        public String getFormattedValue(float value) {
+            if (value > 0){
+                return mFormat.format(value);
+            } else {
+                return "";
+            }
+        }
+
+
+    }
 }
+

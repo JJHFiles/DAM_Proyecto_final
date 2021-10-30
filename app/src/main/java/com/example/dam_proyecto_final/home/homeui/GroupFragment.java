@@ -200,7 +200,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(int id, String message) {
-                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+                Log.d("DEBUGME", "GroupFragment onError: " + id + " " + message);
                 Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
             }
         });
