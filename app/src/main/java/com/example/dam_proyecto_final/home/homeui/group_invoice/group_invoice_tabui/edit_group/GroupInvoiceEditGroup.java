@@ -33,7 +33,7 @@ import java.util.List;
 public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnClickListener {
 
     private ListView lstv_Members;
-    private ArrayList<MemberModel> members;
+    private ArrayList<MemberModel> membersOld, membersAdd, membersUpd, membersDel;
     private TextInputEditText edt_AddMember;
     private TextInputEditText edt_AGAGroupName;
     private TextInputEditText edt_AGADescription;
@@ -50,8 +50,8 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     private String userPass;
     private WebApiRequest webApiRequest;
     private Context context;
-    private ArrayList<GroupModel> groupModels;
-    private GroupModel groupModel;
+    //private ArrayList<GroupModel> groupModels;
+    // private GroupModel groupModel;
 
 
     @Override
@@ -87,7 +87,10 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         //Almacena a informacion en ArrayList<GroupModel> groupModels
         //getGroupsByEmail();
 
-        members = new ArrayList<MemberModel>();
+        membersOld = new ArrayList<MemberModel>(); // Miembros recibidos del grupo antes de editar.
+        membersAdd = new ArrayList<MemberModel>(); // Miembros nuevos que se añadirán al grupo.
+        membersUpd = new ArrayList<MemberModel>(); // Miembros que se han actualizado ya que se ha cambiado su rol.
+        membersDel = new ArrayList<MemberModel>(); // Miembros recibidos del grupo que han sido seleccionados para ser eliminados del grupo.
 
         getGroupAndShared();
 
@@ -163,10 +166,10 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
             if (Patterns.EMAIL_ADDRESS.matcher(edt_AddMember.getText().toString()).matches()) {
                 if (!edt_AddMember.getText().toString().equals("") && roleSelection != null) {
                     //Comprobamos que no haya ya 10 usuario en la lista (máximo 10 usuarios por grupo)
-                    if (members.size() < 10) {
+                    if (membersOld.size() < 10) {
                         //Comprobamos que el mail no esté ya en la lista
                         Boolean memberExist = false;
-                        for (MemberModel m : members) {
+                        for (MemberModel m : membersOld) {
                             if (m.getEmail().equals(edt_AddMember.getText().toString())) {
                                 memberExist = true;
                             }
@@ -185,7 +188,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                                     } else if (roleSelection.toString().equals(getString(R.string.role_reader))) {
                                         role = 2;
                                     }
-                                    members.add(new MemberModel(edt_AddMember.getText().toString(), role));
+                                    membersOld.add(new MemberModel(edt_AddMember.getText().toString(), role));
                                     membersAdapter.notifyDataSetChanged();
                                     edt_AddMember.setText("");
                                     setListViewHeightBasedOnChildren(lstv_Members);
@@ -217,7 +220,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                     !edt_AGADescription.getText().toString().equals("") &&
                     currencySelection != null) {
                 webApiRequest.addGroup(userEmail, userPass, edt_AGAGroupName.getText().toString(),
-                        edt_AGADescription.getText().toString(), currencySelection, members, new WebApiRequest.WebApiRequestJsonResponseListener() {
+                        edt_AGADescription.getText().toString(), currencySelection, membersOld, new WebApiRequest.WebApiRequestJsonResponseListener() {
                             @Override
                             public void onSuccess(JsonResponseModel response) {
                                 Toast.makeText(context, "Grupo creado correctamente", Toast.LENGTH_LONG).show();
@@ -278,16 +281,16 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                         ArrayList sharedModel = (ArrayList) shared;
 
-                      for (int x = 0; x < sharedModel.size(); x++) {
-                                members.add(new MemberModel(
-                                        ((SharedModel) (sharedModel.get(x))).getEmail(),
-                                        ((SharedModel) (sharedModel.get(x))).getRole())
-                                );
-                     }
+                        for (int x = 0; x < sharedModel.size(); x++) {
+                            membersOld.add(new MemberModel(
+                                    ((SharedModel) (sharedModel.get(x))).getEmail(),
+                                    ((SharedModel) (sharedModel.get(x))).getRole())
+                            );
+                        }
                         //ListView de miembros
                         lstv_Members = findViewById(R.id.lstv_AGAMembers);
                         //  members = new ArrayList<MemberModel>();
-                        membersAdapter = new MembersAdapter(getApplicationContext(), members, lstv_Members);
+                        membersAdapter = new MembersAdapter(getApplicationContext(), membersOld, lstv_Members);
                         lstv_Members.setAdapter(membersAdapter);
 
                         membersAdapter.notifyDataSetChanged();
@@ -307,6 +310,13 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                     }
                 });
 
+    }
+
+    // Método que controla el click en la flecha back del ActionBar
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }
