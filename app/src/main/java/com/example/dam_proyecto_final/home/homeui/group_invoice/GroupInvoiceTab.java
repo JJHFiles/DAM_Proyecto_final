@@ -162,7 +162,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 }
         );
 
-        // Register
+        // Método de captura del resultado de la pantalla filtro
         intentForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -187,7 +187,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 });
     }
 
-
+    //Método de gestión para el cambio de fragmento
     private void replaceFragment(int position, FragmentManager fragmentManager) {
         // Elegimos la lista a pasar como parametro priorizando la filtrada
         Bundle bundle = new Bundle();

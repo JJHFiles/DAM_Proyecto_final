@@ -200,6 +200,9 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
             case R.id.btOCR:
                 //TODO: lectura factura por OCR
+
+
+
                 break;
 
             case R.id.root_background:
