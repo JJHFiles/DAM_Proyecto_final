@@ -89,7 +89,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     public void loadInvoiceType() {
 
         //Asignamos lista a DropDowns
-        String[] type = {"Luz", "Agua", "Gas", "Telefonía"};
+        String[] type = {"Electricidad", "Agua", "Gas", "Telefonía", "Alquiler", "Otros"};
         ArrayAdapter typeAdapter = new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, type);
         actv_invoiceType.setAdapter(typeAdapter);
         actv_invoiceType.setOnItemClickListener(new AdapterView.OnItemClickListener() {

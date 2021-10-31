@@ -151,10 +151,10 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
                 measure = " m3";
             } else if (arrIM.get(x).getType().equals("Telefonia")) {
                 measure = " mes";
-            } else if (arrIM.get(x).getType().equals("Renting Coche")) {
+            } else if (arrIM.get(x).getType().equals("Alquiler")) {
                 measure = " mes";
-            } else if (arrIM.get(x).getType().equals("IBI")) {
-                measure = " mes";
+            } else if (arrIM.get(x).getType().equals("Otros")) {
+                measure = "";
             }
 
 
