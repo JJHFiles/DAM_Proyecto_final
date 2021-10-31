@@ -224,21 +224,8 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
                     btManual.setVisibility(View.INVISIBLE);
                     btOCR.setVisibility(View.INVISIBLE);
                 }
-                // Para verse las sombras de los botones, provoca un back negro, cambiar el método back
-                //  getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                //  Toast.makeText(getApplicationContext(), "idGroup "+idGroup, Toast.LENGTH_LONG).show();
-
- /*            TODO: que la actividad se torne en escala grises
-               new AlertDialog.Builder(this)
-                        .setCancelable(false)
-                        .setPositiveButton("Añadir de forma manual",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    }).create().show();
-*/
+//          TODO: que la actividad se torne en escala grises
 
                 break;
 
@@ -253,6 +240,11 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
             case R.id.btOCR:
                 //TODO: lectura factura por OCR
+                Intent intentScan = new Intent(context, InvoiceOCRAddActivity.class);
+                intentScan.putExtra("idGroup", idGroup);/*
+                intentScan.putExtra("groupName", groupName);
+                intentScan.putExtra("userEmail", userEmail);*/
+                startActivity(intentScan);
                 break;
 
             case R.id.root_background:
