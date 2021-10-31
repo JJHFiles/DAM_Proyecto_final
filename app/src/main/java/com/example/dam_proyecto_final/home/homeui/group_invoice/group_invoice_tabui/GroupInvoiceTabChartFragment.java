@@ -27,10 +27,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.android.material.tabs.TabLayout;
 
 import java.text.DecimalFormat;
@@ -363,7 +361,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
     private BarDataSet getBarDataSet(String tipo, ArrayList<String> itemsXAsix) {
 
         // Creamos la lista y le incorporamos el dato requerido del tipo requerido
-        ArrayList<BarEntry> valueSet = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> valueSet = new ArrayList<>();
 
         // Valores de control para posición del ejeX
         int posX;
@@ -475,7 +473,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
         float typeSum = 0; //Valor de suma de tipo
 //        float sum = 0; // Valor de suma de todos los tipos unidos
-        String cad = ""; // Valor del tipo
+        String cad; // Valor del tipo
 
         // Obtenemos la lista de tipos con su suma de valores
         HashMap<String, Float> values = new HashMap<>();
@@ -536,9 +534,9 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
     }
 
     // Subclase que permite formatear el texto en caso de ser 0
-    private class MyValueFormatter extends ValueFormatter {
+    private static class MyValueFormatter extends ValueFormatter {
 
-        private DecimalFormat mFormat;
+        private final DecimalFormat mFormat;
 
         public MyValueFormatter() {
             mFormat = new DecimalFormat("###,###,##0.0"); // use one decimal
