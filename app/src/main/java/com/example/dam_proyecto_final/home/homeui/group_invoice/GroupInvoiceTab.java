@@ -45,7 +45,6 @@ public class GroupInvoiceTab extends AppCompatActivity {
     private String userPass;
 
     private TabLayout tabLayout;
-    private ImageView iv;
     private ArrayList<InvoiceModel> arrIM;
     private ArrayList<InvoiceModel> arrIMFilter;
 
@@ -65,7 +64,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
 
         tabLayout = findViewById(R.id.tabLayout);
-        iv = findViewById(R.id.iv);
+        ImageView iv = findViewById(R.id.iv);
 
         //Instanciamos el FragmentManager para la implementación de las vistas
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -129,12 +128,11 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 if (response.getId() == -253) {
                     //Si es -252 es que el usuario no tiene actividades
                     Toast.makeText(getApplicationContext(), "Error " + response.getId(), Toast.LENGTH_LONG).show();
-                    Log.d("DEBUGME", "GroupInvoiceTab: " + response.getId() + " " + response.getMessage());
                 } else {
                     //Si no ha podido ser cualquier error
                     Toast.makeText(getApplicationContext(), "Error al obtener facturas" + response.getId(), Toast.LENGTH_LONG).show();
-                    Log.d("DEBUGME", "GroupInvoiceTab: " + response.getId() + " " + response.getMessage());
                 }
+                Log.d("DEBUGME", "GroupInvoiceTab: " + response.getId() + " " + response.getMessage());
             }
         });
 
@@ -175,7 +173,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
                             // Obtenemos los parametros de filtro
                             arrIMFilter = bundle.getParcelableArrayList("arrIMFilter");
 
-                            cbSelectedFilter  = bundle.getStringArrayList("cbSelected");
+                            cbSelectedFilter = bundle.getStringArrayList("cbSelected");
                             typeChart = bundle.getInt("typeChart");
                             dateFromFilter = (Calendar) bundle.getSerializable("dateFrom");
                             dateTofilter = (Calendar) bundle.getSerializable("dateTo");
@@ -189,10 +187,11 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 });
     }
 
+
     private void replaceFragment(int position, FragmentManager fragmentManager) {
         // Elegimos la lista a pasar como parametro priorizando la filtrada
         Bundle bundle = new Bundle();
-        if (arrIMFilter != null){
+        if (arrIMFilter != null) {
             bundle.putParcelableArrayList("invoices", arrIMFilter);
         } else {
             bundle.putParcelableArrayList("invoices", arrIM);
@@ -227,6 +226,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -237,23 +237,22 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 Intent intentFilter = new Intent(this, GroupInvoiceFilter.class);
                 intentFilter.putExtra("invoices", arrIM);
                 intentFilter.putExtra("currency", currency);
-                if (cbSelectedFilter != null){
+                if (cbSelectedFilter != null) {
                     intentFilter.putExtra("cbSelected", cbSelectedFilter);
                 }
-                if (typeChart != -1){
+                if (typeChart != -1) {
                     intentFilter.putExtra("typeChart", typeChart);
                 }
-                if (dateFromFilter != null){
+                if (dateFromFilter != null) {
                     intentFilter.putExtra("dateFrom", dateFromFilter);
                 }
-                if (dateTofilter != null){
+                if (dateTofilter != null) {
                     intentFilter.putExtra("dateTo", dateTofilter);
                 }
                 intentForResult.launch(intentFilter);
                 return true;
-            case R.id.mnu_GIHAEditGroup:
-                //TODO crear flujo de grupo
 
+            case R.id.mnu_GIHAEditGroup:
                 Intent intent = new Intent(getApplicationContext(), GroupInvoiceEditGroup.class);
                 intent.putExtra("idGroup", idGroup);
                 intent.putExtra("groupName", groupName);
@@ -261,11 +260,8 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 intent.putExtra("userPass", userPass);
                 intent.putExtra("currency", currency);
                 startActivity(intent);
-
-
-
-
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -109,7 +109,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         lv_invoice = view.findViewById(R.id.lv_invoice);
         iv = view.findViewById(R.id.iv);
 
-        root_background=view.findViewById(R.id.root_background);
+        root_background = view.findViewById(R.id.root_background);
         root_background.setOnClickListener(this);
 
         //TabLayout, seleccionamos la tab correspondiente por si venimos de hacer back
@@ -126,8 +126,6 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
         return view;
     }
-
-
 
 
     // recibe las facturas en ese grupo seleccionado
@@ -178,10 +176,10 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
             case R.id.ibAdd:
 
                 //FAB Principal
-                if(btManual.getVisibility() == View.INVISIBLE) {
+                if (btManual.getVisibility() == View.INVISIBLE) {
                     btManual.setVisibility(View.VISIBLE);
                     btOCR.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     btManual.setVisibility(View.INVISIBLE);
                     btOCR.setVisibility(View.INVISIBLE);
                 }
@@ -206,8 +204,8 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
             case R.id.root_background:
 
-                    btManual.setVisibility(View.INVISIBLE);
-                    btOCR.setVisibility(View.INVISIBLE);
+                btManual.setVisibility(View.INVISIBLE);
+                btOCR.setVisibility(View.INVISIBLE);
 
         }
     }
