@@ -66,19 +66,21 @@ public class WebApiRequest {
         void onError(int id, String message);
     }
 
-    //Método callback3 Devuelve una respuesta y una lista
+    //Método callback3 Devuelve una respuesta
+    public interface WebApiRequestJsonResponseListener {
+        void onSuccess(JsonResponseModel response);
+
+        void onError(JsonResponseModel response);
+    }
+
+    //Método callback4 Devuelve una respuesta y una lista
     public interface WebApiRequestJsonObjectArrayListener {
         void onSuccess(JsonResponseModel response, List<?> data);
 
         void onError(JsonResponseModel response);
     }
 
-    //Método callback4 Devuelve una respuesta y una lista
-    public interface WebApiRequestJsonResponseListener {
-        void onSuccess(JsonResponseModel response);
 
-        void onError(JsonResponseModel response);
-    }
 
     //Método callback5 Devuelve una respuesta y 2 listas
     public interface WebApiRequestJsonObjectArrayListenerV2 {
@@ -886,5 +888,95 @@ public class WebApiRequest {
         };
         queue.add(sr);
 
+    }
+
+    //Comprobacion, si existe el usuario creado en BD
+    public void updateGroup(String email,
+                            String password,
+                            String groupname,
+                            String groupdescription,
+                            String groupcurrency,
+                            ArrayList<MemberModel> membersAdd,
+                            ArrayList<MemberModel> membersUpd,
+                            ArrayList<MemberModel> membersDel,
+                            WebApiRequestJsonResponseListener webapirequestjsonresponselistener) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "updateGroup.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "updateGroup onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    JSONObject json = new JSONObject(response);
+                    id = json.getInt("id");
+                    message = json.getString("message");
+                    JsonResponseModel jsonResponseModel = new JsonResponseModel(id, message);
+                    if (jsonResponseModel.getId() > 0) {
+                        webapirequestjsonresponselistener.onSuccess(jsonResponseModel);
+                    } else {
+                        webapirequestjsonresponselistener.onError(jsonResponseModel);
+                    }
+                } catch (JSONException e) {
+                    webapirequestjsonresponselistener.onError(new JsonResponseModel(-2, "updateGroup JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "updateGroup VolleyError: " + error.getMessage());
+                webapirequestjsonresponselistener.onError(new JsonResponseModel(-1, "updateGroup vVolleyError: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Log.d("DEBUGME", "getparams: " + email);
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", password);
+                params.put("groupname", groupname);
+                params.put("groupdescription", groupdescription);
+                params.put("groupcurrency", groupcurrency);
+
+                int a = 1;
+                for (MemberModel m : membersAdd) {
+                    String member = "membersAdd" + a;
+                    String role = "roleAdd" + a;
+                    Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member + " " + role);
+                    params.put(member, m.getEmail());
+                    params.put(role, String.valueOf(m.getRole()));
+                    a++;
+                }
+
+                int b = 1;
+                for (MemberModel m : membersUpd) {
+                    String member = "membersUpd" + b;
+                    String role = "roleUpd" + b;
+                    Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member + " " + role);
+                    params.put(member, m.getEmail());
+                    params.put(role, String.valueOf(m.getRole()));
+                    b++;
+                }
+
+                int c = 1;
+                for (MemberModel m : membersDel) {
+                    String member = "membersDel" + c;
+                    Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member );
+                    params.put(member, m.getEmail());
+                    c++;
+                }
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
     }
 }
