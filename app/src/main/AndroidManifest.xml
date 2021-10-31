@@ -13,10 +13,13 @@
         android:theme="@style/Theme.DAM_Proyecto_final"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter"
-            android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".home.homeui.group_invoice.GroupInvoiceTab"
+            android:name=".home.homeui.group_invoice.group_invoice_tabui.InvoiceOCRAddActivity"
             android:exported="true" />
+        <activity
+            android:name=".home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter"
+            android:exported="true"
+            android:parentActivityName=".home.homeui.group_invoice.GroupInvoiceTab"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".registry.RegistryGoogleActivity" />
         <activity android:name=".home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup" />
         <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd" />
