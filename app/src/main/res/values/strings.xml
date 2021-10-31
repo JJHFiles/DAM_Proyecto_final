@@ -1,5 +1,5 @@
 <resources>
-   <string name="default_firebase_web_client_id">1063203604183-2a5kiq3trli8ui513b0eeufie7dvokho.apps.googleusercontent.com</string>
+    <string name="default_firebase_web_client_id">1063203604183-2a5kiq3trli8ui513b0eeufie7dvokho.apps.googleusercontent.com</string>
 
     <string name="app_name">BLIST</string>
     <string name="edtpass_text">Escribe tu contraseña</string>
