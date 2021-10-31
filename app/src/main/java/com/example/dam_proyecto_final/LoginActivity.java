@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getResources().getString(R.string.default_firebase_web_client_id))
+                .requestIdToken(getResources().getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 

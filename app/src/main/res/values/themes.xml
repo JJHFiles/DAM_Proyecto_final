@@ -40,6 +40,7 @@
         <item name="android:height">48dp</item>
     </style>
 
+
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/secondary_color</item>
         <item name="boxStrokeWidth">1dp</item>
@@ -63,15 +64,8 @@
         <item name="android:textColor">@drawable/round_checkradio</item>
     </style>
 
-
-    <!--    <CheckBox-->
-    <!--        android:layout_marginLeft="5dp"-->
-    <!--        android:layout_marginRigth="5dp"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="40dp"-->
-    <!--        android:textAlignment="center"-->
-    <!--        android:background="background"-->
-    <!--        android:button="@null"-->
-    <!--        android:text="Consumo"-->
-    <!--        />-->
+    <style name="TabLayout" parent="Widget.MaterialComponents.TabLayout.Colored">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

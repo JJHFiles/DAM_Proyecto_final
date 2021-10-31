@@ -179,11 +179,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     Log.d("DEBUGME", "Con facturas en el grupo:" + groupId + ", " + message);
 
                     Intent intent = new Intent(context, GroupInvoiceTab.class);
-                    /*intent.putExtra("idGroup", groupModel.get(position).getId() + "");
-                    intent.putExtra("groupName", groupModel.get(position).getNombre() + "");
-                    intent.putExtra("userEmail", userEmail);
-                    intent.putExtra("currency", groupModel.get(position).getCurrency());
-                    intent.putExtra("role", groupModel.get(position).getRole());*/
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("userPass", userPass);
                     intent.putExtra("group", groupModel.get(position));
@@ -205,7 +200,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(int id, String message) {
-                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
+                Log.d("DEBUGME", "GroupFragment onError: " + id + " " + message);
                 Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
             }
         });
