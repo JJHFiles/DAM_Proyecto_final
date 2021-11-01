@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.HomeActivity;
-import com.example.dam_proyecto_final.home.homeui.groupui.MembersAdapter;
 import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.model.MemberModel;
@@ -33,15 +32,15 @@ import java.util.List;
 public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnClickListener {
 
     private ListView lstv_Members;
-    private ArrayList<MemberModel> membersOld, membersAdd, membersUpd, membersDel;
-    private TextInputEditText edt_AddMember;
-    private TextInputEditText edt_AGAGroupName;
-    private TextInputEditText edt_AGADescription;
-    private ImageButton imgb_AddMember;
-    private MembersAdapter membersAdapter;
-    private AutoCompleteTextView dd_AGACurrency;
-    private AutoCompleteTextView dd_AGARole;
-    private Button btn_AGAAdd;
+    private ArrayList<MemberModel> membersOld, membersLis, membersAdd, membersUpd, membersDel;
+    private TextInputEditText edt_AGIEG_AddMember;
+    private TextInputEditText edt_AGIEG_GroupName;
+    private TextInputEditText edt_AGIEG_Description;
+    private ImageButton imgb_AGIEG_AddMember;
+    private GroupInvoiceEditGroupMemberAdapter membersAdapter;
+    private AutoCompleteTextView dd_AGIEG_Currency;
+    private AutoCompleteTextView dd_AGIEG_Role;
+    private Button btn_AGIEG_Add;
     private ArrayAdapter rolesAdapter;
     private String roleSelection;
     private String currencySelection;
@@ -84,14 +83,13 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         getSupportActionBar().setTitle("Editar grupo " + groupName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Almacena a informacion en ArrayList<GroupModel> groupModels
-        //getGroupsByEmail();
-
-        membersOld = new ArrayList<MemberModel>(); // Miembros recibidos del grupo antes de editar.
+        membersLis = new ArrayList<MemberModel>(); // Miembros que se listan en la GUI. Los introducidos manualmente (nuevos o Add) y los que ya estaban en el grupo (Old).
+        membersOld = new ArrayList<MemberModel>(); // Miembros recibidos del grupo antes de editar ,necesario para no volverlos a introducir en el grupo.
         membersAdd = new ArrayList<MemberModel>(); // Miembros nuevos que se añadirán al grupo.
         membersUpd = new ArrayList<MemberModel>(); // Miembros que se han actualizado ya que se ha cambiado su rol.
         membersDel = new ArrayList<MemberModel>(); // Miembros recibidos del grupo que han sido seleccionados para ser eliminados del grupo.
 
+        // Carga los usuarios del grupo actual y los muestra en una lista
         getGroupAndShared();
 
         //Asignamos lista a DropDowns
@@ -100,21 +98,21 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         ArrayAdapter currencyAdapter =
                 new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, currencys);
 
-        dd_AGACurrency = findViewById(R.id.dd_AGACurrency);
-        dd_AGACurrency.setText(currency);
-        dd_AGACurrency.setAdapter(currencyAdapter);
+        dd_AGIEG_Currency = findViewById(R.id.dd_AGIEG_Currency);
+        dd_AGIEG_Currency.setText(currency);
+        dd_AGIEG_Currency.setAdapter(currencyAdapter);
 
 
         int selectedCurrency = 0;
 
-        for (int x = 0; x < dd_AGACurrency.getAdapter().getCount(); x++) {
-            if (dd_AGACurrency.getAdapter().getItem(x).toString().equals(currency)) {
-                dd_AGACurrency.setListSelection(x);
+        for (int x = 0; x < dd_AGIEG_Currency.getAdapter().getCount(); x++) {
+            if (dd_AGIEG_Currency.getAdapter().getItem(x).toString().equals(currency)) {
+                dd_AGIEG_Currency.setListSelection(x);
                 selectedCurrency = x;
             }
         }
 
-        dd_AGACurrency.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        dd_AGIEG_Currency.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 currencySelection = (String) parent.getItemAtPosition(position);
             }
@@ -127,33 +125,33 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         };
 
         rolesAdapter = new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, roles);
-        dd_AGARole = findViewById(R.id.dd_AGARole);
-        dd_AGARole.setAdapter(rolesAdapter);
-        dd_AGARole.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        dd_AGIEG_Role = findViewById(R.id.dd_AGIEG_Role);
+        dd_AGIEG_Role.setAdapter(rolesAdapter);
+        dd_AGIEG_Role.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 roleSelection = (String) parent.getItemAtPosition(position);
             }
         });
 
         //EditText de inclusión de miembro
-        edt_AddMember = findViewById(R.id.edt_AddMember);
-        imgb_AddMember = findViewById(R.id.imgb_AGAAddMember);
-        imgb_AddMember.setOnClickListener(this);
-        edt_AGAGroupName = findViewById(R.id.edt_AGAGroupName);
-        edt_AGADescription = findViewById(R.id.edt_AGADescription);
+        edt_AGIEG_AddMember = findViewById(R.id.edt_AGIEG_AddMember);
+        imgb_AGIEG_AddMember = findViewById(R.id.imgb_AGIEG_AddMember);
+        imgb_AGIEG_AddMember.setOnClickListener(this);
+        edt_AGIEG_GroupName = findViewById(R.id.edt_AGIEG_GroupName);
+        edt_AGIEG_Description = findViewById(R.id.edt_AGIEG_Description);
 
-        edt_AGAGroupName.setText(groupName);
+        edt_AGIEG_GroupName.setText(groupName);
 
 /*
         //ListView de miembros
-        lstv_Members = findViewById(R.id.lstv_AGAMembers);
-        //  members = new ArrayList<MemberModel>();
-        membersAdapter = new MembersAdapter(this, members, lstv_Members);
+        lstv_Members = findViewById(R.id.lstv_AGIEG_Members);
+        // members = new ArrayList<MemberModel>();
+        membersAdapter = new GroupInvoiceEditGroupMemberAdapter(this, membersLis, membersDel, lstv_Members);
         lstv_Members.setAdapter(membersAdapter);
 */
         //Buttons
-        btn_AGAAdd = findViewById(R.id.btn_AGAAdd);
-        btn_AGAAdd.setOnClickListener(this);
+        btn_AGIEG_Add = findViewById(R.id.btn_AGIEG_Add);
+        btn_AGIEG_Add.setOnClickListener(this);
 
     }
 
@@ -161,23 +159,39 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         //TODO revisar que el elemento no esté ya en la lista
-        if (view.getId() == R.id.imgb_AGAAddMember) {
+        if (view.getId() == R.id.imgb_AGIEG_AddMember) {
             //Comprobamos que el email y el rol no esten vacios y que el email se ajuste formato. Tambien que el miembro no esté ya en la lista
-            if (Patterns.EMAIL_ADDRESS.matcher(edt_AddMember.getText().toString()).matches()) {
-                if (!edt_AddMember.getText().toString().equals("") && roleSelection != null) {
+            if (Patterns.EMAIL_ADDRESS.matcher(edt_AGIEG_AddMember.getText().toString()).matches()) {
+                if (!edt_AGIEG_AddMember.getText().toString().equals("") && roleSelection != null) {
                     //Comprobamos que no haya ya 10 usuario en la lista (máximo 10 usuarios por grupo)
-                    if (membersOld.size() < 10) {
+                    if (membersLis.size() < 10) {
                         //Comprobamos que el mail no esté ya en la lista
                         Boolean memberExist = false;
-                        for (MemberModel m : membersOld) {
-                            if (m.getEmail().equals(edt_AddMember.getText().toString())) {
+                        for (MemberModel m : membersLis) {
+                            if (m.getEmail().equals(edt_AGIEG_AddMember.getText().toString())) {
                                 memberExist = true;
+
+                                int role = 2;
+                                if (roleSelection.toString().equals(getString(R.string.role_admin))) {
+                                    role = 0;
+                                } else if (roleSelection.toString().equals(getString(R.string.role_editor))) {
+                                    role = 1;
+                                } else if (roleSelection.toString().equals(getString(R.string.role_reader))) {
+                                    role = 2;
+                                }
+                                // Se agrega el usuario para actualizar su rol en el grupo
+                                membersUpd.add(new MemberModel(edt_AGIEG_AddMember.getText().toString(), role));
+
+                                m.setRole(role);
+
+                                // Vuelve a cargar el adaptador y lo refresca actualizado
+                                membersAdapter.notifyDataSetChanged();
                             }
                         }
                         //Si no existe ok si existe toast
                         if (!memberExist) {
                             //Comprobar si el mail existe en BD
-                            webApiRequest.getIfEmailExist(edt_AddMember.getText().toString(), new WebApiRequest.WebApiRequestJsonResponseListener() {
+                            webApiRequest.getIfEmailExist(edt_AGIEG_AddMember.getText().toString(), new WebApiRequest.WebApiRequestJsonResponseListener() {
                                 @Override
                                 public void onSuccess(JsonResponseModel response) {
                                     int role = 2;
@@ -188,15 +202,19 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                                     } else if (roleSelection.toString().equals(getString(R.string.role_reader))) {
                                         role = 2;
                                     }
-                                    membersOld.add(new MemberModel(edt_AddMember.getText().toString(), role));
+                                    membersLis.add(new MemberModel(edt_AGIEG_AddMember.getText().toString(), role));
+
+                                    // Usuarios que se añadirán al grupo
+                                    membersAdd.add(new MemberModel(edt_AGIEG_AddMember.getText().toString(), role));
+
                                     membersAdapter.notifyDataSetChanged();
-                                    edt_AddMember.setText("");
+                                    edt_AGIEG_AddMember.setText("");
                                     setListViewHeightBasedOnChildren(lstv_Members);
                                 }
 
                                 @Override
                                 public void onError(JsonResponseModel response) {
-                                    edt_AddMember.setText("");
+                                    edt_AGIEG_AddMember.setText("");
                                     Toast.makeText(context, R.string.userNoDB, Toast.LENGTH_LONG).show();
                                 }
                             });
@@ -212,15 +230,19 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
             } else {
                 Toast.makeText(this, R.string.email_NoMatch, Toast.LENGTH_LONG).show();
             }
-        } else if (view.getId() == R.id.btn_AGAAdd) {
+
+            /* TODO IMPORTANTE comprobar que algún usuario del grupo es administrador nates de grabar en BD
+               si no es así no dejar hacer update en el grupo hasta que un usuario tenga rol admin
+             */
+        } else if (view.getId() == R.id.btn_AGIEG_Add) {
             //Revisar elementos no nulos y si no nulos insertar en BBDD
-            Log.d("DEBUGME", userEmail + " " + userPass + " " + edt_AGAGroupName.getText().toString() + " " +
-                    edt_AGADescription.getText().toString() + " " + currencySelection);
-            if (!edt_AGAGroupName.getText().toString().equals("") &&
-                    !edt_AGADescription.getText().toString().equals("") &&
+            Log.d("DEBUGME", userEmail + " " + userPass + " " + edt_AGIEG_GroupName.getText().toString() + " " +
+                    edt_AGIEG_Description.getText().toString() + " " + currencySelection);
+            if (!edt_AGIEG_GroupName.getText().toString().equals("") &&
+                    !edt_AGIEG_Description.getText().toString().equals("") &&
                     currencySelection != null) {
-                webApiRequest.addGroup(userEmail, userPass, edt_AGAGroupName.getText().toString(),
-                        edt_AGADescription.getText().toString(), currencySelection, membersOld, new WebApiRequest.WebApiRequestJsonResponseListener() {
+                webApiRequest.addGroup(userEmail, userPass, edt_AGIEG_GroupName.getText().toString(),
+                        edt_AGIEG_Description.getText().toString(), currencySelection, membersLis, new WebApiRequest.WebApiRequestJsonResponseListener() {
                             @Override
                             public void onSuccess(JsonResponseModel response) {
                                 Toast.makeText(context, "Grupo creado correctamente", Toast.LENGTH_LONG).show();
@@ -239,7 +261,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
             } else {
                 Toast.makeText(this, "Por favor, rellene todos los campos", Toast.LENGTH_LONG).show();
             }
-        } //else if ( view.getId() == R.id.btn_AGACancel ){
+        } //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
 //            finish();
 //            overridePendingTransition(0, 0);
 //            startActivity(getIntent());
@@ -249,7 +271,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     }
 
     private void setListViewHeightBasedOnChildren(ListView listView) {
-        MembersAdapter listAdapter = (MembersAdapter) listView.getAdapter();
+        GroupInvoiceEditGroupMemberAdapter listAdapter = (GroupInvoiceEditGroupMemberAdapter) listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
             return;
@@ -277,22 +299,27 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                     public void onSuccess(JsonResponseModel response, GroupModel group, List<?> shared) {
                         Log.d("DEBUGME", response.getId() + " " + response.getMessage());
 
-                        edt_AGADescription.setText(group.getDescription());
+                        edt_AGIEG_Description.setText(group.getDescription());
 
                         ArrayList sharedModel = (ArrayList) shared;
 
                         for (int x = 0; x < sharedModel.size(); x++) {
+                            membersLis.add(new MemberModel(
+                                    ((SharedModel) (sharedModel.get(x))).getEmail(),
+                                    ((SharedModel) (sharedModel.get(x))).getRole())
+                            );
+                            // Para controlar que usuarios ya estaban en el grupo y no volverlos a introducir
                             membersOld.add(new MemberModel(
                                     ((SharedModel) (sharedModel.get(x))).getEmail(),
                                     ((SharedModel) (sharedModel.get(x))).getRole())
                             );
                         }
                         //ListView de miembros
-                        lstv_Members = findViewById(R.id.lstv_AGAMembers);
+                        lstv_Members = findViewById(R.id.lstv_AGIEG_Members);
                         //  members = new ArrayList<MemberModel>();
-                        membersAdapter = new MembersAdapter(getApplicationContext(), membersOld, lstv_Members);
+                        membersAdapter = new GroupInvoiceEditGroupMemberAdapter(getApplicationContext(), membersLis, membersDel, lstv_Members);
                         lstv_Members.setAdapter(membersAdapter);
-
+                        // Vuelve a cargar el adaptador y lo refresca actualizado
                         membersAdapter.notifyDataSetChanged();
                         setListViewHeightBasedOnChildren(lstv_Members);
 
@@ -305,7 +332,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                         } else {
                             //Si no ha podido ser cualquier error
-                            Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG);
+                            Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });

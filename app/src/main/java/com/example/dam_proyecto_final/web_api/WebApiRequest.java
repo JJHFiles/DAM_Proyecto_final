@@ -890,9 +890,10 @@ public class WebApiRequest {
 
     }
 
-    //Comprobacion, si existe el usuario creado en BD
+    // TODO Poner comentario
     public void updateGroup(String email,
                             String password,
+                            String groupid,
                             String groupname,
                             String groupdescription,
                             String groupcurrency,
@@ -936,6 +937,7 @@ public class WebApiRequest {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
                 params.put("password", password);
+                params.put("groupid", groupid);
                 params.put("groupname", groupname);
                 params.put("groupdescription", groupdescription);
                 params.put("groupcurrency", groupcurrency);
