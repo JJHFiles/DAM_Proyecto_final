@@ -44,7 +44,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     private ArrayAdapter rolesAdapter;
     private String roleSelection;
     private String currencySelection;
-    private String userEmail, groupName, currency;
+    private String userEmail, groupName, currency,groupDescription;
     private int idGroup;
     private String userPass;
     private WebApiRequest webApiRequest;
@@ -241,8 +241,19 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
             if (!edt_AGIEG_GroupName.getText().toString().equals("") &&
                     !edt_AGIEG_Description.getText().toString().equals("") &&
                     currencySelection != null) {
-                webApiRequest.addGroup(userEmail, userPass, edt_AGIEG_GroupName.getText().toString(),
-                        edt_AGIEG_Description.getText().toString(), currencySelection, membersLis, new WebApiRequest.WebApiRequestJsonResponseListener() {
+                groupDescription=edt_AGIEG_Description.getText().toString()+"";
+
+                webApiRequest.updateGroup(
+                        userEmail,
+                        userPass,
+                        idGroup+"",/* Cast a String*/
+                        groupName,
+                        groupDescription,
+                        currency,
+                        membersAdd,
+                        membersUpd,
+                        membersDel,
+                        new WebApiRequest.WebApiRequestJsonResponseListener() {
                             @Override
                             public void onSuccess(JsonResponseModel response) {
                                 Toast.makeText(context, "Grupo creado correctamente", Toast.LENGTH_LONG).show();
