@@ -27,10 +27,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.android.material.tabs.TabLayout;
 
 import java.text.DecimalFormat;
@@ -242,8 +240,25 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
             }
         }
 
+        // Opciones de la leyenda de tipo de factura
+        lineChart.getLegend().setTextSize(18);
+        lineChart.getLegend().setXEntrySpace(24);
+        lineChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        lineChart.getLegend().setWordWrapEnabled(true);
+        lineChart.setExtraOffsets(0f, 16f, 0f, 0f);
+
         // Obtenemos los campos para el eje X
         ArrayList<String> itemsXAsix = collectionXAsis(invoices);
+
+        //Solicitamos un DataSet por cada tipo de factura y le asignamos la coleccion de datos al gráfico
+        LineData data = new LineData();
+        for (String type : types) {
+            data.addDataSet(getLineDataSet(type, itemsXAsix));
+        }
+        lineChart.setData(data);
+        data.setValueFormatter(new MyValueFormatter());
+        lineChart.setData(data); //Duplicada intencioandamente para cargar correctamente la legenda en wrap
+
 
         // Barra X
         XAxis xAxis = lineChart.getXAxis();
@@ -257,12 +272,6 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         //Barra Y
         lineChart.getAxisRight().setEnabled(false);
 
-        // Opciones de la leyenda de tipo de factura
-        lineChart.getLegend().setTextSize(18);
-        lineChart.getLegend().setXEntrySpace(24);
-        lineChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        lineChart.getLegend().setWordWrapEnabled(true);
-        lineChart.setExtraOffsets(0f, 16f, 0f, 0f);
 
         //Opciones de gráfico
         lineChart.setVisibleXRangeMaximum(3);
@@ -273,14 +282,6 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         Description description = new Description();
         description.setText("");
         lineChart.setDescription(description);
-
-        //Solicitamos un DataSet por cada tipo de factura y le asignamos la coleccion de datos al gráfico
-        LineData data = new LineData();
-        for (String type : types) {
-            data.addDataSet(getLineDataSet(type, itemsXAsix));
-        }
-        lineChart.setData(data);
-        lineChart.setData(data); //Duplicada intencioandamente para cargar correctamente la legenda en wrap
 
         // Establecemos animación y refrescamos
         lineChart.animateXY(1000, 1000);
@@ -360,7 +361,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
     private BarDataSet getBarDataSet(String tipo, ArrayList<String> itemsXAsix) {
 
         // Creamos la lista y le incorporamos el dato requerido del tipo requerido
-        ArrayList<BarEntry> valueSet = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> valueSet = new ArrayList<>();
 
         // Valores de control para posición del ejeX
         int posX;
@@ -471,8 +472,8 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         ArrayList<PieEntry> valueSet = new ArrayList<>();
 
         float typeSum = 0; //Valor de suma de tipo
-        float sum = 0; // Valor de suma de todos los tipos unidos
-        String cad = ""; // Valor del tipo
+//        float sum = 0; // Valor de suma de todos los tipos unidos
+        String cad; // Valor del tipo
 
         // Obtenemos la lista de tipos con su suma de valores
         HashMap<String, Float> values = new HashMap<>();
@@ -491,31 +492,14 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
                 values.put(type, typeSum);
                 typeSum = 0;
             }
-//        } else if (typeChart == R.id.rb_GIFCost) {
-//            cad = "Coste";
-//            if (typeChart == R.id.rb_GIFConsumption || typeChart == -1) {
-//                for (int t = 0; t < types.size(); t++) {
-//                    String type = types.get(t);
-//                    for (InvoiceModel i : invoices) {
-//                        if (type.equals(i.getType())) {
-//                            typeSum += i.getAmount();
-//                        }
-//                    }
-//
-//                    // Inicializamos typeSum por cada tipo y sumamos elemento al total
-//                    values.put(type, typeSum);
-//                    sum += typeSum;
-//                    typeSum = 0;
-//                }
-//            }
-//        }
 
-        // Calculamos a partir de la suma total de los tipo y la suma individual de cada tipo su procentaje
-        HashMap<String, Float> percentValues = new HashMap<>();
-        for (Map.Entry<String, Float> entry : values.entrySet()) {
-            float percent = (entry.getValue() * 100) / sum;
-            percentValues.put(entry.getKey(), percent);
-        }
+
+//        // Calculamos a partir de la suma total de los tipo y la suma individual de cada tipo su procentaje
+//        HashMap<String, Float> percentValues = new HashMap<>();
+//        for (Map.Entry<String, Float> entry : values.entrySet()) {
+//            float percent = (entry.getValue() * 100) / sum;
+//            percentValues.put(entry.getKey(), percent);
+//        }
 
         // Asignamos a la lista de pieEntry los valores y su tipo y creamos una lista de colores
         ArrayList<Integer> colors = new ArrayList<>();
@@ -549,9 +533,10 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         }
     }
 
-    private class MyValueFormatter extends ValueFormatter {
+    // Subclase que permite formatear el texto en caso de ser 0
+    private static class MyValueFormatter extends ValueFormatter {
 
-        private DecimalFormat mFormat;
+        private final DecimalFormat mFormat;
 
         public MyValueFormatter() {
             mFormat = new DecimalFormat("###,###,##0.0"); // use one decimal

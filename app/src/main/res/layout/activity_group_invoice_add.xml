@@ -1,191 +1,237 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.homeui.group_invoice.GroupInvoiceAdd">
+    android:fitsSystemWindows="true">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_invoiceNum"
-        style="@style/TextInputLayoutStyle"
-        android:layout_width="410dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:hint="Número de factura"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_GIFStarPeriod"
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@color/white"
+        app:contentInsetStart="0dp"
+        app:elevation="0.1dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:inputType="text" />
+            android:layout_height="match_parent">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/bt_New"
+                style="@style/PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Añadir"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_Amount" />
+        </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_provider"
-        style="@style/TextInputLayoutStyle"
-        android:layout_width="410dp"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:hint="Proveedor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_invoiceNum">
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_provider"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="84dp"
+        android:fitsSystemWindows="true">
+
+        <!-- YOUR MAIN SCROLLING CONTENT HERE -->
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:inputType="text" />
+            android:layout_height="match_parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:orientation="vertical">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_invoiceNum"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:hint="Número de factura"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_GIFStarPeriod"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:inputType="text" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_invoiceType"
-        style="@style/ExposedDropdownMenu"
-        android:layout_width="410dp"
-        android:layout_height="63dp"
-        android:gravity="bottom"
-        android:hint="Tipo de Factura"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_provider">
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <AutoCompleteTextView
-            android:id="@+id/actv_invoiceType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType=""
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_provider"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:hint="Proveedor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_invoiceNum">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_date"
-        style="@style/TextInputLayoutStyle"
-        android:layout_width="410dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:hint="Fecha de emisión"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_invoiceType">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_provider"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_date"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="10dp"
-            android:inputType="text"
-            android:textColor="@color/black" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_startPeriod"
-        style="@style/TextInputLayoutStyle"
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:hint="Fecha inicio consumo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_date">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_invoiceType"
+                style="@style/ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="bottom"
+                android:hint="Tipo de Factura"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_provider">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_startPeriod"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="10dp"
-            android:inputType="text"
-            android:textColor="@color/black" />
+                <AutoCompleteTextView
+                    android:id="@+id/actv_invoiceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType=""
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_date"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
 
-    </com.google.android.material.textfield.TextInputLayout>
+                android:gravity="center"
+                android:hint="Fecha de emisión"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_invoiceType">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:textColor="@color/black" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_endPeriod"
-        style="@style/TextInputLayoutStyle"
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:hint="Fecha fin consumo"
-        app:layout_constraintStart_toEndOf="@+id/til_startPeriod"
-        app:layout_constraintTop_toBottomOf="@+id/til_date">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_endPeriod"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="10dp"
-            android:inputType="text"
-            android:textColor="@color/black" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_Consumption"
-        style="@style/TextInputLayoutStyle"
-        android:layout_width="410dp"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:hint="Consumo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_startPeriod">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_Consumption"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:inputType="text" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_Amount"
-        style="@style/TextInputLayoutStyle"
-        android:layout_width="410dp"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:hint="Importe"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_Consumption">
+            <LinearLayout
+                android:id="@+id/ll_agia_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_date">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_Amount"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:inputType="text" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_startPeriod"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="Periodo inicio">
 
-    <Button
-        android:id="@+id/bt_New"
-        style="@style/PrimaryButton"
-        android:layout_width="227dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="52dp"
-        android:text="Crear nueva factura"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_Amount"
-        app:layout_constraintVertical_bias="0.0" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tiet_startPeriod"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:textColor="@color/black" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_endPeriod"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="Periodo fin">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tiet_endPeriod"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:textColor="@color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_Consumption"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:hint="Consumo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_agia_date">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_Consumption"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_Amount"
+                style="@style/TextInputLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:hint="Importe"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_Consumption">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_Amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

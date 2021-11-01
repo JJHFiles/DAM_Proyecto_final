@@ -78,7 +78,7 @@
     <string name="tab_Day">Day(s)</string>
     <string name="tab_Month">Month(s)</string>
     <string name="tab_Year">Year(s)</string>
-    <string name="tab_Type">Tipo: </string>
+    <string name="tab_invoice">Factura</string>
     <string name="tab_Amount">Gasto: </string>
     <string name="tab_Date">Fecha: </string>
     <string name="tab_consumption">Consumo: </string>

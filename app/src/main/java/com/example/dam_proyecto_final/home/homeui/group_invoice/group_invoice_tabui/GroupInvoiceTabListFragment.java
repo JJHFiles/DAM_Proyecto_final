@@ -109,7 +109,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         lv_invoice = view.findViewById(R.id.lv_invoice);
         iv = view.findViewById(R.id.iv);
 
-        root_background=view.findViewById(R.id.root_background);
+        root_background = view.findViewById(R.id.root_background);
         root_background.setOnClickListener(this);
 
         //TabLayout, seleccionamos la tab correspondiente por si venimos de hacer back
@@ -128,39 +128,12 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
     }
 
 
-
-
     // recibe las facturas en ese grupo seleccionado
     public void getInvoiceByGroup(String idGroup) {
         Log.d("DEBUGME", "GroupInvoiceTabListFragment");
         webApiRequest = new WebApiRequest(context);
 
     }
-
-/*    private void fillListViewSimpleAdapter(ArrayList<InvoiceModel> al) {
-
-        ArrayList<String> arr = new ArrayList<>();
-        for (int x = 0; x < al.size(); x++) {
-            arr.add(""
-                    + "#" + (x + 1)
-                    + "\nTipo: " + al.get(x).getType()
-                    + "\nDate: " + al.get(x).getDate()
-                    + "\nInicio de facturación: " + al.get(x).getStart_period()
-                    + "\nFin de facturación: " + al.get(x).getEnd_period()
-                    + "\nConsumo: " + al.get(x).getConsumption()
-                    + "\nMonto: " + al.get(x).getAmount());
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, arr);
-        lv_invoice.setAdapter(arrayAdapter);
-
-        AdapterView.OnItemClickListener lvClick = new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
-                Toast.makeText(getApplicationContext(), "Seleccionado elemento: "+position, Toast.LENGTH_LONG).show();
-            }
-        };
-        lv_invoice.setOnItemClickListener(lvClick);
-
-    }*/
 
     private void fillListViewCustomAdapter(ArrayList<InvoiceModel> arrIM) {
         ArrayList<InvoiceListModel> ilm = new ArrayList<InvoiceListModel>();
@@ -169,25 +142,25 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
             //Obtenemos measure
             if (arrIM.get(x).getType().equals("Electricidad")) {
-                measure = " KW";
+                measure = " kW";
             } else if (arrIM.get(x).getType().equals("Gas")) {
-                measure = " KW";
+                measure = " kW";
             } else if (arrIM.get(x).getType().equals("Agua")) {
-                measure = " M3";
+                measure = " m3";
             } else if (arrIM.get(x).getType().equals("Telefonia")) {
-                measure = " Mes";
-            } else if (arrIM.get(x).getType().equals("Renting Coche")) {
-                measure = " Mes";
-            } else if (arrIM.get(x).getType().equals("IBI")) {
-                measure = " Mes";
+                measure = " mes";
+            } else if (arrIM.get(x).getType().equals("Alquiler")) {
+                measure = " mes";
+            } else if (arrIM.get(x).getType().equals("Otros")) {
+                measure = "";
             }
 
 
             ilm.add(new InvoiceListModel());
-            ilm.get(x).setType("Tipo: " + arrIM.get(x).getType());
-            ilm.get(x).setAmount("Gasto: " + arrIM.get(x).getAmount() + currency);
-            ilm.get(x).setDate("Fecha: " + arrIM.get(x).getDate());
-            ilm.get(x).setConsumption("Consumo: " + arrIM.get(x).getConsumption() + measure);
+            ilm.get(x).setType("Factura " + arrIM.get(x).getType());
+            ilm.get(x).setAmount(arrIM.get(x).getAmount() + " " + currency);
+            ilm.get(x).setDate(arrIM.get(x).getDate());
+            ilm.get(x).setConsumption(arrIM.get(x).getConsumption() + measure);
             ilm.get(x).setCode(x);
         }
 
@@ -195,21 +168,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         lv_invoice.setAdapter(ila);
     }
 
-    /*
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(getApplicationContext(), "TAB 1"+tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
 
-            if (tabLayout.getSelectedTabPosition()== 0) {
-                Toast.makeText(getApplicationContext(), "TAB 1", Toast.LENGTH_LONG).show();
-
-            } else {
-                Toast.makeText(getApplicationContext(), "TAB 2", Toast.LENGTH_LONG).show();
-
-            }
-        }
-
-     */
     @Override
     public void onClick(View v) {
         int choice = v.getId();
@@ -217,28 +176,16 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
             case R.id.ibAdd:
 
                 //FAB Principal
-                if(btManual.getVisibility() == View.INVISIBLE) {
+                if (btManual.getVisibility() == View.INVISIBLE) {
                     btManual.setVisibility(View.VISIBLE);
                     btOCR.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     btManual.setVisibility(View.INVISIBLE);
                     btOCR.setVisibility(View.INVISIBLE);
                 }
-                // Para verse las sombras de los botones, provoca un back negro, cambiar el método back
-                //  getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                //  Toast.makeText(getApplicationContext(), "idGroup "+idGroup, Toast.LENGTH_LONG).show();
+//                TODO: que la actividad se torne en escala grises
 
- /*            TODO: que la actividad se torne en escala grises
-               new AlertDialog.Builder(this)
-                        .setCancelable(false)
-                        .setPositiveButton("Añadir de forma manual",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    }).create().show();
-*/
 
                 break;
 
@@ -253,12 +200,15 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
             case R.id.btOCR:
                 //TODO: lectura factura por OCR
+
+
+
                 break;
 
             case R.id.root_background:
 
-                    btManual.setVisibility(View.INVISIBLE);
-                    btOCR.setVisibility(View.INVISIBLE);
+                btManual.setVisibility(View.INVISIBLE);
+                btOCR.setVisibility(View.INVISIBLE);
 
         }
     }
