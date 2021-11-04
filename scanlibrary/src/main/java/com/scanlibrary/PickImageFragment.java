@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +41,7 @@ public class PickImageFragment extends Fragment {
     private Uri fileUri;
     private IScanner scanner;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
+    private String path;
 
     @Override
     public void onAttach(Activity activity) {
@@ -47,6 +50,8 @@ public class PickImageFragment extends Fragment {
             throw new ClassCastException("Activity must implement IScanner");
         }
         this.scanner = (IScanner) activity;
+        //Cambiado path por path debido a nuevo almacenamiento API29
+        path = getActivity().getExternalCacheDir().getPath() + "/scanSample";
     }
 
     @Override
@@ -61,16 +66,17 @@ public class PickImageFragment extends Fragment {
         cameraButton.setOnClickListener(new CameraButtonClickListener());
         galleryButton = (ImageButton) view.findViewById(R.id.selectButton);
         galleryButton.setOnClickListener(new GalleryClickListener());
-        if (isIntentPreferenceSet()) {
-            handleIntentPreference();
-        } else {
-            getActivity().finish();
-        }
+        // Se comenta para que no se lance la camara por defecto y dar la opción de elegir archivo
+//        if (isIntentPreferenceSet()) {
+//            handleIntentPreference();
+//        } else {
+//            getActivity().finish();
+//        }
     }
 
     private void clearTempImages() {
         try {
-            File tempFolder = new File(ScanConstants.IMAGE_PATH);
+            File tempFolder = new File(path);
             for (File f : tempFolder.listFiles())
                 f.delete();
         } catch (Exception e) {
@@ -145,7 +151,7 @@ public class PickImageFragment extends Fragment {
         clearTempImages();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new
                 Date());
-        File file = new File(ScanConstants.IMAGE_PATH, "IMG_" + timeStamp +
+        File file = new File(path, "IMG_" + timeStamp +
                 ".jpg");
         fileUri = Uri.fromFile(file);
         return file;
@@ -153,7 +159,7 @@ public class PickImageFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("", "onActivityResult" + resultCode);
+        Log.d("DEBUGME", "onActivityResult" + resultCode);
         Bitmap bitmap = null;
         if (resultCode == Activity.RESULT_OK) {
             try {
@@ -189,10 +195,40 @@ public class PickImageFragment extends Fragment {
         AssetFileDescriptor fileDescriptor = null;
         fileDescriptor =
                 getActivity().getContentResolver().openAssetFileDescriptor(selectedimg, "r");
+
+        // Correción de imagen en landscape
+
+        Matrix matrix = new Matrix();
+
+        ExifInterface exif = null;     //Since API Level 5
+        try {
+            exif = new ExifInterface(selectedimg.getPath());
+            int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int rotationInDegrees = exifToDegrees(rotation);
+            if (rotation != 0f) {
+                matrix.preRotate(rotationInDegrees);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Bitmap original
                 = BitmapFactory.decodeFileDescriptor(
                 fileDescriptor.getFileDescriptor(), null, options);
-        return original;
+//        return original;
+
+        return Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
+    }
+
+    private static int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
     }
 
     @Override
