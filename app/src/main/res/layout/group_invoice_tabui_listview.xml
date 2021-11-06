@@ -26,7 +26,6 @@
                 android:layout_weight="1"
                 android:gravity="bottom"
                 android:paddingLeft="16dp"
-                android:text="@string/tab_invoice"
                 android:textColor="@color/primary_color"
                 android:textSize="16dp"
                 android:textStyle="bold" />

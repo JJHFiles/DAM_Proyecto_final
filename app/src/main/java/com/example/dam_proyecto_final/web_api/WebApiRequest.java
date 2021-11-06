@@ -419,8 +419,8 @@ public class WebApiRequest {
     }
 
 
-    public void getActivityByEmail(String email, WebApiRequestJsonObjectArrayListener webApiRequestJsonObjectArrayListener) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public void getActivityByEmail(String email, String password, WebApiRequestJsonObjectArrayListener webApiRequestJsonObjectArrayListener) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "getActivityByEmail.php", new Response.Listener<String>() {
             @Override
@@ -438,26 +438,32 @@ public class WebApiRequest {
                             jsonObjectResponse.getString("message"));
 
                     //Creamos la lista de grupos
-                    ArrayList<ActivityModel> activityModel = new ArrayList<>();
+                    ArrayList<ActivityModel> activityModels = new ArrayList<>();
                     if (jsonResponseModel.getId() > 0) {
                         //Si la respuesta es Positiva hay datos. Obtenemos el JsonArray
                         JSONArray jsonArrayActivity = json.getJSONArray("activity");
                         for (int i = 0; i < jsonArrayActivity.length(); i++) {
                             //Obtenemos el objeto JSONObjet de Activity individual
                             JSONObject jsonObjectActivity = jsonArrayActivity.getJSONObject(i);
-                            activityModel.add(new ActivityModel(
-                                    jsonObjectActivity.getString("idactivity"),
-                                    jsonObjectActivity.getString("action"),
-                                    jsonObjectActivity.getString("date_activity"),
-                                    jsonObjectActivity.getString("name"),
-                                    jsonObjectActivity.getString("description"),
-                                    jsonObjectActivity.getString("email")
 
+                            // Comprobamos si la factura es nula
+                            int identifierinvoice = -1;
+                            if (!jsonObjectActivity.isNull("identifierincoice")){
+                                identifierinvoice = jsonObjectActivity.getInt("identifierinvoice");
+                            }
+                            activityModels.add(new ActivityModel(
+                                    jsonObjectActivity.getString("idactivity"),
+                                    jsonObjectActivity.getString("date_activity"),
+                                    jsonObjectActivity.getString("action"),
+                                    jsonObjectActivity.getInt("idgroup"),
+                                    jsonObjectActivity.getString("email"),
+                                    identifierinvoice,
+                                    jsonObjectActivity.getInt("icon")
                             ));
                         }
 
                         //Una vez tenemos la respuesta y la lista la retornamos
-                        webApiRequestJsonObjectArrayListener.onSuccess(jsonResponseModel, activityModel);
+                        webApiRequestJsonObjectArrayListener.onSuccess(jsonResponseModel, activityModels);
                     } else {
                         //Si la respuesta es negativa devolvemos el error
                         webApiRequestJsonObjectArrayListener.onError(jsonResponseModel);
@@ -480,6 +486,7 @@ public class WebApiRequest {
                 Log.d("DEBUGME", "getparams: " + email);
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
+                params.put("password", password);
 
                 return params;
             }

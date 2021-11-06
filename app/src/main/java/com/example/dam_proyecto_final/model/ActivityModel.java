@@ -5,49 +5,51 @@ public class ActivityModel {
 // BD activity table fields:  idactivity, date_activity(type datetime), action, idgroup, email
 
     private String idactivity;
-    private String action;
     private String date_activity;
-    private String name;
-    private String description;
+    private String action;
+    private int idgroup;
     private String email;
+    private int identifierinvoice;
+    private int icon;
 
 
-    public ActivityModel(String idactivity,
-                         String action,
-                         String date_activity,
-                         String name,
-                         String description,
-                         String email
-                         ) {
+    public ActivityModel(String idactivity, String date_activity, String action, int idgroup, String email, int identifierinvoice, int icon) {
         this.idactivity = idactivity;
-        this.action = action;
         this.date_activity = date_activity;
-        this.description = description;
+        this.action = action;
+        this.idgroup = idgroup;
         this.email = email;
-        this.name = name;
+        this.identifierinvoice = identifierinvoice;
+        this.icon = icon;
     }
 
     public String getIdactivity() {
         return idactivity;
     }
 
-    public String getAction() {
-        return action;
-    }
-
     public String getDate_activity() {
         return date_activity;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAction() {
+        return action;
+    }
+
+    public int getIdgroup() {
+        return idgroup;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getName() {
-        return name;
+    public int getIdentifierinvoice() {
+        return identifierinvoice;
     }
+
+    public int getIcon() {
+        return icon;
+    }
+
+
 }
