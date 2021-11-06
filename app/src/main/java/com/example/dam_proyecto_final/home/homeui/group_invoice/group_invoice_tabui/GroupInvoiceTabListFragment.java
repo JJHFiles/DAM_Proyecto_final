@@ -168,7 +168,21 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         lv_invoice.setAdapter(ila);
     }
 
+    /*
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getApplicationContext(), "TAB 1"+tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
 
+            if (tabLayout.getSelectedTabPosition()== 0) {
+                Toast.makeText(getApplicationContext(), "TAB 1", Toast.LENGTH_LONG).show();
+
+            } else {
+                Toast.makeText(getApplicationContext(), "TAB 2", Toast.LENGTH_LONG).show();
+
+            }
+        }
+
+     */
     @Override
     public void onClick(View v) {
         int choice = v.getId();
@@ -176,16 +190,15 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
             case R.id.ibAdd:
 
                 //FAB Principal
-                if (btManual.getVisibility() == View.INVISIBLE) {
+                if(btManual.getVisibility() == View.INVISIBLE) {
                     btManual.setVisibility(View.VISIBLE);
                     btOCR.setVisibility(View.VISIBLE);
-                } else {
+                }else{
                     btManual.setVisibility(View.INVISIBLE);
                     btOCR.setVisibility(View.INVISIBLE);
                 }
 
-//                TODO: que la actividad se torne en escala grises
-
+//          TODO: que la actividad se torne en escala grises
 
                 break;
 
@@ -200,9 +213,11 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
             case R.id.btOCR:
                 //TODO: lectura factura por OCR
-
-
-
+                Intent intentScan = new Intent(context, InvoiceOCRAddActivity.class);
+                intentScan.putExtra("idGroup", idGroup);/*
+                intentScan.putExtra("groupName", groupName);
+                intentScan.putExtra("userEmail", userEmail);*/
+                startActivity(intentScan);
                 break;
 
             case R.id.root_background:
