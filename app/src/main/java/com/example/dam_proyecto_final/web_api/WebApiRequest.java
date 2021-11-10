@@ -949,27 +949,27 @@ public class WebApiRequest {
                 params.put("groupdescription", groupdescription);
                 params.put("groupcurrency", groupcurrency);
 
-                int a = 1;
+                int a = 0;
                 for (MemberModel m : membersAdd) {
                     String member = "membersAdd" + a;
-                    String role = "roleAdd" + a;
+                    String role = "rolesAdd" + a;
                     Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member + " " + role);
                     params.put(member, m.getEmail());
                     params.put(role, String.valueOf(m.getRole()));
                     a++;
                 }
 
-                int b = 1;
+                int b = 0;
                 for (MemberModel m : membersUpd) {
                     String member = "membersUpd" + b;
-                    String role = "roleUpd" + b;
+                    String role = "rolesUpd" + b;
                     Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member + " " + role);
                     params.put(member, m.getEmail());
                     params.put(role, String.valueOf(m.getRole()));
                     b++;
                 }
 
-                int c = 1;
+                int c = 0;
                 for (MemberModel m : membersDel) {
                     String member = "membersDel" + c;
                     Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member );

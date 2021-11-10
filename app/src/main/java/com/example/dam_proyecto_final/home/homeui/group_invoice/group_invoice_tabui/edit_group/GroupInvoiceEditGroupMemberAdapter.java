@@ -18,13 +18,15 @@ import java.util.ArrayList;
 public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<MemberModel> memberModels, membersDel;
+    private ArrayList<MemberModel> membersLis, membersAdd,membersUpd,membersDel;
     private ListView lstv_Members;
 
-    public GroupInvoiceEditGroupMemberAdapter(Context context, ArrayList<MemberModel> memberModels,ArrayList<MemberModel> membersDel, ListView lstv_Members) {
+    public GroupInvoiceEditGroupMemberAdapter(Context context, ArrayList<MemberModel> membersLis,ArrayList<MemberModel> membersAdd,ArrayList<MemberModel> membersUpd,ArrayList<MemberModel> membersDel, ListView lstv_Members) {
         super();
         this.context = context;
-        this.memberModels = memberModels;
+        this.membersLis = membersLis;
+        this.membersAdd = membersAdd;
+        this.membersUpd = membersUpd;
         this.membersDel = membersDel;
         this.lstv_Members = lstv_Members;
     }
@@ -32,12 +34,12 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return memberModels.size();
+        return membersLis.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return memberModels.get(i);
+        return membersLis.get(i);
     }
 
     @Override
@@ -52,26 +54,46 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
         view = layoutInflater.inflate(R.layout.activity_group_invoice_edit_group_member_adapter_item, null);
 
         String role = "";
-        if (memberModels.get(i).getRole() == 0) {
+        if (membersLis.get(i).getRole() == 0) {
             role = view.getResources().getString(R.string.role_admin);
-        } else if (memberModels.get(i).getRole() == 1) {
+        } else if (membersLis.get(i).getRole() == 1) {
             role = view.getResources().getString(R.string.role_editor);
-        } else if (memberModels.get(i).getRole() == 2) {
+        } else if (membersLis.get(i).getRole() == 2) {
             role = view.getResources().getString(R.string.role_reader);
         }
 
 
         TextView txtv_Member = view.findViewById(R.id.txtv_Member_edit);
-        txtv_Member.setText(memberModels.get(i).getEmail());
+        txtv_Member.setText(membersLis.get(i).getEmail());
         TextView txtv_MemberRole = view.findViewById(R.id.txtv_MemberRole_edit);
         txtv_MemberRole.setText(role);
         ImageButton imgb_MemberDelete = view.findViewById(R.id.imgb_MemberDelete_edit);
         imgb_MemberDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                memberModels.remove(memberModels.get(i));
-               // membersDel.remove(membersDel.get(i));
 
+                for (int x=0;x<membersAdd.size();x++) {
+                    if(membersAdd.get(x).getEmail().equals(membersLis.get(i).getEmail())){
+                        membersAdd.remove(membersAdd.get(x));
+                    }
+                }
+
+                for (int x=0;x<membersUpd.size();x++) {
+                    if(membersUpd.get(x).getEmail().equals(membersLis.get(i).getEmail())){
+                        membersUpd.remove(membersUpd.get(x));
+                    }
+                }
+
+                for (int x=0;x<membersDel.size();x++) {
+                    if(membersDel.get(x).getEmail().equals(membersLis.get(i).getEmail())){
+                        membersDel.remove(membersDel.get(x));
+                    }
+                }
+
+
+                membersLis.remove(membersLis.get(i));
+
+               // Para que los cambios se hagan efectivos en el ListView de miembros
                 notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(lstv_Members);
             }
