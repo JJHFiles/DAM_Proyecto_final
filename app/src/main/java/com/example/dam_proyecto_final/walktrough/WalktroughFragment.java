@@ -1,5 +1,7 @@
 package com.example.dam_proyecto_final.walktrough;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,9 +15,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.dam_proyecto_final.LoginActivity;
 import com.example.dam_proyecto_final.R;
 
-public class WalktroughFragment extends Fragment {
+public class WalktroughFragment extends Fragment implements View.OnClickListener {
 
     TextView txtSkipe;
     LottieAnimationView lavAnimation;
@@ -56,11 +59,12 @@ public class WalktroughFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_walktrough, container, false);
 
         txtSkipe = view.findViewById(R.id.txtv_fw_skipe);
+        txtSkipe.setOnClickListener(this);
         lavAnimation = view.findViewById(R.id.lav_fw_animation);
         txtvTitle = view.findViewById(R.id.txtv_fw_title);
         txtDesciption = view.findViewById(R.id.txtv_fw_description);
         btnStart = view.findViewById(R.id.btn_fw_start);
-
+        btnStart.setOnClickListener(this);
         return view;
     }
 
@@ -87,5 +91,17 @@ public class WalktroughFragment extends Fragment {
                 btnStart.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        SharedPreferences preferences = getActivity().getSharedPreferences("savedData", getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("walktroughtDone", true);
+        editor.apply();
+
+        Intent intent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
