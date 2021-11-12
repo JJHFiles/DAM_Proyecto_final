@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-//https://material.io/components/tabs/android#fixed-tabs
 
 public class GroupInvoiceTab extends AppCompatActivity {
 
@@ -79,7 +78,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
             currency = group.getCurrency();
             role = group.getRole();
             userPass = parametros.getString("userPass", "vacio");
-            role = parametros.getString("role", "vacioRole");
+//            role = parametros.getString("role", "vacioRole");
 
 
             Log.d("DEBUGME", "GroupInvoiceTab: grupo " + idGroup);

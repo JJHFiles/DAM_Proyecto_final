@@ -98,6 +98,7 @@
     <string name="walktrough_description_1">Crea un grupo y añade a quien tu quieras. Podréis ir añadiendo todas las facturas que compartáis.</string>
     <string name="walktrough_description_2">\"Sube tus facturas de forma manual o mediante OCR. ¡Podrás añadir todas las facturas que quieras! \"</string>
     <string name="walktrough_description_3">Podrás visualizar todas las facturas añadidas a cada grupo en formato lista o en modo gráfica. ¡Hay 3 diferentes!</string>
+    <string name="empty_invoices_text">Aún no tienes ninguna factura añadida a este grupo.\n Cuando añadas una esta te aparecerá aquí</string>
 
 
 </resources>

@@ -189,11 +189,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     Log.d("DEBUGME", "Sin facturas en el grupo: " + groupId + ", id:" + id);
 
                     Intent intent = new Intent(context, GroupInvoiceEmptyActivity.class);
-                    intent.putExtra("idGroup", groupModel.get(position).getId() + "");
-                    intent.putExtra("groupName", groupModel.get(position).getName() + "");
+                    intent.putExtra("group", groupModel.get(position));
                     intent.putExtra("userEmail", userEmail);
-                    intent.putExtra("currency",groupModel.get(position).getCurrency());
-                    intent.putExtra("role", groupModel.get(position).getRole());
+                    intent.putExtra("userPass", userPass);
                     startActivity(intent);
                 }
             }
