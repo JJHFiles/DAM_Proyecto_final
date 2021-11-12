@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.model.MemberModel;
@@ -74,31 +75,70 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
 
+                boolean isUserFound=false;
+
                 for (int x = 0; x < membersAdd.size(); x++) {
                     if (membersAdd.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
                         membersAdd.remove(membersAdd.get(x));
+                        isUserFound=true;
+                        membersLis.remove(membersLis.get(i));
                     }
                 }
 
-                for (int x = 0; x < membersUpd.size(); x++) {
-                    if (membersUpd.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
-                        membersUpd.remove(membersUpd.get(x));
-                    }
-                }
+                if(!isUserFound) {
+                    for (int x = 0; x < membersUpd.size(); x++) {
+                        if (membersUpd.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
+                            membersUpd.remove(membersUpd.get(x));
+                            isUserFound = true;
+                            membersLis.remove(membersLis.get(i));
 
-                if (!membersLis.get(i).getEmail().equals(guiUser)) {
-                    if (membersDel.size() > 0) {
-                        for (int x = 0; x < membersDel.size(); x++) {
-                            if (!membersDel.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
-                                membersDel.add(membersLis.get(i));
-                            }
                         }
-                    } else {
-                        membersDel.add(membersLis.get(i));
                     }
                 }
 
-                membersLis.remove(membersLis.get(i));
+                // En el caso de que el usuario a eliminar no sea el usuario de la gui
+                if(!isUserFound) {
+                    if (!membersLis.get(i).getEmail().equals(guiUser)) {
+                        if (membersDel.size() > 0) {
+                            for (int x = 0; x < membersDel.size(); x++) {
+                                if (!membersDel.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
+                                    membersDel.add(membersLis.get(i));
+                                    isUserFound = true;
+                                    membersLis.remove(membersLis.get(i));
+                                }
+                            }
+                        } else {
+                            membersDel.add(membersLis.get(i));
+                            isUserFound = true;
+                            membersLis.remove(membersLis.get(i));
+
+
+                        }
+
+                    }
+                }
+
+                    /* Usuario de la gui quiere salir del grupo, el usuario a eliminar es el usuario
+                    de la gui y queda algun usuario en el grupo */
+                if(!isUserFound) {
+                    if (membersLis.get(i).getEmail().equals(guiUser) && membersLis.size() > 1) {
+                        if (membersDel.size() > 0) {
+                            for (int x = 0; x < membersDel.size(); x++) {
+                                if (!membersDel.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
+                                    membersDel.add(membersLis.get(i));
+                                    Toast.makeText(context, "" +
+                                            "saliendo del grupo ", Toast.LENGTH_LONG).show();
+                                    membersLis.remove(membersLis.get(i));
+                                }
+                            }
+                        } else {
+                            membersDel.add(membersLis.get(i));
+                            Toast.makeText(context, "" +
+                                    "saliendo del grupo " , Toast.LENGTH_LONG).show();
+                            membersLis.remove(membersLis.get(i));
+                        }
+                    }
+                }
 
                 // Para que los cambios se hagan efectivos en el ListView de miembros
                 notifyDataSetChanged();

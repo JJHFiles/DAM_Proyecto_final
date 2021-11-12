@@ -272,7 +272,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                         new WebApiRequest.WebApiRequestJsonResponseListener() {
                             @Override
                             public void onSuccess(JsonResponseModel response) {
-                                Toast.makeText(context, "Grupo creado correctamente", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Grupo actualizado correctamente", Toast.LENGTH_LONG).show();
 
                                 //Volvemos al login activity
                                 Intent intent = new Intent(context, HomeActivity.class);
