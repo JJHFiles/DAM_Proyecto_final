@@ -5,9 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DAM_Proyecto_final"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".MainActivity"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".walktrough.WalktroughActivity"
+            android:noHistory="true">
+        </activity>
         <activity
             android:name=".home.homeui.group_invoice.group_invoice_tabui.InvoiceOCRAddActivity"
             android:exported="true" />
@@ -40,13 +50,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".registry.RegistryActivity" />
         <activity android:name=".home.HomeActivity" />
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".LoginActivity"
+            android:noHistory="true"></activity>
     </application>
 
 </manifest>

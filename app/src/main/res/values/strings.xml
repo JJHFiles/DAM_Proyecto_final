@@ -92,6 +92,12 @@
     <string name="tab_IBI">IBI</string>
     <string name="today">Hoy</string>
     <string name="yesterday">Ayer</string>
+    <string name="walktrough_title_1">Crea tu B-list</string>
+    <string name="walktrough_title_2">Sube tus facturas</string>
+    <string name="walktrough_title_3">Visualiza tus gastos</string>
+    <string name="walktrough_description_1">Crea un grupo y añade a quien tu quieras. Podréis ir añadiendo todas las facturas que compartáis.</string>
+    <string name="walktrough_description_2">\"Sube tus facturas de forma manual o mediante OCR. ¡Podrás añadir todas las facturas que quieras! \"</string>
+    <string name="walktrough_description_3">Podrás visualizar todas las facturas añadidas a cada grupo en formato lista o en modo gráfica. ¡Hay 3 diferentes!</string>
 
 
 </resources>
