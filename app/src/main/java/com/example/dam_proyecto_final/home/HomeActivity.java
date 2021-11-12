@@ -26,7 +26,6 @@ public class HomeActivity extends FragmentActivity implements NavigationBarView.
         setContentView(R.layout.activity_home);
 
         //Lectura de datos drecibidos desde el el login
-
         bottom_navigation = findViewById(R.id.bttmNav);
         bottom_navigation.setOnItemSelectedListener(this);
 
