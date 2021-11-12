@@ -1,11 +1,12 @@
 # CHANGELOG for blist proyect
 
 
+
 ## 0.1.5 2021-11-12
 ### Added
 - Walktrought flow screens
 - MainActivity for start flow (to walktrought, to login or to home)
-- Added menu with edit options to empty group screen
+- Added menu with "edit" option to empty groupinvoices screen
 
 ### Fixed
 - Repair minor warning
