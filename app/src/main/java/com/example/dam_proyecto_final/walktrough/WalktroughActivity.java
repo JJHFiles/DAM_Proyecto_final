@@ -24,12 +24,12 @@ public class WalktroughActivity extends FragmentActivity {
 
         vp2Walktrough.setAdapter(new WalktroughStateAdapter(getSupportFragmentManager(), getLifecycle()));
 
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabDots, vp2Walktrough, true, new TabLayoutMediator.TabConfigurationStrategy() {
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabDots, vp2Walktrough,
+                true, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(TabLayout.Tab tab, int position) { }
         });
         tabLayoutMediator.attach();
-
 
     }
 }
