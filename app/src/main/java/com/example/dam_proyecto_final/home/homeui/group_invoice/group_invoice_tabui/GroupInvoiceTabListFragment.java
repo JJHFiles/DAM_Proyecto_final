@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -11,81 +12,70 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.home.homeui.group_invoice.GroupInvoiceAdd;
+import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.InvoiceModel;
-import com.example.dam_proyecto_final.model.JsonResponseModel;
+
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link GroupInvoiceTabListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class GroupInvoiceTabListFragment extends Fragment implements View.OnClickListener {
 
-    private String userEmail, idGroup, groupName, currency, role;
-    private WebApiRequest webApiRequest;
     private ListView lv_invoice;
     private ConstraintLayout root_background;
     private TabLayout tabLayout;
-    private ImageView iv;
     private ImageButton ibAdd;
     private Context context;
     private ExtendedFloatingActionButton btOCR, btManual;
+
+
+    private static final String GROUPMODEL = "groupModel";
+    private static final String USEREMAIL = "userEmail";
+    private static final String USERPASS = "userPass";
+    private static final String INVOICES = "invoices";
+
+
+    private GroupModel groupModel;
+    private String userEmail;
+    private String userPass;
     private ArrayList<InvoiceModel> arrIM;
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public GroupInvoiceTabListFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GroupInvoiceTabListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static GroupInvoiceTabListFragment newInstance(String param1, String param2) {
+
+    public static GroupInvoiceTabListFragment newInstance(GroupModel groupModel, String userEmail, String userPass,
+            ArrayList<InvoiceModel> invoices) {
         GroupInvoiceTabListFragment fragment = new GroupInvoiceTabListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(GROUPMODEL, groupModel);
+        args.putString(USEREMAIL, userEmail);
+        args.putString(USERPASS, userPass);
+        args.putParcelableArrayList(INVOICES, invoices);
+
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            groupModel = (GroupModel) getArguments().getSerializable(GROUPMODEL);
+            userEmail = getArguments().getString(USEREMAIL);
+            userPass = getArguments().getString(USERPASS);
+            arrIM = getArguments().getParcelableArrayList(INVOICES);
         }
-
     }
 
     @Override
@@ -107,7 +97,6 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
         //ListView
         lv_invoice = view.findViewById(R.id.lv_invoice);
-        iv = view.findViewById(R.id.iv);
 
         root_background = view.findViewById(R.id.root_background);
         root_background.setOnClickListener(this);
@@ -118,8 +107,6 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
 
         if (getArguments() != null) {
-            ArrayList<InvoiceModel> arrIM = getArguments().getParcelableArrayList("invoices");
-            currency = getArguments().getString("currency");
             fillListViewCustomAdapter(arrIM);
         }
 
@@ -127,13 +114,6 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         return view;
     }
 
-
-    // recibe las facturas en ese grupo seleccionado
-    public void getInvoiceByGroup(String idGroup) {
-        Log.d("DEBUGME", "GroupInvoiceTabListFragment");
-        webApiRequest = new WebApiRequest(context);
-
-    }
 
     private void fillListViewCustomAdapter(ArrayList<InvoiceModel> arrIM) {
         ArrayList<InvoiceListModel> ilm = new ArrayList<InvoiceListModel>();
@@ -158,7 +138,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
             ilm.add(new InvoiceListModel());
             ilm.get(x).setType("Factura " + arrIM.get(x).getType());
-            ilm.get(x).setAmount(arrIM.get(x).getAmount() + " " + currency);
+            ilm.get(x).setAmount(arrIM.get(x).getAmount() + " " + groupModel.getCurrency());
             ilm.get(x).setDate(arrIM.get(x).getDate());
             ilm.get(x).setConsumption(arrIM.get(x).getConsumption() + measure);
             ilm.get(x).setCode(x);
@@ -168,21 +148,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         lv_invoice.setAdapter(ila);
     }
 
-    /*
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(getApplicationContext(), "TAB 1"+tabLayout.getSelectedTabPosition(), Toast.LENGTH_LONG).show();
 
-            if (tabLayout.getSelectedTabPosition()== 0) {
-                Toast.makeText(getApplicationContext(), "TAB 1", Toast.LENGTH_LONG).show();
-
-            } else {
-                Toast.makeText(getApplicationContext(), "TAB 2", Toast.LENGTH_LONG).show();
-
-            }
-        }
-
-     */
     @Override
     public void onClick(View v) {
         int choice = v.getId();
@@ -205,18 +171,18 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
             case R.id.btManual:
                 // Abre activity para añadir nuevas facturas manuales
                 Intent intent = new Intent(context, GroupInvoiceAdd.class);
-                intent.putExtra("idGroup", idGroup);
-                intent.putExtra("groupName", groupName);
+                intent.putExtra("groupModel", groupModel);
                 intent.putExtra("userEmail", userEmail);
+                intent.putExtra("userPass", userPass);
+
                 startActivity(intent);
                 break;
 
             case R.id.btOCR:
                 //TODO: lectura factura por OCR
                 Intent intentScan = new Intent(context, InvoiceOCRAddActivity.class);
-                intentScan.putExtra("idGroup", idGroup);/*
-                intentScan.putExtra("groupName", groupName);
-                intentScan.putExtra("userEmail", userEmail);*/
+                intentScan.putExtra("groupModel", groupModel);
+
                 startActivity(intentScan);
                 break;
 

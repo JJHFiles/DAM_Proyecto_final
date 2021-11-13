@@ -37,13 +37,15 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".registry.RegistryGoogleActivity" />
         <activity android:name=".home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup" />
-        <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd" />
+        <activity android:name=".home.homeui.group_invoice.GroupInvoiceAdd"
+            android:noHistory="true"/>
         <activity
             android:name=".home.homeui.group_invoice.GroupInvoiceTab"
             android:parentActivityName=".home.HomeActivity" />
         <activity
             android:name=".home.homeui.group_invoice.GroupInvoiceEmptyActivity"
-            android:parentActivityName=".home.HomeActivity" />
+            android:parentActivityName=".home.HomeActivity"
+            android:noHistory="true"/>
         <activity
             android:name=".home.homeui.groupui.GroupAddActivity"
             android:parentActivityName=".home.HomeActivity"

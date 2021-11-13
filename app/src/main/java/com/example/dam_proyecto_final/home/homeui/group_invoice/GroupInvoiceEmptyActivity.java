@@ -3,6 +3,7 @@ package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,11 +29,9 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
 
     private ExtendedFloatingActionButton btOCR,btManual;
 
+    GroupModel groupModel;
     private String userEmail;
-    private int idGroup;
-    private String groupName;
     private String userPass;
-    private String currency;
 
 
 
@@ -55,19 +54,16 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
         Bundle parametros = this.getIntent().getExtras();
 
         if (parametros != null) {
-            GroupModel group = (GroupModel) parametros.getSerializable("group");
-            idGroup = group.getId();
-            groupName = group.getName();
-            currency = group.getCurrency();
+            groupModel = (GroupModel) parametros.getSerializable("groupModel");
             userEmail = parametros.getString("userEmail", "vacio");
             userPass = parametros.getString("userPass", "vacio");
-            Toast.makeText(getApplicationContext(), "idGroup " + idGroup, Toast.LENGTH_LONG).show();
+            Log.d("DEBUGME", "Grupo: " + groupModel.getId());
 
         } else {
             Toast.makeText(getApplicationContext(), "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
         }
 
-        this.setTitle(groupName);
+        this.setTitle(groupModel.getName());
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         noInvoices();
@@ -84,15 +80,15 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
         } else if (v.getId() == R.id.btManual){
             // Abre activity para añadir nuevas facturas manuales
             Intent intent = new Intent(getApplicationContext(), GroupInvoiceAdd.class);
-            intent.putExtra("idGroup", idGroup);
-            intent.putExtra("groupName", groupName);
+            intent.putExtra("groupModel", groupModel);
             intent.putExtra("userEmail", userEmail);
+            intent.putExtra("userPass", userPass);
             startActivity(intent);
         }
         else if (v.getId() == R.id.btOCR){
             //TODO: lectura factura por OCR
             Intent intentScan = new Intent(getApplicationContext(), InvoiceOCRAddActivity.class);
-            intentScan.putExtra("idGroup", idGroup);
+            intentScan.putExtra("idGroup", groupModel.getId());
             startActivity(intentScan);
         }
 
@@ -119,11 +115,11 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
         // Handle item selection
         if (item.getItemId() == R.id.mnu_GIHAEditGroup) {
             Intent intent = new Intent(getApplicationContext(), GroupInvoiceEditGroup.class);
-            intent.putExtra("idGroup", idGroup);
-            intent.putExtra("groupName", groupName);
+            intent.putExtra("idGroup", groupModel.getId());
+            intent.putExtra("groupName", groupModel.getName());
+            intent.putExtra("currency", groupModel.getCurrency());
             intent.putExtra("userEmail", userEmail);
             intent.putExtra("userPass", userPass);
-            intent.putExtra("currency", currency);
             startActivity(intent);
             return true;
         }

@@ -629,7 +629,7 @@ public class WebApiRequest {
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "getInvoiceByGroup.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("DEBUGME", "getInvoiceByGroup onResponse: response " + response);
+                Log.d("DEBUGME", "getInvoiceByGroup onResponse");
 
                 //Respuesta
                 try {
@@ -641,9 +641,9 @@ public class WebApiRequest {
                             jsonObjectResponse.getInt("id"),
                             jsonObjectResponse.getString("message"));
 
-                    //Creamos la lista de grupos
-                    ArrayList<InvoiceModel> invoiceModel;
-                    invoiceModel = new ArrayList<>();
+                    //Creamos la lista de facturas
+                    ArrayList<InvoiceModel> invoiceModels;
+                    invoiceModels = new ArrayList<>();
                     if (jsonResponseModel.getId() > 0) {
                         //Si la respuesta es Positiva hay datos. Obtenemos el JsonArray
                         JSONArray jsonArrayInvoice = json.getJSONArray("invoice");
@@ -656,7 +656,8 @@ public class WebApiRequest {
 //                                consumption = jsonObjectInvoice.getDouble("consumption");
 //                            }
 
-                            invoiceModel.add(new InvoiceModel(
+                            invoiceModels.add(new InvoiceModel(
+                                    jsonObjectInvoice.getInt("idinvoice"),
                                     jsonObjectInvoice.getString("identifier"),
                                     jsonObjectInvoice.getString("type"),
                                     jsonObjectInvoice.getString("date"),
@@ -671,7 +672,7 @@ public class WebApiRequest {
                         }
 
                         //Una vez tenemos la respuesta y la lista la retornamos
-                        webApiRequestJsonObjectArrayListener.onSuccess(jsonResponseModel, invoiceModel);
+                        webApiRequestJsonObjectArrayListener.onSuccess(jsonResponseModel, invoiceModels);
                     } else {
                         //Si la respuesta es negativa devolvemos el error
                         webApiRequestJsonObjectArrayListener.onError(jsonResponseModel);
@@ -691,7 +692,7 @@ public class WebApiRequest {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Log.d("DEBUGME", "getparams: " + idGroup);
+                Log.d("DEBUGME", "getInvoiceByGroup getparams: idgroup" + idGroup);
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("idgroup", String.valueOf(idGroup));
 

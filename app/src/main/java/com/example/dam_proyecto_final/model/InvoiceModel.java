@@ -6,7 +6,8 @@ import android.os.Parcelable;
 import java.sql.Date;
 
 public class InvoiceModel implements Parcelable {
-    // Table invoice columns:  `identifier`, `type`, `date`, `start_period`, `end_period`, `consumption`, `amount`, `file`, `filetype`, `idgroup`
+
+    private int idInvoice;
     private String identifier;
     private String type;
     private String date;
@@ -31,18 +32,20 @@ public class InvoiceModel implements Parcelable {
         this.filetype = filetype;
         this.idgroup = idgroup;
     }
-
-    protected InvoiceModel(Parcel in) {
-        identifier = in.readString();
-        type = in.readString();
-        date = in.readString();
-        start_period = in.readString();
-        end_period = in.readString();
-        consumption = in.readDouble();
-        amount = in.readDouble();
-        filetype = in.readString();
-        idgroup = in.readInt();
+    public InvoiceModel(int idInvoice, String identifier, String type, String date, String start_period, String end_period, double consumption, double amount, String filetype, int idgroup) {
+        this.idInvoice = idInvoice;
+        this.identifier = identifier;
+        this.type = type;
+        this.date = date;
+        this.start_period = start_period;
+        this.end_period = end_period;
+        this.consumption = consumption;
+        this.amount = amount;
+        this.filetype = filetype;
+        this.idgroup = idgroup;
     }
+
+
 
     public static final Creator<InvoiceModel> CREATOR = new Creator<InvoiceModel>() {
         @Override
@@ -128,6 +131,19 @@ public class InvoiceModel implements Parcelable {
         this.idgroup = idgroup;
     }
 
+    protected InvoiceModel(Parcel in) {
+        idInvoice = in.readInt();
+        identifier = in.readString();
+        type = in.readString();
+        date = in.readString();
+        start_period = in.readString();
+        end_period = in.readString();
+        consumption = in.readDouble();
+        amount = in.readDouble();
+        filetype = in.readString();
+        idgroup = in.readInt();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -135,6 +151,7 @@ public class InvoiceModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(idInvoice);
         parcel.writeString(identifier);
         parcel.writeString(type);
         parcel.writeString(date);

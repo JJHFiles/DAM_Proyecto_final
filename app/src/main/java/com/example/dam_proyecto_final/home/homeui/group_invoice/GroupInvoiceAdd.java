@@ -1,5 +1,6 @@
 package com.example.dam_proyecto_final.home.homeui.group_invoice;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.utility.CalendarUtility;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
@@ -31,8 +33,12 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     private String typeSelection;
     private AutoCompleteTextView actv_invoiceType;
     private Button bt_New;
-    private String idGroup,groupName,userEmail,currency;
 
+//    private int idGroup;
+//    private String groupName,,currency;
+    private GroupModel groupModel;
+    private String userEmail;
+    private String userPass;
     private WebApiRequest webApiRequest;
 
 
@@ -57,14 +63,14 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
         Bundle param= this.getIntent().getExtras();
         if (param != null) {
-            idGroup = param.getString("idGroup", "vacio");
-            groupName = param.getString("groupName", "vacio");
+            groupModel = (GroupModel) param.getSerializable("groupModel");
             userEmail = param.getString("userEmail", "vacio");
-            currency=param.getString("currency", "vacio");
+            userPass = param.getString("userPass", "vacio");
+
         }
         loadInvoiceType();
 
-// Se preparan los escuchadores onFocusChangeListener sobre los TextInputEditText
+        // Se preparan los escuchadores onFocusChangeListener sobre los TextInputEditText
         cuStartPeriod = new CalendarUtility(this, R.id.tiet_startPeriod);
         listenerDateStartPeriod();
 
@@ -73,16 +79,6 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
         cuDate = new CalendarUtility(this, R.id.tiet_date);
         listenerDate();
-
-
-
-
-
-     /*   final EditText password1 = (EditText) layout.findViewById(R.id.EditText_Pwd1);
-        final EditText password2 = (EditText) layout.findViewById(R.id.EditText_Pwd2);
-        final TextView error = (TextView) layout.findViewById(R.id.TextView_PwdProblem);
-*/
-
 
     }
 
@@ -123,7 +119,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                     Double.parseDouble(tiet_Consumption.getText().toString()),
                     Double.parseDouble(tiet_Amount.getText().toString()),
                     "0",
-                    Integer.parseInt(idGroup)
+                    groupModel.getId()
             );
             insertInvoice(invoiceModel);
         }
@@ -139,7 +135,13 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(getApplicationContext(), "Factura insertada con éxito: " + id, Toast.LENGTH_LONG).show();
                     // bloqueado boton de nueva factura para no insertar la misma varias veces
                     //bt_New.setEnabled(false);
+//                    onBackPressed();
 
+                    Intent intent = new Intent(getApplicationContext(), GroupInvoiceTab.class);
+                    intent.putExtra("groupModel", groupModel);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("userPass", userPass);
+                    startActivity(intent);
                 } else if (id < 0) {
                     Log.d("DEBUGME", "insertInvoice onSucess: " + id + " " + message);
                     Toast.makeText(getApplicationContext(), "Error al insertar. Codigo de error: " + id, Toast.LENGTH_LONG).show();

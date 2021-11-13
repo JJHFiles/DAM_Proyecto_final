@@ -1,19 +1,22 @@
 # CHANGELOG for blist proyect
 
 
+
 ## 0.1.6 XXXXXXX  
 ### Added
-
+- Navigation fixed to best experiencie and forbidden back on some screen
+- Invoice name can be duplicated in multiple groups
 
 ### Changed
-
+- Now some fragment use newInstance method instead constructor and bundle
+- Now some fragment/activity receive group object instead parameters
+- Some Toast was removed instead log depuration
 
 ### Fixed
 
 
-
 ### Removed
-
+- Some Toast was removed for better ux
 
 
 

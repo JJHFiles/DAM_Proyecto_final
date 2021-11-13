@@ -35,12 +35,8 @@ import java.util.List;
 
 public class GroupInvoiceTab extends AppCompatActivity {
 
-
+    private GroupModel groupModel;
     private String userEmail;
-    private int idGroup;
-    private String groupName;
-    private String currency;
-    private String role;
     private String userPass;
 
     private TabLayout tabLayout;
@@ -61,7 +57,6 @@ public class GroupInvoiceTab extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_invoice_tab);
 
-
         tabLayout = findViewById(R.id.tabLayout);
         ImageView iv = findViewById(R.id.iv);
 
@@ -71,24 +66,18 @@ public class GroupInvoiceTab extends AppCompatActivity {
         //Cogemos la información de grupo obtenida del GroupFragment
         Bundle parametros = getIntent().getExtras();
         if (parametros != null) {
+            groupModel = (GroupModel) parametros.getSerializable("groupModel");
             userEmail = parametros.getString("userEmail", "vacio");
-            GroupModel group = (GroupModel) parametros.getSerializable("group");
-            idGroup = group.getId();
-            groupName = group.getName();
-            currency = group.getCurrency();
-            role = group.getRole();
             userPass = parametros.getString("userPass", "vacio");
-//            role = parametros.getString("role", "vacioRole");
 
-
-            Log.d("DEBUGME", "GroupInvoiceTab: grupo " + idGroup);
+            Log.d("DEBUGME", "GroupInvoiceTab: grupo " + groupModel.getId());
 
         } else {
             Log.d("DEBUGME", "GroupInvoiceTab: ERROR GRAVE idGroup = null");
         }
 
         //Establecemos titulo al banner y flecha de back
-        this.setTitle(groupName);
+        this.setTitle(groupModel.getName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Inicializamos parametros de filtro
@@ -99,7 +88,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
         //Obtenemos la lista de facturas que pasaremos a los fragment, al ser la carga inicial tambien invocamos al fragment de lista principal
         WebApiRequest webApiRequest = new WebApiRequest(this);
-        webApiRequest.getInvoiceByGroup(idGroup, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
+        webApiRequest.getInvoiceByGroup(groupModel.getId(), new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
             @Override
             public void onSuccess(JsonResponseModel response, List<?> data) {
                 Log.d("DEBUGME", "GroupInvoiceTab: " + response.getId() + " " + response.getMessage());
@@ -108,16 +97,11 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 arrIM = (ArrayList<InvoiceModel>) data;
 
                 //Si obtenemos la lista invocamos al fragment
-                GroupInvoiceTabListFragment fragment = new GroupInvoiceTabListFragment();
-
-                //Creamos el bundle y asignamos
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("invoices", arrIM);
-                bundle.putString("currency", currency);
-                fragment.setArguments(bundle);
+                GroupInvoiceTabListFragment fragment = GroupInvoiceTabListFragment.newInstance(
+                        groupModel, userEmail, userPass, arrIM
+                );
                 fragmentManager.beginTransaction()
                         .replace(R.id.fcv_AGITListChart, fragment, null)
-                        .addToBackStack(null) // name can be null
                         .commit();
             }
 
@@ -190,16 +174,20 @@ public class GroupInvoiceTab extends AppCompatActivity {
     private void replaceFragment(int position, FragmentManager fragmentManager) {
         // Elegimos la lista a pasar como parametro priorizando la filtrada
         Bundle bundle = new Bundle();
+        ArrayList<InvoiceModel> invoices;
         if (arrIMFilter != null) {
-            bundle.putParcelableArrayList("invoices", arrIMFilter);
+//            bundle.putParcelableArrayList("invoices", arrIMFilter);
+            invoices = arrIMFilter;
         } else {
-            bundle.putParcelableArrayList("invoices", arrIM);
+//            bundle.putParcelableArrayList("invoices", arrIM);
+            invoices = arrIM;
         }
 
         if (position == 0) {
-            bundle.putString("currency", currency);
-            GroupInvoiceTabListFragment fragment = new GroupInvoiceTabListFragment();
-            fragment.setArguments(bundle);
+//            bundle.putString("currency", groupModel.getCurrency());
+            GroupInvoiceTabListFragment fragment = GroupInvoiceTabListFragment.newInstance(
+                    groupModel , userEmail, userPass, invoices
+            );
             fragmentManager.beginTransaction()
                     .replace(R.id.fcv_AGITListChart, fragment, null)
                     .addToBackStack(null) // name can be null
@@ -208,6 +196,8 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
         if (position == 1) {
             bundle.putInt("typeChart", typeChart);
+            bundle.putParcelableArrayList("invoices", invoices);
+
             GroupInvoiceTabChartFragment fragment = new GroupInvoiceTabChartFragment();
             fragment.setArguments(bundle);
             fragmentManager.beginTransaction()
@@ -235,7 +225,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 //TODO crear flujo de filtro
                 Intent intentFilter = new Intent(this, GroupInvoiceFilter.class);
                 intentFilter.putExtra("invoices", arrIM);
-                intentFilter.putExtra("currency", currency);
+                intentFilter.putExtra("currency", groupModel.getCurrency());
                 if (cbSelectedFilter != null) {
                     intentFilter.putExtra("cbSelected", cbSelectedFilter);
                 }
@@ -253,11 +243,11 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
             case R.id.mnu_GIHAEditGroup:
                 Intent intent = new Intent(getApplicationContext(), GroupInvoiceEditGroup.class);
-                intent.putExtra("idGroup", idGroup);
-                intent.putExtra("groupName", groupName);
+                intent.putExtra("idGroup", groupModel.getId());
+                intent.putExtra("groupName", groupModel.getName());
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("userPass", userPass);
-                intent.putExtra("currency", currency);
+                intent.putExtra("currency", groupModel.getCurrency());
                 startActivity(intent);
                 return true;
 
