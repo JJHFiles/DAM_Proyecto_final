@@ -11,6 +11,9 @@ import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.ui.home.HomeActivity;
 import com.example.dam_proyecto_final.ui.walktrough.WalktroughActivity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -19,20 +22,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //TODO SplashScreen
+        getSupportActionBar().hide();
 
-        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        Boolean walktroughtDone = preferencias.getBoolean("walktroughtDone", false);
-        String userEmail = preferencias.getString("email", null);
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
+                Boolean walktroughtDone = preferencias.getBoolean("walktroughtDone", false);
+                String userEmail = preferencias.getString("email", null);
 
-        Intent intent;
-        if (!walktroughtDone){
-            intent = new Intent(getApplicationContext(), WalktroughActivity.class);
-        } else if(userEmail != null) {
-            intent = new Intent(getApplicationContext(), HomeActivity.class);
-        } else {
-            intent = new Intent(getApplicationContext(), LoginActivity.class);
-        }
-        startActivity(intent);
+                Intent intent;
+                if (!walktroughtDone){
+                    intent = new Intent(getApplicationContext(), WalktroughActivity.class);
+                } else if(userEmail != null) {
+                    intent = new Intent(getApplicationContext(), HomeActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), LoginActivity.class);
+                }
+                startActivity(intent);
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(task, 5000);
+
 
     }
 }
