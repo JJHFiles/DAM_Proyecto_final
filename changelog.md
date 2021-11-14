@@ -52,5 +52,29 @@
 
 
 
+## 0.1.2
+### Added
+- Group detail screen to explorer invoice
+- Can add invoice to group
+- Can swith to list invoice and chart invoice panel
+
+
+
+
+## 0.1.1
+### Added
+- Login Screen with username/password and google access
+- Registry flow for new users
+- Home Screen with 3 functions
+  - BList Screen to manage BList groups
+  - Activity Screen to show actions historicals
+  - Profile Screen to user options
+- Create blist groups function
+- Logout option on profile screen
+
+
+
+
 ## 0.1.0
 ### Added
+- Project base with gitignore
