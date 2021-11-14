@@ -758,7 +758,7 @@ public class WebApiRequest {
 
     }
 
-    public void insertInvoice(InvoiceModel im, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+    public void insertInvoice(String email, String password, InvoiceModel im, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         @SuppressWarnings("RedundantThrows") StringRequest sr = new StringRequest(Request.Method.POST, URL + "insertInvoice.php", new Response.Listener<String>() {
             @Override
@@ -789,6 +789,8 @@ public class WebApiRequest {
                 // String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
                 Log.d("DEBUGME", "getparams: " + "identificador: " + im.getIdentifier());
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", password);
                 params.put("identifier", im.getIdentifier());
                 params.put("provider", im.getProvider());
                 params.put("type", im.getType());

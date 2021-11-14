@@ -2,6 +2,8 @@ package com.example.dam_proyecto_final.ui.home.homeui.group_invoice;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,9 +21,8 @@ import com.example.dam_proyecto_final.utility.CalendarUtility;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickListener {
+public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickListener, TextWatcher {
     private CalendarUtility cuStartPeriod, cuEndPeriod, cuDate;
-    private InvoiceModel invoiceModel;
     private TextInputEditText
             tietInvoiceNum,
             tietProvider,
@@ -51,14 +52,22 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         webApiRequest = new WebApiRequest(getApplicationContext());
 
         tietInvoiceNum = findViewById(R.id.tiet_GIFStarPeriod);
+        tietInvoiceNum.addTextChangedListener(this);
         tietProvider = findViewById(R.id.tiet_provider);
+        tietProvider.addTextChangedListener(this);
         tietDate = findViewById(R.id.tiet_date);
+        tietDate.addTextChangedListener(this);
         tietStartPeriod = findViewById(R.id.tiet_startPeriod);
+        tietStartPeriod.addTextChangedListener(this);
         tietEndPeriod = findViewById(R.id.tiet_endPeriod);
+        tietEndPeriod.addTextChangedListener(this);
         tietConsumption = findViewById(R.id.tiet_Consumption);
+        tietConsumption.addTextChangedListener(this);
         tietAmount = findViewById(R.id.tiet_Amount);
-        actvInvoiceType =findViewById(R.id.actv_invoiceType);
-        btNew =findViewById(R.id.bt_New);
+        tietAmount.addTextChangedListener(this);
+        actvInvoiceType = findViewById(R.id.actv_invoiceType);
+        actvInvoiceType.addTextChangedListener(this);
+        btNew = findViewById(R.id.bt_New);
         btNew.setOnClickListener(this);
 
         Bundle param= this.getIntent().getExtras();
@@ -91,6 +100,11 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         actvInvoiceType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 typeSelection = parent.getItemAtPosition(position).toString();
+                if (checkFields()) {
+                    btNew.setEnabled(true);
+                } else {
+                    btNew.setEnabled(false);
+                }
             }
         });
     }
@@ -109,36 +123,66 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (checkFields()){
-            if(v.getId()==R.id.bt_New){
-                // TODO añadir provider al añadir factura
-                invoiceModel=new InvoiceModel(
-                        tietInvoiceNum.getText().toString(),
-                        tietProvider.getText().toString(),
-                        typeSelection,
-                        tietDate.getText().toString(),
-                        tietStartPeriod.getText().toString(),
-                        tietEndPeriod.getText().toString(),
-                        Double.parseDouble(tietConsumption.getText().toString()),
-                        Double.parseDouble(tietAmount.getText().toString()),
-                        "0",
-                        groupModel.getId()
-                );
-                insertInvoice(invoiceModel);
-            }
+        if(v.getId()==R.id.bt_New){
+            // TODO añadir provider al añadir factura
+            InvoiceModel invoiceModel = new InvoiceModel(
+                    tietInvoiceNum.getText().toString(),
+                    tietProvider.getText().toString(),
+                    typeSelection,
+                    tietDate.getText().toString(),
+                    tietStartPeriod.getText().toString(),
+                    tietEndPeriod.getText().toString(),
+                    Double.parseDouble(tietConsumption.getText().toString()),
+                    Double.parseDouble(tietAmount.getText().toString()),
+                    "0",
+                    groupModel.getId()
+            );
+            insertInvoice(invoiceModel);
+            btNew.setClickable(false);
         }
-
     }
 
     private boolean checkFields() {
-        if(tietInvoiceNum.getText().toString() == null || tietInvoiceNum.getText().toString().equals("")){
-            Toast.makeText(this, "Número de factura no indicado, por favor rellene todos los campos"
-                    , Toast.LENGTH_LONG);
+        tietInvoiceNum.getText().toString();
+        if(tietInvoiceNum.getText().toString().equals("")){
+//            Toast.makeText(this, "Número de factura no indicado, por favor rellene todos los campos"
+//                    , Toast.LENGTH_LONG).show();
             return false;
         }
         if(tietProvider.getText().toString() == null || tietProvider.getText().toString().equals("")){
-            Toast.makeText(this, "Proveedor no indicado, por favor rellene todos los campos"
-                    , Toast.LENGTH_LONG);
+//            Toast.makeText(this, "Proveedor no indicado, por favor rellene todos los campos"
+//                    , Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(typeSelection == null || typeSelection.equals("")){
+//            Toast.makeText(this, "Tipo no indicado, por favor rellene todos los campos"
+//                    , Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(tietDate.getText().toString() == null || tietDate.getText().toString().equals("")){
+//            Toast.makeText(this, "Fecha de emisión no indicada, por favor rellene todos los campos"
+//                    , Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(tietStartPeriod.getText().toString() == null || tietStartPeriod.getText().toString().equals("")){
+//            Toast.makeText(this, "Periodo de inicio no indicado, por favor rellene todos los campos"
+//                    , Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(tietEndPeriod.getText().toString() == null || tietEndPeriod.getText().toString().equals("")){
+//            Toast.makeText(this, "Periodo fin no indicado, por favor rellene todos los campos"
+//                    , Toast.LENGTH_LONG).show();
+            return false;
+        }
+        // TODO si los campos periodo estan metidos comprobar que el inicio no sea superior al fin
+        if(tietConsumption.getText().toString() == null || tietConsumption.getText().toString().equals("")){
+//            Toast.makeText(this, "Consumo no indicado, por favor rellene todos los campos"
+//                    , Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(tietAmount.getText().toString() == null || tietAmount.getText().toString().equals("")){
+//            Toast.makeText(this, "Importe no indicado, por favor rellene todos los campos"
+//                    , Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -147,7 +191,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
     public void insertInvoice(InvoiceModel im){
 
-        webApiRequest.insertInvoice(im, new WebApiRequest.WebApiRequestJsonObjectListener() {
+        webApiRequest.insertInvoice(userEmail, userPass, im, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
                 if (id > 0) {
@@ -170,8 +214,26 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "insertInvoice onerror: " + id + " " + message);
                 Toast.makeText(getApplicationContext(), "Error al insertar factura. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                btNew.setClickable(false);
             }
         });
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (checkFields()) {
+            btNew.setEnabled(true);
+        } else {
+            btNew.setEnabled(false);
+        }
+    }
 }
