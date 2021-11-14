@@ -9,6 +9,7 @@ public class InvoiceModel implements Parcelable {
 
     private int idInvoice;
     private String identifier;
+    private String provider;
     private String type;
     private String date;
     private String start_period;
@@ -21,20 +22,9 @@ public class InvoiceModel implements Parcelable {
     public InvoiceModel() {
     }
 
-    public InvoiceModel(String identifier, String type, String date, String start_period, String end_period, double consumption, double amount, String filetype, int idgroup) {
+    public InvoiceModel(String identifier, String provider, String type, String date, String start_period, String end_period, double consumption, double amount, String filetype, int idgroup) {
         this.identifier = identifier;
-        this.type = type;
-        this.date = date;
-        this.start_period = start_period;
-        this.end_period = end_period;
-        this.consumption = consumption;
-        this.amount = amount;
-        this.filetype = filetype;
-        this.idgroup = idgroup;
-    }
-    public InvoiceModel(int idInvoice, String identifier, String type, String date, String start_period, String end_period, double consumption, double amount, String filetype, int idgroup) {
-        this.idInvoice = idInvoice;
-        this.identifier = identifier;
+        this.provider = provider;
         this.type = type;
         this.date = date;
         this.start_period = start_period;
@@ -45,6 +35,19 @@ public class InvoiceModel implements Parcelable {
         this.idgroup = idgroup;
     }
 
+    public InvoiceModel(int idInvoice, String identifier, String provider, String type, String date, String start_period, String end_period, double consumption, double amount, String filetype, int idgroup) {
+        this.idInvoice = idInvoice;
+        this.identifier = identifier;
+        this.provider = provider;
+        this.type = type;
+        this.date = date;
+        this.start_period = start_period;
+        this.end_period = end_period;
+        this.consumption = consumption;
+        this.amount = amount;
+        this.filetype = filetype;
+        this.idgroup = idgroup;
+    }
 
 
     public static final Creator<InvoiceModel> CREATOR = new Creator<InvoiceModel>() {
@@ -131,9 +134,26 @@ public class InvoiceModel implements Parcelable {
         this.idgroup = idgroup;
     }
 
+    public int getIdInvoice() {
+        return idInvoice;
+    }
+
+    public void setIdInvoice(int idInvoice) {
+        this.idInvoice = idInvoice;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
     protected InvoiceModel(Parcel in) {
         idInvoice = in.readInt();
         identifier = in.readString();
+        provider = in.readString();
         type = in.readString();
         date = in.readString();
         start_period = in.readString();
@@ -153,6 +173,7 @@ public class InvoiceModel implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(idInvoice);
         parcel.writeString(identifier);
+        parcel.writeString(provider);
         parcel.writeString(type);
         parcel.writeString(date);
         parcel.writeString(start_period);

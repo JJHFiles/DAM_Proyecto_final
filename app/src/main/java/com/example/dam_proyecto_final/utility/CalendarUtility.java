@@ -2,9 +2,9 @@ package com.example.dam_proyecto_final.utility;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,23 +36,8 @@ public class CalendarUtility extends AppCompatActivity {
                 }
             }
         });
-
     }
-/*
-    public void getTime() {
 
-        etTime = activity.findViewById(R.id.etTime);
-        etTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showTime();
-                    // etTime.setEnabled(false);
-                }
-            }
-        });
-
-    }
-*/
 
     // Cuando el listener sea pulsado por el usuario, muestra el Picker se selccion de fecha
     public void showCalendar() {
@@ -63,9 +48,8 @@ public class CalendarUtility extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 String wd = getWeekDay(day, month, year);
-                Toast.makeText(activity.getApplicationContext(),
-                        "FECHA SELECCIONADA: " + wd + " " + day + "-" + (month + 1) + "-" + year, Toast.LENGTH_LONG)
-                        .show();
+                Log.d("DEBUGME", "FECHA SELECCIONADA: " + wd + " " + day + "-" + (month + 1) + "-" + year);
+
                 String dday = day + "", mmonth = (month + 1) + "", yyear = year + "";
                 if (day < 10) {
                     dday = "0" + day;
@@ -82,39 +66,6 @@ public class CalendarUtility extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    /*
-        public void showTime() {
-            int hour = c.get(Calendar.HOUR);
-            int minutes = c.get(Calendar.MINUTE);
-            TimePickerDialog timePickerDialog = new TimePickerDialog(activity, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                    Toast.makeText(activity.getApplicationContext(),
-                            "HORA SELECCIONADA: " + hourOfDay + "/" + minute, Toast.LENGTH_LONG)
-                            .show();
-
-                    String hhourOfDay = hourOfDay + "", mminute = minute + "";
-                    if (hourOfDay < 10) {
-                        hhourOfDay = "0" + hourOfDay;
-                    }
-                    if (minute < 10) {
-                        mminute = "0" + minute;
-                    }
-
-
-
-                        etTime.setText(hhourOfDay + ":" + mminute);
-                        etTime.setEnabled(false);
-
-
-                }
-            }, hour, minutes, true);
-            timePickerDialog.updateTime(hour, minutes);
-            timePickerDialog.show();
-
-        }
-    */
     // Para saber el día de la semana a partir de una fecha
     public String getWeekDay(int day, int month, int year) {
         String weekDay = "";

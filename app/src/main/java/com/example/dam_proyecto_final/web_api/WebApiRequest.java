@@ -659,6 +659,7 @@ public class WebApiRequest {
                             invoiceModels.add(new InvoiceModel(
                                     jsonObjectInvoice.getInt("idinvoice"),
                                     jsonObjectInvoice.getString("identifier"),
+                                    jsonObjectInvoice.getString("provider"),
                                     jsonObjectInvoice.getString("type"),
                                     jsonObjectInvoice.getString("date"),
                                     jsonObjectInvoice.getString("start_period"),
@@ -789,6 +790,7 @@ public class WebApiRequest {
                 Log.d("DEBUGME", "getparams: " + "identificador: " + im.getIdentifier());
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("identifier", im.getIdentifier());
+                params.put("provider", im.getProvider());
                 params.put("type", im.getType());
                 params.put("date", im.getDate());
                 params.put("start_period", im.getStart_period());

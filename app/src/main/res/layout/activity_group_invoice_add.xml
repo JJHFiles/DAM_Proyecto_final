@@ -151,6 +151,7 @@
                     android:id="@+id/til_startPeriod"
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
+                    android:layout_marginRight="6dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -159,6 +160,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_startPeriod"
                         android:layout_width="match_parent"
+                        android:drawableEnd="@drawable/ic_calendar"
                         android:layout_height="match_parent"
                         android:inputType="text"
                         android:textColor="@color/black" />
@@ -171,7 +173,7 @@
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginLeft="6dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:hint="Periodo fin">
@@ -179,6 +181,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_endPeriod"
                         android:layout_width="match_parent"
+                        android:drawableEnd="@drawable/ic_calendar"
                         android:layout_height="match_parent"
                         android:inputType="text"
                         android:textColor="@color/black" />

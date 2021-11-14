@@ -23,16 +23,16 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     private CalendarUtility cuStartPeriod, cuEndPeriod, cuDate;
     private InvoiceModel invoiceModel;
     private TextInputEditText
-            tiet_invoiceNum,
-            tiet_provider,
-            tiet_date,
-            tiet_startPeriod,
-            tiet_endPeriod,
-            tiet_Consumption,
-            tiet_Amount;
+            tietInvoiceNum,
+            tietProvider,
+            tietDate,
+            tietStartPeriod,
+            tietEndPeriod,
+            tietConsumption,
+            tietAmount;
     private String typeSelection;
-    private AutoCompleteTextView actv_invoiceType;
-    private Button bt_New;
+    private AutoCompleteTextView actvInvoiceType;
+    private Button btNew;
 
 //    private int idGroup;
 //    private String groupName,,currency;
@@ -50,16 +50,16 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
         webApiRequest = new WebApiRequest(getApplicationContext());
 
-        tiet_invoiceNum = findViewById(R.id.tiet_GIFStarPeriod);
-        tiet_provider = findViewById(R.id.tiet_provider);
-        tiet_date = findViewById(R.id.tiet_date);
-        tiet_startPeriod = findViewById(R.id.tiet_startPeriod);
-        tiet_endPeriod = findViewById(R.id.tiet_endPeriod);
-        tiet_Consumption = findViewById(R.id.tiet_Consumption);
-        tiet_Amount = findViewById(R.id.tiet_Amount);
-        actv_invoiceType=findViewById(R.id.actv_invoiceType);
-        bt_New=findViewById(R.id.bt_New);
-        bt_New.setOnClickListener(this);
+        tietInvoiceNum = findViewById(R.id.tiet_GIFStarPeriod);
+        tietProvider = findViewById(R.id.tiet_provider);
+        tietDate = findViewById(R.id.tiet_date);
+        tietStartPeriod = findViewById(R.id.tiet_startPeriod);
+        tietEndPeriod = findViewById(R.id.tiet_endPeriod);
+        tietConsumption = findViewById(R.id.tiet_Consumption);
+        tietAmount = findViewById(R.id.tiet_Amount);
+        actvInvoiceType =findViewById(R.id.actv_invoiceType);
+        btNew =findViewById(R.id.bt_New);
+        btNew.setOnClickListener(this);
 
         Bundle param= this.getIntent().getExtras();
         if (param != null) {
@@ -85,10 +85,10 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     public void loadInvoiceType() {
 
         //Asignamos lista a DropDowns
-        String[] type = {"Electricidad", "Agua", "Gas", "Telefonía", "Alquiler", "Otros"};
+        String[] type = {"Electricidad", "Agua", "Gas", "Telefonía"};
         ArrayAdapter typeAdapter = new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, type);
-        actv_invoiceType.setAdapter(typeAdapter);
-        actv_invoiceType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        actvInvoiceType.setAdapter(typeAdapter);
+        actvInvoiceType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 typeSelection = parent.getItemAtPosition(position).toString();
             }
@@ -109,21 +109,42 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.bt_New){
-            invoiceModel=new InvoiceModel(
-                    tiet_invoiceNum.getText().toString(),
-                    typeSelection,
-                    tiet_date.getText().toString(),
-                    tiet_startPeriod.getText().toString(),
-                    tiet_endPeriod.getText().toString(),
-                    Double.parseDouble(tiet_Consumption.getText().toString()),
-                    Double.parseDouble(tiet_Amount.getText().toString()),
-                    "0",
-                    groupModel.getId()
-            );
-            insertInvoice(invoiceModel);
+        if (checkFields()){
+            if(v.getId()==R.id.bt_New){
+                // TODO añadir provider al añadir factura
+                invoiceModel=new InvoiceModel(
+                        tietInvoiceNum.getText().toString(),
+                        tietProvider.getText().toString(),
+                        typeSelection,
+                        tietDate.getText().toString(),
+                        tietStartPeriod.getText().toString(),
+                        tietEndPeriod.getText().toString(),
+                        Double.parseDouble(tietConsumption.getText().toString()),
+                        Double.parseDouble(tietAmount.getText().toString()),
+                        "0",
+                        groupModel.getId()
+                );
+                insertInvoice(invoiceModel);
+            }
         }
+
     }
+
+    private boolean checkFields() {
+        if(tietInvoiceNum.getText().toString() == null || tietInvoiceNum.getText().toString().equals("")){
+            Toast.makeText(this, "Número de factura no indicado, por favor rellene todos los campos"
+                    , Toast.LENGTH_LONG);
+            return false;
+        }
+        if(tietProvider.getText().toString() == null || tietProvider.getText().toString().equals("")){
+            Toast.makeText(this, "Proveedor no indicado, por favor rellene todos los campos"
+                    , Toast.LENGTH_LONG);
+            return false;
+        }
+
+        return true;
+    }
+
     public void insertInvoice(InvoiceModel im){
 
         webApiRequest.insertInvoice(im, new WebApiRequest.WebApiRequestJsonObjectListener() {
@@ -133,9 +154,6 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                     Log.d("DEBUGME", "insertInvoice onSucess: " + id + " " + message);
 
                     Toast.makeText(getApplicationContext(), "Factura insertada con éxito: " + id, Toast.LENGTH_LONG).show();
-                    // bloqueado boton de nueva factura para no insertar la misma varias veces
-                    //bt_New.setEnabled(false);
-//                    onBackPressed();
 
                     Intent intent = new Intent(getApplicationContext(), GroupInvoiceTab.class);
                     intent.putExtra("groupModel", groupModel);
@@ -144,14 +162,14 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                     startActivity(intent);
                 } else if (id < 0) {
                     Log.d("DEBUGME", "insertInvoice onSucess: " + id + " " + message);
-                    Toast.makeText(getApplicationContext(), "Error al insertar. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error al insertar factura. Codigo de error: " + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "insertInvoice onerror: " + id + " " + message);
-                Toast.makeText(getApplicationContext(), "Error al insertar. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error al insertar factura. Codigo de error: " + id, Toast.LENGTH_LONG).show();
             }
         });
     }
