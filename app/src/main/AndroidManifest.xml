@@ -17,7 +17,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.MainActivity"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,35 +26,47 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.walktrough.WalktroughActivity"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.InvoiceOCRAddActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter"
             android:exported="true"
             android:parentActivityName=".ui.home.homeui.group_invoice.GroupInvoiceTab"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.registry.RegistryGoogleActivity" />
-        <activity android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.registry.RegistryGoogleActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.home.homeui.group_invoice.GroupInvoiceAdd"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.homeui.group_invoice.GroupInvoiceTab"
-            android:parentActivityName=".ui.home.HomeActivity" />
+            android:parentActivityName=".ui.home.HomeActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.homeui.group_invoice.GroupInvoiceEmptyActivity"
             android:parentActivityName=".ui.home.HomeActivity"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.homeui.groupui.GroupAddActivity"
             android:parentActivityName=".ui.home.HomeActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.registry.RegistryActivity" />
-        <activity android:name=".ui.home.HomeActivity" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.registry.RegistryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.home.HomeActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.LoginActivity"
-            android:noHistory="true"></activity>
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
