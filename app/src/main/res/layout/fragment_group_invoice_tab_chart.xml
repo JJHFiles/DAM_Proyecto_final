@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.homeui.group_invoice.GroupInvoiceTab">
+    tools:context=".ui.home.homeui.group_invoice.GroupInvoiceTab">
 
 
     <RadioGroup

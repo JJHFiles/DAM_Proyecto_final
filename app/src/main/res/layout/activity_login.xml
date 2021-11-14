@@ -7,7 +7,7 @@
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
     android:forceDarkAllowed="true"
-    tools:context=".LoginActivity">
+    tools:context=".ui.LoginActivity">
 
 
     <ImageView

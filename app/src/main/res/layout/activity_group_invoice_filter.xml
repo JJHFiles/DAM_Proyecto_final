@@ -7,7 +7,7 @@
     android:layout_marginLeft="24dp"
     android:layout_marginRight="24dp"
     android:fitsSystemWindows="true"
-    tools:context=".home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter">
+    tools:context=".ui.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter">
 
 
     <com.google.android.material.bottomappbar.BottomAppBar
