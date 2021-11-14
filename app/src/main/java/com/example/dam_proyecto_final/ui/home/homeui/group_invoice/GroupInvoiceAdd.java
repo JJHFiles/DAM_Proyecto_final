@@ -100,11 +100,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         actvInvoiceType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 typeSelection = parent.getItemAtPosition(position).toString();
-                if (checkFields()) {
-                    btNew.setEnabled(true);
-                } else {
-                    btNew.setEnabled(false);
-                }
+                btNew.setEnabled(checkFields());
             }
         });
     }
@@ -145,44 +141,34 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     private boolean checkFields() {
         tietInvoiceNum.getText().toString();
         if(tietInvoiceNum.getText().toString().equals("")){
-//            Toast.makeText(this, "Número de factura no indicado, por favor rellene todos los campos"
-//                    , Toast.LENGTH_LONG).show();
             return false;
         }
-        if(tietProvider.getText().toString() == null || tietProvider.getText().toString().equals("")){
-//            Toast.makeText(this, "Proveedor no indicado, por favor rellene todos los campos"
-//                    , Toast.LENGTH_LONG).show();
+        tietProvider.getText().toString();
+        if(tietProvider.getText().toString().equals("")){
             return false;
         }
         if(typeSelection == null || typeSelection.equals("")){
-//            Toast.makeText(this, "Tipo no indicado, por favor rellene todos los campos"
-//                    , Toast.LENGTH_LONG).show();
             return false;
         }
-        if(tietDate.getText().toString() == null || tietDate.getText().toString().equals("")){
-//            Toast.makeText(this, "Fecha de emisión no indicada, por favor rellene todos los campos"
-//                    , Toast.LENGTH_LONG).show();
+        tietDate.getText().toString();
+        if(tietDate.getText().toString().equals("")){
             return false;
         }
-        if(tietStartPeriod.getText().toString() == null || tietStartPeriod.getText().toString().equals("")){
-//            Toast.makeText(this, "Periodo de inicio no indicado, por favor rellene todos los campos"
-//                    , Toast.LENGTH_LONG).show();
+        tietStartPeriod.getText().toString();
+        if(tietStartPeriod.getText().toString().equals("")){
             return false;
         }
-        if(tietEndPeriod.getText().toString() == null || tietEndPeriod.getText().toString().equals("")){
-//            Toast.makeText(this, "Periodo fin no indicado, por favor rellene todos los campos"
-//                    , Toast.LENGTH_LONG).show();
+        tietEndPeriod.getText().toString();
+        if(tietEndPeriod.getText().toString().equals("")){
             return false;
         }
         // TODO si los campos periodo estan metidos comprobar que el inicio no sea superior al fin
-        if(tietConsumption.getText().toString() == null || tietConsumption.getText().toString().equals("")){
-//            Toast.makeText(this, "Consumo no indicado, por favor rellene todos los campos"
-//                    , Toast.LENGTH_LONG).show();
+        tietConsumption.getText().toString();
+        if(tietConsumption.getText().toString().equals("")){
             return false;
         }
-        if(tietAmount.getText().toString() == null || tietAmount.getText().toString().equals("")){
-//            Toast.makeText(this, "Importe no indicado, por favor rellene todos los campos"
-//                    , Toast.LENGTH_LONG).show();
+        tietAmount.getText().toString();
+        if(tietAmount.getText().toString().equals("")){
             return false;
         }
 
