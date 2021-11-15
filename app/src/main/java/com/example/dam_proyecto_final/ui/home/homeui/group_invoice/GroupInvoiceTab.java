@@ -190,7 +190,6 @@ public class GroupInvoiceTab extends AppCompatActivity {
             );
             fragmentManager.beginTransaction()
                     .replace(R.id.fcv_AGITListChart, fragment, null)
-                    .addToBackStack(null) // name can be null
                     .commit();
         }
 
@@ -202,7 +201,6 @@ public class GroupInvoiceTab extends AppCompatActivity {
             fragment.setArguments(bundle);
             fragmentManager.beginTransaction()
                     .replace(R.id.fcv_AGITListChart, fragment, null)
-                    .addToBackStack(null) // name can be null
                     .commit();
         }
     }
