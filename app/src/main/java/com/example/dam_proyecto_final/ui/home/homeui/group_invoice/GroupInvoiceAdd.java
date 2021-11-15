@@ -19,10 +19,17 @@ import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.utility.CalendarUtility;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickListener, TextWatcher {
-    private CalendarUtility cuStartPeriod, cuEndPeriod, cuDate;
+
     private TextInputEditText
             tietInvoiceNum,
             tietProvider,
@@ -35,12 +42,14 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     private AutoCompleteTextView actvInvoiceType;
     private Button btNew;
 
-//    private int idGroup;
-//    private String groupName,,currency;
     private GroupModel groupModel;
     private String userEmail;
     private String userPass;
     private WebApiRequest webApiRequest;
+
+    private Calendar dateEmition = Calendar.getInstance();
+    private Calendar dateStart = Calendar.getInstance();
+    private Calendar dateEnd = Calendar.getInstance();
 
 
     @Override
@@ -57,10 +66,13 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         tietProvider.addTextChangedListener(this);
         tietDate = findViewById(R.id.tiet_date);
         tietDate.addTextChangedListener(this);
+        tietDate.setOnClickListener(this);
         tietStartPeriod = findViewById(R.id.tiet_startPeriod);
         tietStartPeriod.addTextChangedListener(this);
+        tietStartPeriod.setOnClickListener(this);
         tietEndPeriod = findViewById(R.id.tiet_endPeriod);
         tietEndPeriod.addTextChangedListener(this);
+        tietEndPeriod.setOnClickListener(this);
         tietConsumption = findViewById(R.id.tiet_Consumption);
         tietConsumption.addTextChangedListener(this);
         tietAmount = findViewById(R.id.tiet_Amount);
@@ -79,20 +91,9 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         }
         loadInvoiceType();
 
-        // Se preparan los escuchadores onFocusChangeListener sobre los TextInputEditText
-        cuStartPeriod = new CalendarUtility(this, R.id.tiet_startPeriod);
-        listenerDateStartPeriod();
-
-        cuEndPeriod = new CalendarUtility(this, R.id.tiet_endPeriod);
-        listenerDateEndPeriod();
-
-        cuDate = new CalendarUtility(this, R.id.tiet_date);
-        listenerDate();
-
     }
 
     public void loadInvoiceType() {
-
         //Asignamos lista a DropDowns
         String[] type = {"Electricidad", "Agua", "Gas", "Telefonía"};
         ArrayAdapter typeAdapter = new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, type);
@@ -105,69 +106,83 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    public void listenerDateStartPeriod() {
-        cuStartPeriod.getDate();
+    private void addCalendar(Calendar calendar, TextInputEditText tiet) {
+        MaterialDatePicker materialDatePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText(R.string.select_date)
+                .build();
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                calendar.setTimeInMillis((Long) selection);
+
+                DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
+                String formatted = format.format(calendar.getTime());
+                tiet.setText(formatted);
+            }
+        });
+        materialDatePicker.show(getSupportFragmentManager(), String.valueOf(R.string.select_date));
     }
 
-    public void listenerDateEndPeriod() {
-        cuEndPeriod.getDate();
-    }
 
-    public void listenerDate() {
-        cuDate.getDate();
-    }
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.bt_New){
-            // TODO añadir provider al añadir factura
-            InvoiceModel invoiceModel = new InvoiceModel(
-                    tietInvoiceNum.getText().toString(),
-                    tietProvider.getText().toString(),
-                    typeSelection,
-                    tietDate.getText().toString(),
-                    tietStartPeriod.getText().toString(),
-                    tietEndPeriod.getText().toString(),
-                    Double.parseDouble(tietConsumption.getText().toString()),
-                    Double.parseDouble(tietAmount.getText().toString()),
-                    "0",
-                    groupModel.getId()
-            );
-            insertInvoice(invoiceModel);
-            btNew.setClickable(false);
+        if (v.getId() == R.id.bt_New) {
+            if (dateStart.before(dateEnd)){
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                InvoiceModel invoiceModel = new InvoiceModel(
+                        tietInvoiceNum.getText().toString(),
+                        tietProvider.getText().toString(),
+                        typeSelection,
+                        formater.format(dateEmition.getTime()),
+                        formater.format(dateStart.getTime()),
+                        formater.format(dateEnd.getTime()),
+                        Double.parseDouble(tietConsumption.getText().toString()),
+                        Double.parseDouble(tietAmount.getText().toString()),
+                        "0",
+                        groupModel.getId()
+                );
+                insertInvoice(invoiceModel);
+                btNew.setClickable(false);
+            } else {
+                tietStartPeriod.setText("");
+                tietEndPeriod.setText("");
+                Toast.makeText(this, "El periodo de fin debe ser superior al periodo de inicio",
+                        Toast.LENGTH_LONG).show();
+                btNew.setEnabled(false);
+            }
+        } else if (v.getId() == R.id.tiet_date) {
+            addCalendar(dateEmition, (TextInputEditText) v);
+        } else if (v.getId() == R.id.tiet_startPeriod){
+            addCalendar(dateStart, (TextInputEditText) v);
+        } else if ( v.getId() == R.id.tiet_endPeriod){
+            addCalendar(dateEnd, (TextInputEditText) v);
         }
     }
 
     private boolean checkFields() {
-        tietInvoiceNum.getText().toString();
         if(tietInvoiceNum.getText().toString().equals("")){
             return false;
         }
-        tietProvider.getText().toString();
         if(tietProvider.getText().toString().equals("")){
             return false;
         }
         if(typeSelection == null || typeSelection.equals("")){
             return false;
         }
-        tietDate.getText().toString();
         if(tietDate.getText().toString().equals("")){
             return false;
         }
-        tietStartPeriod.getText().toString();
         if(tietStartPeriod.getText().toString().equals("")){
             return false;
         }
-        tietEndPeriod.getText().toString();
         if(tietEndPeriod.getText().toString().equals("")){
             return false;
         }
         // TODO si los campos periodo estan metidos comprobar que el inicio no sea superior al fin
-        tietConsumption.getText().toString();
         if(tietConsumption.getText().toString().equals("")){
             return false;
         }
-        tietAmount.getText().toString();
         if(tietAmount.getText().toString().equals("")){
             return false;
         }
@@ -176,7 +191,6 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     }
 
     public void insertInvoice(InvoiceModel im){
-
         webApiRequest.insertInvoice(userEmail, userPass, im, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
@@ -205,6 +219,8 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+
+    // Métodos para habilitar el botón con el form completo
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
