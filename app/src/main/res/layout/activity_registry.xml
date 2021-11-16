@@ -44,7 +44,7 @@
         android:layout_height="59dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
-        android:hint="Nombre"
+        android:hint="@string/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtvQuestion">
@@ -60,12 +60,12 @@
         android:id="@+id/btnCancel"
         style="@style/SecondaryButton"
         android:layout_width="0dp"
+        android:layout_marginEnd="4dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
-        android:text="@string/btnCancel"
+        android:text="@string/cancel"
         app:layout_constraintEnd_toStartOf="@+id/btnContinue"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txInLaHint" />
 
@@ -73,13 +73,13 @@
         android:id="@+id/btnContinue"
         style="@style/PrimaryButton"
         android:layout_width="0dp"
+        android:layout_marginStart="4dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="16dp"
         android:text="@string/btnContinue_Continue"
         app:backgroundTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnCancel"
         app:layout_constraintTop_toBottomOf="@+id/txInLaHint" />
 
