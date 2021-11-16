@@ -24,21 +24,8 @@ import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ActivityFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ActivityFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
 
     private String email = "vacio";
@@ -56,25 +43,6 @@ public class ActivityFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static ActivityFragment newInstance(String param1, String param2) {
-        ActivityFragment fragment = new ActivityFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -149,32 +117,5 @@ public class ActivityFragment extends Fragment {
         });
 
     }
-
-//    private void fillListView(ArrayList<ActivityModel> al) {
-//
-//        ArrayList<String> arr = new ArrayList<>();
-//        for (int x = 0; x < al.size(); x++) {
-//            arr.add(""
-//                    + "#" + (x + 1)
-//                    //      + "\nID Actividad: " + al.get(x).getIdactivity()
-//                    + "\nActividad: " + al.get(x).getAction()
-//                    + "\nNombre: " + al.get(x).getName()
-//                    + "\nFecha: " + al.get(x).getDate_activity()
-//                    + "\nDescripcion: " + al.get(x).getDescription()
-//                    + "\nCreador: " + al.get(x).getEmail());
-//        }
-//
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, R.layout.activity_fragmet_listview, arr);
-//        lv.setAdapter(arrayAdapter);
-///*
-//        AdapterView.OnItemClickListener lvClick = new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView parent, View v, int position, long id) {
-//                Toast.makeText(context, "Seleccionado elemento: "+position, Toast.LENGTH_LONG).show();
-//            }
-//        };
-//        lv.setOnItemClickListener(lvClick);
-//*/
-//    }
-
 
 }
