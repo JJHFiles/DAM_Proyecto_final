@@ -1,8 +1,22 @@
 # CHANGELOG for blist proyect
 
 
+## 0.1.7 XXXXXX
+### Added
 
-## 0.1.6 XXXXXXX  
+### Changed
+
+
+### Fixed
+
+
+### Removed
+
+
+
+
+
+## 0.1.6 2021-11-16  
 ### Added
 - Navigation fixed to best experiencie and forbidden back on some screen
 - Invoice name can be duplicated in multiple groups
@@ -18,10 +32,13 @@
 - Some Toast was removed instead log depuration
 - Icon for activitys
 - Package refactored
+- Calendar methods deprecated
 
 ### Fixed
 - InvoiceModel not load/write provider
 - Warning minor
+- Format date on activity
+
 
 ### Removed
 - Some Toast was removed for better ux
