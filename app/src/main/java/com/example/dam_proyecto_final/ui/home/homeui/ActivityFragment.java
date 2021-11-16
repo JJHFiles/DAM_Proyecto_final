@@ -87,10 +87,8 @@ public class ActivityFragment extends Fragment {
                 imgv_EmptyAnimation.setVisibility(View.INVISIBLE);
                 lv.setVisibility(View.VISIBLE);
 
-                //fillListView((ArrayList<ActivityModel>) data);
-                lv.setAdapter(new ActivityModelAdapter(getContext(), (ArrayList<ActivityModel>) data));
 
-
+                lv.setAdapter(new ActivityModelAdapter(getContext(), (ArrayList<ActivityModel>)data));
 
             }
 

@@ -446,18 +446,12 @@ public class WebApiRequest {
                             //Obtenemos el objeto JSONObjet de Activity individual
                             JSONObject jsonObjectActivity = jsonArrayActivity.getJSONObject(i);
 
-                            // Comprobamos si la factura es nula
-                            int identifierinvoice = -1;
-                            if (!jsonObjectActivity.isNull("identifierincoice")){
-                                identifierinvoice = jsonObjectActivity.getInt("identifierinvoice");
-                            }
                             activityModels.add(new ActivityModel(
-                                    jsonObjectActivity.getString("idactivity"),
+                                    jsonObjectActivity.getInt("idactivity"),
                                     jsonObjectActivity.getString("date_activity"),
                                     jsonObjectActivity.getString("action"),
                                     jsonObjectActivity.getInt("idgroup"),
                                     jsonObjectActivity.getString("email"),
-                                    identifierinvoice,
                                     jsonObjectActivity.getInt("icon")
                             ));
                         }

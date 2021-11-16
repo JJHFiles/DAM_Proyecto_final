@@ -40,7 +40,7 @@ public class ActivityModelAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return activitys.get(i).getIdentifierinvoice();
+        return activitys.get(i).getIdactivity();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ActivityModelAdapter extends BaseAdapter {
         imgActivityIco.setImageDrawable(context.getDrawable(icon));
 
         String actionParse = "<b> " + activity.getEmail() + " </b> " + activity.getAction();
-        // TODO revisar deprecated
+
         txtvAction.setText(Html.fromHtml(actionParse));
 
         Calendar calToday = Calendar.getInstance();
@@ -90,15 +90,18 @@ public class ActivityModelAdapter extends BaseAdapter {
         }
 
         // Si el día es hoy
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy",
+                Locale.getDefault());
+        String datea = sdf2.format(calToday.getTime());
+        String dateb = sdf2.format(calActivity.getTime());
+        String datec = sdf2.format(calActivity.getTime());
         String dateText;
-        if (calToday.getTime().getDay() == calActivity.getTime().getDay()){
+        if (datea.equals(dateb)){
             dateText = context.getString(R.string.today);
-        } else if (calToday.getTime().getDay() == calActivity.getTime().getDay()-1){
+        } else if (datea.equals(datec)){
             dateText = context.getString(R.string.yesterday);
         } else {
-            dateText = String.valueOf(calActivity.getTime().getDay() + "/" +
-                    calActivity.getTime().getMonth() + "/" +
-                    calActivity.getTime().getYear());
+            dateText = sdf2.format(calActivity.getTime());
         }
         txtDate.setText(dateText);
 
