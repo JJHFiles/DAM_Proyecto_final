@@ -16,6 +16,11 @@
         android:theme="@style/Theme.DAM_Proyecto_final"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.home.homeui.profileui.PasswordChangeActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".ui.MainActivity"
             android:noHistory="true"
             android:screenOrientation="portrait">
@@ -25,48 +30,54 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.walktrough.WalktroughActivity"
+        <activity
+            android:name=".ui.walktrough.WalktroughActivity"
             android:noHistory="true"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.InvoiceOCRAddActivity"
             android:exported="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter"
             android:exported="true"
             android:parentActivityName=".ui.home.homeui.group_invoice.GroupInvoiceTab"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.registry.RegistryGoogleActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.home.homeui.group_invoice.GroupInvoiceAdd"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.registry.RegistryGoogleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.homeui.group_invoice.GroupInvoiceAdd"
             android:noHistory="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.homeui.group_invoice.GroupInvoiceTab"
             android:parentActivityName=".ui.home.HomeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.homeui.group_invoice.GroupInvoiceEmptyActivity"
-            android:parentActivityName=".ui.home.HomeActivity"
             android:noHistory="true"
-            android:screenOrientation="portrait"/>
+            android:parentActivityName=".ui.home.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.homeui.groupui.GroupAddActivity"
             android:parentActivityName=".ui.home.HomeActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.registry.RegistryActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.home.HomeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.registry.RegistryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.LoginActivity"
             android:noHistory="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
