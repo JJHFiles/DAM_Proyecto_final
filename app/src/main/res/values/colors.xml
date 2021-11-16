@@ -16,4 +16,5 @@
     <color name="background_lay_gray">#F6F6F6</color>
     <color name="background_chechbox">#F0F0F0</color>
     <color name="background_shadow_gray">#5BE6E4E4</color>
+    <color name="activity_circle">#D8F2DA</color>
 </resources>
