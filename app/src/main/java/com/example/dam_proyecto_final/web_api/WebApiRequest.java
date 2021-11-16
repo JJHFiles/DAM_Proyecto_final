@@ -993,4 +993,62 @@ public class WebApiRequest {
         };
         queue.add(sr);
     }
+
+    public void updatePassword(String userEmail, String userPass, String newPass, WebApiRequestJsonResponseListener webApiRequestJsonResponseListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "updatePassword.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "updatePassword onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    //Obtenemos el JsonResponde Padre
+                    JSONObject json = new JSONObject(response);
+
+                    //Obtenemos el JsonObject hijo con la respuesta
+                    JSONObject jsonObjectResponse = json.getJSONObject("response");
+
+                    //Creamos el JsonResponseModel
+                    JsonResponseModel jsonResponseModel = new JsonResponseModel(
+                            jsonObjectResponse.getInt("id"),
+                            jsonObjectResponse.getString("message"));
+
+                    if (jsonResponseModel.getId() > 0) {
+                        webApiRequestJsonResponseListener.onSuccess(jsonResponseModel);
+                    } else {
+                        webApiRequestJsonResponseListener.onError(jsonResponseModel);
+                    }
+                } catch (JSONException e) {
+                    Log.d("DEBUGME", e.getMessage());
+                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "updatePassword JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "getGroupsByEmail VolleyError: " + error.getMessage());
+                webApiRequestJsonResponseListener.onError(new JsonResponseModel(-1, "updatePassword onErrorResponse: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", userEmail);
+                params.put("password", userPass);
+                params.put("newpassword", newPass);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
 }
