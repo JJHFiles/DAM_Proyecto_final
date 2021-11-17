@@ -18,11 +18,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dam_proyecto_final.R;
-import com.example.dam_proyecto_final.ui.home.HomeActivity;
 import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.model.MemberModel;
 import com.example.dam_proyecto_final.model.SharedModel;
+import com.example.dam_proyecto_final.ui.home.HomeActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -129,7 +129,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         dd_AGIEG_Role.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 roleSelection = (String) parent.getItemAtPosition(position);
-              //  Toast.makeText(context, "Role:"+roleSelection, Toast.LENGTH_LONG).show();
+                //  Toast.makeText(context, "Role:"+roleSelection, Toast.LENGTH_LONG).show();
 
             }
         });
@@ -147,7 +147,6 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         //Buttons
         btn_AGIEG_Add = findViewById(R.id.btn_AGIEG_Add);
         btn_AGIEG_Add.setOnClickListener(this);
-
 
 
     }
@@ -187,14 +186,17 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                         }
                         //Si no existe ok si existe toast
                         if (!memberExist) {
-
+                            int dec = 0;
+                            if (membersOld.size() > 1) {
+                                dec = -1;
+                            }
                             //Controlamos que no se agregue un usuario que ya estaba en la lista original membersOld
-                            for (int x = 0; x < membersOld.size(); x++) {
+                            for (int x = 0; x < membersOld.size()+dec; x++) {
                                 if (!edt_AGIEG_AddMember.getText().toString().equals(membersOld.get(x).getEmail())) {
 
                                     // Si el usuario está pendiente de eliminarse del grupo ya no eliminará
-                                    for (int y=0;x<membersDel.size();y++) {
-                                        if(membersDel.get(y).getEmail().equals(edt_AGIEG_AddMember.getText().toString())){
+                                    for (int y = 0; x < membersDel.size(); y++) {
+                                        if (membersDel.get(y).getEmail().equals(edt_AGIEG_AddMember.getText().toString())) {
                                             membersDel.remove(membersDel.get(y));
                                         }
                                     }
@@ -229,7 +231,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                                             Toast.makeText(context, R.string.userNoDB, Toast.LENGTH_LONG).show();
                                         }
                                     });
-                                }else{
+                                } else {
                                     Toast.makeText(this, "No se puede agregar un usuario que ya estaba en el grupo con anterioridad", Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -281,7 +283,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                             @Override
                             public void onError(JsonResponseModel response) {
-                                Toast. makeText(context, response.getId()+"", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, response.getId() + "", Toast.LENGTH_LONG).show();
                             }
                         });
             } else {

@@ -16,10 +16,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
 
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.model.MemberModel;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 
@@ -223,8 +225,8 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
-      //  NestedScrollView NScroll=listView.findViewById(R.id.NestedScroll);
-      //  NScroll.scrollTo(0,0);
 
-    }
+        }
+
+
 }
