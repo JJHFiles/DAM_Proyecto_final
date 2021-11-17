@@ -33,6 +33,7 @@
 - Icon for activitys
 - Package refactored
 - Calendar methods deprecated
+- EditGroup with full features and full depurated
 
 ### Fixed
 - InvoiceModel not load/write provider
