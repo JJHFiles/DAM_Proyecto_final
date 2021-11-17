@@ -2,6 +2,8 @@ package com.example.dam_proyecto_final.ui.home.homeui.group_invoice;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,29 +19,37 @@ import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.InvoiceModel;
 import com.example.dam_proyecto_final.utility.CalendarUtility;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickListener {
-    private CalendarUtility cuStartPeriod, cuEndPeriod, cuDate;
-    private InvoiceModel invoiceModel;
-    private TextInputEditText
-            tiet_invoiceNum,
-            tiet_provider,
-            tiet_date,
-            tiet_startPeriod,
-            tiet_endPeriod,
-            tiet_Consumption,
-            tiet_Amount;
-    private String typeSelection;
-    private AutoCompleteTextView actv_invoiceType;
-    private Button bt_New;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
-//    private int idGroup;
-//    private String groupName,,currency;
+public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+
+    private TextInputEditText
+            tietInvoiceNum,
+            tietProvider,
+            tietDate,
+            tietStartPeriod,
+            tietEndPeriod,
+            tietConsumption,
+            tietAmount;
+    private String typeSelection;
+    private AutoCompleteTextView actvInvoiceType;
+    private Button btNew;
+
     private GroupModel groupModel;
     private String userEmail;
     private String userPass;
     private WebApiRequest webApiRequest;
+
+    private Calendar dateEmition = Calendar.getInstance();
+    private Calendar dateStart = Calendar.getInstance();
+    private Calendar dateEnd = Calendar.getInstance();
 
 
     @Override
@@ -50,16 +60,27 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
         webApiRequest = new WebApiRequest(getApplicationContext());
 
-        tiet_invoiceNum = findViewById(R.id.tiet_GIFStarPeriod);
-        tiet_provider = findViewById(R.id.tiet_provider);
-        tiet_date = findViewById(R.id.tiet_date);
-        tiet_startPeriod = findViewById(R.id.tiet_startPeriod);
-        tiet_endPeriod = findViewById(R.id.tiet_endPeriod);
-        tiet_Consumption = findViewById(R.id.tiet_Consumption);
-        tiet_Amount = findViewById(R.id.tiet_Amount);
-        actv_invoiceType=findViewById(R.id.actv_invoiceType);
-        bt_New=findViewById(R.id.bt_New);
-        bt_New.setOnClickListener(this);
+        tietInvoiceNum = findViewById(R.id.tiet_GIFStarPeriod);
+        tietInvoiceNum.addTextChangedListener(this);
+        tietProvider = findViewById(R.id.tiet_provider);
+        tietProvider.addTextChangedListener(this);
+        tietDate = findViewById(R.id.tiet_date);
+        tietDate.addTextChangedListener(this);
+        tietDate.setOnClickListener(this);
+        tietStartPeriod = findViewById(R.id.tiet_startPeriod);
+        tietStartPeriod.addTextChangedListener(this);
+        tietStartPeriod.setOnClickListener(this);
+        tietEndPeriod = findViewById(R.id.tiet_endPeriod);
+        tietEndPeriod.addTextChangedListener(this);
+        tietEndPeriod.setOnClickListener(this);
+        tietConsumption = findViewById(R.id.tiet_Consumption);
+        tietConsumption.addTextChangedListener(this);
+        tietAmount = findViewById(R.id.tiet_Amount);
+        tietAmount.addTextChangedListener(this);
+        actvInvoiceType = findViewById(R.id.actv_invoiceType);
+        actvInvoiceType.addTextChangedListener(this);
+        btNew = findViewById(R.id.bt_New);
+        btNew.setOnClickListener(this);
 
         Bundle param= this.getIntent().getExtras();
         if (param != null) {
@@ -70,72 +91,113 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         }
         loadInvoiceType();
 
-        // Se preparan los escuchadores onFocusChangeListener sobre los TextInputEditText
-        cuStartPeriod = new CalendarUtility(this, R.id.tiet_startPeriod);
-        listenerDateStartPeriod();
-
-        cuEndPeriod = new CalendarUtility(this, R.id.tiet_endPeriod);
-        listenerDateEndPeriod();
-
-        cuDate = new CalendarUtility(this, R.id.tiet_date);
-        listenerDate();
-
     }
 
     public void loadInvoiceType() {
-
         //Asignamos lista a DropDowns
-        String[] type = {"Electricidad", "Agua", "Gas", "Telefonía", "Alquiler", "Otros"};
+        String[] type = {"Electricidad", "Agua", "Gas", "Telefonía"};
         ArrayAdapter typeAdapter = new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, type);
-        actv_invoiceType.setAdapter(typeAdapter);
-        actv_invoiceType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        actvInvoiceType.setAdapter(typeAdapter);
+        actvInvoiceType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 typeSelection = parent.getItemAtPosition(position).toString();
+                btNew.setEnabled(checkFields());
             }
         });
     }
 
-    public void listenerDateStartPeriod() {
-        cuStartPeriod.getDate();
+    private void addCalendar(Calendar calendar, TextInputEditText tiet) {
+        MaterialDatePicker materialDatePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText(R.string.select_date)
+                .build();
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                calendar.setTimeInMillis((Long) selection);
+
+                DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
+                String formatted = format.format(calendar.getTime());
+                tiet.setText(formatted);
+            }
+        });
+        materialDatePicker.show(getSupportFragmentManager(), String.valueOf(R.string.select_date));
     }
 
-    public void listenerDateEndPeriod() {
-        cuEndPeriod.getDate();
-    }
 
-    public void listenerDate() {
-        cuDate.getDate();
-    }
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.bt_New){
-            invoiceModel=new InvoiceModel(
-                    tiet_invoiceNum.getText().toString(),
-                    typeSelection,
-                    tiet_date.getText().toString(),
-                    tiet_startPeriod.getText().toString(),
-                    tiet_endPeriod.getText().toString(),
-                    Double.parseDouble(tiet_Consumption.getText().toString()),
-                    Double.parseDouble(tiet_Amount.getText().toString()),
-                    "0",
-                    groupModel.getId()
-            );
-            insertInvoice(invoiceModel);
+        if (v.getId() == R.id.bt_New) {
+            if (dateStart.before(dateEnd)){
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                InvoiceModel invoiceModel = new InvoiceModel(
+                        tietInvoiceNum.getText().toString(),
+                        tietProvider.getText().toString(),
+                        typeSelection,
+                        formater.format(dateEmition.getTime()),
+                        formater.format(dateStart.getTime()),
+                        formater.format(dateEnd.getTime()),
+                        Double.parseDouble(tietConsumption.getText().toString()),
+                        Double.parseDouble(tietAmount.getText().toString()),
+                        "0",
+                        groupModel.getId()
+                );
+                insertInvoice(invoiceModel);
+                btNew.setClickable(false);
+            } else {
+                tietStartPeriod.setText("");
+                tietEndPeriod.setText("");
+                Toast.makeText(this, "El periodo de fin debe ser superior al periodo de inicio",
+                        Toast.LENGTH_LONG).show();
+                btNew.setEnabled(false);
+            }
+        } else if (v.getId() == R.id.tiet_date) {
+            addCalendar(dateEmition, (TextInputEditText) v);
+        } else if (v.getId() == R.id.tiet_startPeriod){
+            addCalendar(dateStart, (TextInputEditText) v);
+        } else if ( v.getId() == R.id.tiet_endPeriod){
+            addCalendar(dateEnd, (TextInputEditText) v);
         }
     }
-    public void insertInvoice(InvoiceModel im){
 
-        webApiRequest.insertInvoice(im, new WebApiRequest.WebApiRequestJsonObjectListener() {
+    private boolean checkFields() {
+        if(tietInvoiceNum.getText().toString().equals("")){
+            return false;
+        }
+        if(tietProvider.getText().toString().equals("")){
+            return false;
+        }
+        if(typeSelection == null || typeSelection.equals("")){
+            return false;
+        }
+        if(tietDate.getText().toString().equals("")){
+            return false;
+        }
+        if(tietStartPeriod.getText().toString().equals("")){
+            return false;
+        }
+        if(tietEndPeriod.getText().toString().equals("")){
+            return false;
+        }
+        // TODO si los campos periodo estan metidos comprobar que el inicio no sea superior al fin
+        if(tietConsumption.getText().toString().equals("")){
+            return false;
+        }
+        if(tietAmount.getText().toString().equals("")){
+            return false;
+        }
+
+        return true;
+    }
+
+    public void insertInvoice(InvoiceModel im){
+        webApiRequest.insertInvoice(userEmail, userPass, im, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
                 if (id > 0) {
                     Log.d("DEBUGME", "insertInvoice onSucess: " + id + " " + message);
 
                     Toast.makeText(getApplicationContext(), "Factura insertada con éxito: " + id, Toast.LENGTH_LONG).show();
-                    // bloqueado boton de nueva factura para no insertar la misma varias veces
-                    //bt_New.setEnabled(false);
-//                    onBackPressed();
 
                     Intent intent = new Intent(getApplicationContext(), GroupInvoiceTab.class);
                     intent.putExtra("groupModel", groupModel);
@@ -144,16 +206,36 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                     startActivity(intent);
                 } else if (id < 0) {
                     Log.d("DEBUGME", "insertInvoice onSucess: " + id + " " + message);
-                    Toast.makeText(getApplicationContext(), "Error al insertar. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error al insertar factura. Codigo de error: " + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "insertInvoice onerror: " + id + " " + message);
-                Toast.makeText(getApplicationContext(), "Error al insertar. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error al insertar factura. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                btNew.setClickable(false);
             }
         });
     }
 
+
+    // Métodos para habilitar el botón con el form completo
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (checkFields()) {
+            btNew.setEnabled(true);
+        } else {
+            btNew.setEnabled(false);
+        }
+    }
 }

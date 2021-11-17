@@ -446,18 +446,12 @@ public class WebApiRequest {
                             //Obtenemos el objeto JSONObjet de Activity individual
                             JSONObject jsonObjectActivity = jsonArrayActivity.getJSONObject(i);
 
-                            // Comprobamos si la factura es nula
-                            int identifierinvoice = -1;
-                            if (!jsonObjectActivity.isNull("identifierincoice")){
-                                identifierinvoice = jsonObjectActivity.getInt("identifierinvoice");
-                            }
                             activityModels.add(new ActivityModel(
-                                    jsonObjectActivity.getString("idactivity"),
+                                    jsonObjectActivity.getInt("idactivity"),
                                     jsonObjectActivity.getString("date_activity"),
                                     jsonObjectActivity.getString("action"),
                                     jsonObjectActivity.getInt("idgroup"),
                                     jsonObjectActivity.getString("email"),
-                                    identifierinvoice,
                                     jsonObjectActivity.getInt("icon")
                             ));
                         }
@@ -659,6 +653,7 @@ public class WebApiRequest {
                             invoiceModels.add(new InvoiceModel(
                                     jsonObjectInvoice.getInt("idinvoice"),
                                     jsonObjectInvoice.getString("identifier"),
+                                    jsonObjectInvoice.getString("provider"),
                                     jsonObjectInvoice.getString("type"),
                                     jsonObjectInvoice.getString("date"),
                                     jsonObjectInvoice.getString("start_period"),
@@ -757,7 +752,7 @@ public class WebApiRequest {
 
     }
 
-    public void insertInvoice(InvoiceModel im, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+    public void insertInvoice(String email, String password, InvoiceModel im, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         @SuppressWarnings("RedundantThrows") StringRequest sr = new StringRequest(Request.Method.POST, URL + "insertInvoice.php", new Response.Listener<String>() {
             @Override
@@ -788,7 +783,10 @@ public class WebApiRequest {
                 // String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
                 Log.d("DEBUGME", "getparams: " + "identificador: " + im.getIdentifier());
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                params.put("password", password);
                 params.put("identifier", im.getIdentifier());
+                params.put("provider", im.getProvider());
                 params.put("type", im.getType());
                 params.put("date", im.getDate());
                 params.put("start_period", im.getStart_period());
@@ -977,6 +975,64 @@ public class WebApiRequest {
                     params.put(member, m.getEmail());
                     c++;
                 }
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
+
+    public void updatePassword(String userEmail, String userPass, String newPass, WebApiRequestJsonResponseListener webApiRequestJsonResponseListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "updatePassword.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "updatePassword onResponse: response " + response);
+
+                //Respuesta
+                try {
+                    //Obtenemos el JsonResponde Padre
+                    JSONObject json = new JSONObject(response);
+
+                    //Obtenemos el JsonObject hijo con la respuesta
+                    JSONObject jsonObjectResponse = json.getJSONObject("response");
+
+                    //Creamos el JsonResponseModel
+                    JsonResponseModel jsonResponseModel = new JsonResponseModel(
+                            jsonObjectResponse.getInt("id"),
+                            jsonObjectResponse.getString("message"));
+
+                    if (jsonResponseModel.getId() > 0) {
+                        webApiRequestJsonResponseListener.onSuccess(jsonResponseModel);
+                    } else {
+                        webApiRequestJsonResponseListener.onError(jsonResponseModel);
+                    }
+                } catch (JSONException e) {
+                    Log.d("DEBUGME", e.getMessage());
+                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "updatePassword JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "getGroupsByEmail VolleyError: " + error.getMessage());
+                webApiRequestJsonResponseListener.onError(new JsonResponseModel(-1, "updatePassword onErrorResponse: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", userEmail);
+                params.put("password", userPass);
+                params.put("newpassword", newPass);
+
                 return params;
             }
 

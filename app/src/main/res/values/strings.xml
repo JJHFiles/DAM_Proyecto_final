@@ -19,7 +19,7 @@
     <string name="edtInput_name">Nombre</string>
     <string name="edtInput_email">Email</string>
     <string name="edtInput_pass">Contraseña</string>
-    <string name="btnCancel">Cancelar</string>
+    <string name="cancel">Cancelar</string>
     <string name="btnContinue_Continue">Continuar</string>
     <string name="btnContinue_Finalize">Finalizar</string>
     <string name="pass_NotEquals">Las contraseñas no coinciden</string>
@@ -33,7 +33,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
+    <string name="next">Siguiente</string>
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
@@ -99,10 +99,20 @@
     <string name="walktrough_description_2">\"Sube tus facturas de forma manual o mediante OCR. ¡Podrás añadir todas las facturas que quieras! \"</string>
     <string name="walktrough_description_3">Podrás visualizar todas las facturas añadidas a cada grupo en formato lista o en modo gráfica. ¡Hay 3 diferentes!</string>
     <string name="empty_invoices_text">Aún no tienes ninguna factura añadida a este grupo.\n Cuando añadas una esta te aparecerá aquí</string>
-    <string-array name="roles">
-        <item>Admin</item>
-        <item>Editor</item>
-        <item>lector</item>
-    </string-array>
+    <string name="password_change_text1">Para poder cambiar tu contraseña, necesitamos que introduzcas tu contraseña actual.</string>
+    <string name="password_change_text2">Ahora, introduce tu nueva contraseña.</string>
+    <string name="password_change_text3">Vuelve a introducir tu nueva contraseña</string>
+    <string name="password_change_warning_baddpassword">Contraseña incorrecta</string>
+    <string name="password_change_passwordchanged">Ha cambiado la contraseña correctamente</string>
+    <string name="password_change_warning_errorchanging">Error al cambiar la contraseña</string>
+    <string name="password_change_warning_newpassnotequals">Las contraseñas no coinciden, por favor introducelas de nuevo</string>
+    <string name="blist_logo_description">Imagen del logo de la aplicación</string>
+    <string name="user">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="registry_text1">¿Aún no tienes cuenta?</string>
+    <string name="registry_text2">Regístrate</string>
+    <string name="name">Nombre</string>
+    <string name="change_password">Cambiar contraseña</string>
+
 
 </resources>

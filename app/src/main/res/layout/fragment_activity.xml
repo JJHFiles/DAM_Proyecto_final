@@ -57,6 +57,8 @@
         android:layout_marginRight="24dp"
         android:dividerHeight="1dp"
         android:visibility="invisible"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

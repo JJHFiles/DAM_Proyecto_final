@@ -4,26 +4,24 @@ public class ActivityModel {
 
 // BD activity table fields:  idactivity, date_activity(type datetime), action, idgroup, email
 
-    private String idactivity;
+    private int idactivity;
     private String date_activity;
     private String action;
     private int idgroup;
     private String email;
-    private int identifierinvoice;
     private int icon;
 
 
-    public ActivityModel(String idactivity, String date_activity, String action, int idgroup, String email, int identifierinvoice, int icon) {
+    public ActivityModel(int idactivity, String date_activity, String action, int idgroup, String email, int icon) {
         this.idactivity = idactivity;
         this.date_activity = date_activity;
         this.action = action;
         this.idgroup = idgroup;
         this.email = email;
-        this.identifierinvoice = identifierinvoice;
         this.icon = icon;
     }
 
-    public String getIdactivity() {
+    public int getIdactivity() {
         return idactivity;
     }
 
@@ -41,10 +39,6 @@ public class ActivityModel {
 
     public String getEmail() {
         return email;
-    }
-
-    public int getIdentifierinvoice() {
-        return identifierinvoice;
     }
 
     public int getIcon() {

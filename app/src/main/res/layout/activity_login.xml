@@ -21,7 +21,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/blist_logo_description" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout4"
@@ -29,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginTop="60dp"
-        android:hint="Usuario"
+        android:hint="@string/user"
         app:layout_constraintTop_toBottomOf="@+id/imgvLogo">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -46,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginTop="24dp"
-        android:hint="Contraseña"
+        android:hint="@string/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
@@ -55,7 +56,7 @@
             android:id="@+id/edtUserPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -141,16 +142,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="¿Aún no tienes cuenta?" />
+            android:text="@string/registry_text1" />
 
         <TextView
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/primary_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Regístrate" />
+            android:text="@string/registry_text2" />
 
     </LinearLayout>
 

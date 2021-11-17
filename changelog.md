@@ -1,22 +1,48 @@
 # CHANGELOG for blist proyect
 
 
-
-## 0.1.6 XXXXXXX  
+## 0.1.7 XXXXXX
 ### Added
-- Navigation fixed to best experiencie and forbidden back on some screen
-- Invoice name can be duplicated in multiple groups
 
 ### Changed
-- Now some fragment use newInstance method instead constructor and bundle
-- Now some fragment/activity receive group object instead parameters
-- Some Toast was removed instead log depuration
+
 
 ### Fixed
 
 
 ### Removed
+
+
+
+
+
+## 0.1.6 2021-11-16  
+### Added
+- Navigation fixed to best experiencie and forbidden back on some screen
+- Invoice name can be duplicated in multiple groups
+- Now Add invoice screen show calendar text on local format 
+- Now can't add invoices if all form inputs are complete
+- Now tab fragment navigation not add to backstack for better nav
+- Change password is available
+- Spash screen animation to startup
+
+### Changed
+- Now some fragment use newInstance method instead constructor and bundle
+- Now some fragment/activity receive group object instead parameters
+- Some Toast was removed instead log depuration
+- Icon for activitys
+- Package refactored
+- Calendar methods deprecated
+
+### Fixed
+- InvoiceModel not load/write provider
+- Warning minor
+- Format date on activity
+
+
+### Removed
 - Some Toast was removed for better ux
+- Unncesary code
 
 
 
