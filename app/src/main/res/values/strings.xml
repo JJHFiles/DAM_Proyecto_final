@@ -99,6 +99,10 @@
     <string name="walktrough_description_2">\"Sube tus facturas de forma manual o mediante OCR. ¡Podrás añadir todas las facturas que quieras! \"</string>
     <string name="walktrough_description_3">Podrás visualizar todas las facturas añadidas a cada grupo en formato lista o en modo gráfica. ¡Hay 3 diferentes!</string>
     <string name="empty_invoices_text">Aún no tienes ninguna factura añadida a este grupo.\n Cuando añadas una esta te aparecerá aquí</string>
-
+    <string-array name="roles">
+        <item>Admin</item>
+        <item>Editor</item>
+        <item>lector</item>
+    </string-array>
 
 </resources>

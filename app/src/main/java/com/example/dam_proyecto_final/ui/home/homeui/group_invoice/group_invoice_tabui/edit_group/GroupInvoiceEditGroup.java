@@ -49,6 +49,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     private String userPass;
     private WebApiRequest webApiRequest;
     private Context context;
+    ViewGroup.LayoutParams params;
     //private ArrayList<GroupModel> groupModels;
     // private GroupModel groupModel;
 
@@ -128,6 +129,8 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         dd_AGIEG_Role.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
                 roleSelection = (String) parent.getItemAtPosition(position);
+              //  Toast.makeText(context, "Role:"+roleSelection, Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -140,16 +143,12 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
         edt_AGIEG_GroupName.setText(groupName);
 
-/*
-        //ListView de miembros
-        lstv_Members = findViewById(R.id.lstv_AGIEG_Members);
-        // members = new ArrayList<MemberModel>();
-        membersAdapter = new GroupInvoiceEditGroupMemberAdapter(this, membersLis, membersDel, lstv_Members);
-        lstv_Members.setAdapter(membersAdapter);
-*/
+
         //Buttons
         btn_AGIEG_Add = findViewById(R.id.btn_AGIEG_Add);
         btn_AGIEG_Add.setOnClickListener(this);
+
+
 
     }
 
@@ -193,7 +192,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                             for (int x = 0; x < membersOld.size(); x++) {
                                 if (!edt_AGIEG_AddMember.getText().toString().equals(membersOld.get(x).getEmail())) {
 
-                                    // Sui el usuario está pendiente de eliminarse del grupo ya no eliminará
+                                    // Si el usuario está pendiente de eliminarse del grupo ya no eliminará
                                     for (int y=0;x<membersDel.size();y++) {
                                         if(membersDel.get(y).getEmail().equals(edt_AGIEG_AddMember.getText().toString())){
                                             membersDel.remove(membersDel.get(y));
@@ -312,7 +311,8 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
             totalHeight += listItem.getMeasuredHeight();
         }
 
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+        params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
