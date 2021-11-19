@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -26,7 +27,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 
 
-public class GroupInvoiceTabListFragment extends Fragment implements View.OnClickListener {
+public class GroupInvoiceTabListFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ListView lv_invoice;
     private ConstraintLayout root_background;
@@ -95,6 +96,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
         //ListView
         lv_invoice = view.findViewById(R.id.lv_invoice);
+        lv_invoice.setOnItemClickListener(this);
 
         root_background = view.findViewById(R.id.root_background);
         root_background.setOnClickListener(this);
@@ -192,4 +194,12 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         }
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(context, InvoiceDetail.class);
+        intent.putExtra("userEmail", userEmail);
+        intent.putExtra("userPass", userPass);
+        intent.putExtra("invoice", arrIM.get(i));
+        startActivity(intent);
+    }
 }

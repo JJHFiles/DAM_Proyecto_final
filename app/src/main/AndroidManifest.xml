@@ -16,10 +16,13 @@
         android:theme="@style/Theme.DAM_Proyecto_final"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.InvoiceDetail"
+            android:exported="true" />
+        <activity
             android:name=".ui.home.homeui.profileui.PasswordChangeActivity"
-            android:windowSoftInputMode="adjustResize"
             android:noHistory="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.MainActivity"
             android:noHistory="true"
@@ -52,7 +55,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.homeui.group_invoice.GroupInvoiceAdd"
-            android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.homeui.group_invoice.GroupInvoiceTab"

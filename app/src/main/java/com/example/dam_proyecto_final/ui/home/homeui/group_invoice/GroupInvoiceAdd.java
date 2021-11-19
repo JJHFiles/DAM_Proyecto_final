@@ -1,34 +1,55 @@
 package com.example.dam_proyecto_final.ui.home.homeui.group_invoice;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.InvoiceModel;
-import com.example.dam_proyecto_final.utility.CalendarUtility;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+
+    // Request code for selecting a PDF document.
+    private static final int PICK_PDF_FILE = 2;
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 400;
 
     private TextInputEditText
             tietInvoiceNum,
@@ -38,6 +59,12 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             tietEndPeriod,
             tietConsumption,
             tietAmount;
+    TextView tvFileName;
+    String pdfFile;
+    ImageButton ibFileIcon;
+    LinearLayout llFilePicker;
+
+
     private String typeSelection;
     private AutoCompleteTextView actvInvoiceType;
     private Button btNew;
@@ -81,6 +108,11 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         actvInvoiceType.addTextChangedListener(this);
         btNew = findViewById(R.id.bt_New);
         btNew.setOnClickListener(this);
+        llFilePicker = findViewById(R.id.ll_invoiceadd_filepicker);
+        llFilePicker.setOnClickListener(this);
+        tvFileName = findViewById(R.id.tv_invoiceadd_filename);
+        ibFileIcon = findViewById(R.id.ib_invoiceadd_fileicon);
+
 
         Bundle param= this.getIntent().getExtras();
         if (param != null) {
@@ -142,6 +174,9 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                         "0",
                         groupModel.getId()
                 );
+                if (!pdfFile.isEmpty()){
+                    invoiceModel.setFile(pdfFile);
+                }
                 insertInvoice(invoiceModel);
                 btNew.setClickable(false);
             } else {
@@ -157,6 +192,12 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             addCalendar(dateStart, (TextInputEditText) v);
         } else if ( v.getId() == R.id.tiet_endPeriod){
             addCalendar(dateEnd, (TextInputEditText) v);
+        } else if (v.getId() == R.id.ll_invoiceadd_filepicker){
+//            Intent intent = new Intent()
+//                    .setType("application/pdf")
+//                    .setAction(Intent.ACTION_GET_CONTENT);
+//            startActivity(intent);
+            openFile();
         }
     }
 
@@ -190,7 +231,76 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         return true;
     }
 
+
+
+    private void openFile() {
+        checkStoragePermissions();
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/pdf");
+
+        startActivityForResult(intent, PICK_PDF_FILE);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( requestCode == PICK_PDF_FILE  && resultCode == Activity.RESULT_OK){
+            Uri pdfPath = data.getData();
+            pdfFile = getStringPdf(pdfPath);
+            if (pdfPath.getScheme().equals("content")) {
+                Cursor cursor = getContentResolver().query(pdfPath, null, null, null, null);
+                try {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        tvFileName.setText(cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)));
+                    }
+                } finally {
+                    cursor.close();
+                }
+                ibFileIcon.setVisibility(View.INVISIBLE);
+                llFilePicker.setClickable(false);
+            }
+
+        } else {
+            Toast.makeText(this, "Error al seleccioanr el fichero", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public String getStringPdf (Uri filepath){
+        InputStream inputStream = null;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            inputStream =  getContentResolver().openInputStream(filepath);
+
+            byte[] buffer = new byte[1024];
+            byteArrayOutputStream = new ByteArrayOutputStream();
+
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        byte[] pdfByteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(pdfByteArray, Base64.DEFAULT);
+    }
+
+
     public void insertInvoice(InvoiceModel im){
+
         webApiRequest.insertInvoice(userEmail, userPass, im, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
@@ -236,6 +346,35 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             btNew.setEnabled(true);
         } else {
             btNew.setEnabled(false);
+        }
+    }
+
+
+    private void checkStoragePermissions() {
+        if ( checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Se necesitan de almacenamiento para poder almacenar la factura")
+                        .setTitle("Permisos denegados")
+                        .setNeutralButton("Lo he entendido", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                        REQUEST_CODE_ASK_PERMISSIONS);
+                                onBackPressed();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else {
+                // request permission
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    onBackPressed();
+                }
+            }
+
         }
     }
 }

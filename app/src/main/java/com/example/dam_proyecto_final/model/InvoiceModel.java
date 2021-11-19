@@ -17,6 +17,7 @@ public class InvoiceModel implements Parcelable {
     private double consumption;
     private double amount;
     private String filetype;
+    private String file;
     private int idgroup;
 
     public InvoiceModel() {
@@ -148,6 +149,14 @@ public class InvoiceModel implements Parcelable {
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 
     protected InvoiceModel(Parcel in) {

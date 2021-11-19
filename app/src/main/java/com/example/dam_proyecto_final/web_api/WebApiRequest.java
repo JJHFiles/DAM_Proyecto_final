@@ -794,7 +794,9 @@ public class WebApiRequest {
                 params.put("consumption", String.valueOf(im.getConsumption()));
                 params.put("amount", String.valueOf(im.getAmount()));
                 params.put("idgroup", String.valueOf(im.getIdgroup()));
-
+                if (!im.getFile().isEmpty()){
+                    params.put("file", String.valueOf(im.getFile()));
+                }
 
                 return params;
             }
