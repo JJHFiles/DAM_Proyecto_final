@@ -88,7 +88,7 @@
         android:layout_marginTop="52dp"
         android:backgroundTint="@color/white"
         android:gravity="center"
-        android:text="Añadir escaneando, OCR"
+        android:text="Añadir factura manualmente"
         android:textColor="@color/primary_color"
         android:textSize="10dp"
         android:visibility="invisible"
