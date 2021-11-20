@@ -81,7 +81,6 @@ public class WebApiRequest {
     }
 
 
-
     //Método callback5 Devuelve una respuesta y 2 listas
     public interface WebApiRequestJsonObjectArrayListenerV2 {
         void onSuccess(JsonResponseModel response, GroupModel group, List<?> data);
@@ -639,35 +638,38 @@ public class WebApiRequest {
                     ArrayList<InvoiceModel> invoiceModels;
                     invoiceModels = new ArrayList<>();
                     if (jsonResponseModel.getId() > 0) {
-                        //Si la respuesta es Positiva hay datos. Obtenemos el JsonArray
-                        JSONArray jsonArrayInvoice = json.getJSONArray("invoice");
-                        for (int i = 0; i < jsonArrayInvoice.length(); i++) {
-                            //Obtenemos el objeto JSONObjet de Activity individual
-                            JSONObject jsonObjectInvoice = jsonArrayInvoice.getJSONObject(i);
+                        if (jsonResponseModel.getId() == 252) {
+                            webApiRequestJsonObjectArrayListener.onSuccess(jsonResponseModel, null);
+                        } else {
+                            //Si la respuesta es Positiva hay datos. Obtenemos el JsonArray
+                            JSONArray jsonArrayInvoice = json.getJSONArray("invoice");
+                            for (int i = 0; i < jsonArrayInvoice.length(); i++) {
+                                //Obtenemos el objeto JSONObjet de Activity individual
+                                JSONObject jsonObjectInvoice = jsonArrayInvoice.getJSONObject(i);
 
 //                            double consumption = -1;
 //                            if (!jsonObjectInvoice.getString("consumption").equals("null")){
 //                                consumption = jsonObjectInvoice.getDouble("consumption");
 //                            }
 
-                            invoiceModels.add(new InvoiceModel(
-                                    jsonObjectInvoice.getInt("idinvoice"),
-                                    jsonObjectInvoice.getString("identifier"),
-                                    jsonObjectInvoice.getString("provider"),
-                                    jsonObjectInvoice.getString("type"),
-                                    jsonObjectInvoice.getString("date"),
-                                    jsonObjectInvoice.getString("start_period"),
-                                    jsonObjectInvoice.getString("end_period"),
-                                    jsonObjectInvoice.getDouble("consumption"),
-                                    jsonObjectInvoice.getDouble("amount"),
-                                    jsonObjectInvoice.getString("filetype"),
-                                    jsonObjectInvoice.getInt("idgroup")
+                                invoiceModels.add(new InvoiceModel(
+                                        jsonObjectInvoice.getInt("idinvoice"),
+                                        jsonObjectInvoice.getString("identifier"),
+                                        jsonObjectInvoice.getString("provider"),
+                                        jsonObjectInvoice.getString("type"),
+                                        jsonObjectInvoice.getString("date"),
+                                        jsonObjectInvoice.getString("start_period"),
+                                        jsonObjectInvoice.getString("end_period"),
+                                        jsonObjectInvoice.getDouble("consumption"),
+                                        jsonObjectInvoice.getDouble("amount"),
+                                        jsonObjectInvoice.getString("filetype"),
+                                        jsonObjectInvoice.getInt("idgroup")
 
-                            ));
+                                ));
+                                //Una vez tenemos la respuesta y la lista la retornamos
+                                webApiRequestJsonObjectArrayListener.onSuccess(jsonResponseModel, invoiceModels);
+                            }
                         }
-
-                        //Una vez tenemos la respuesta y la lista la retornamos
-                        webApiRequestJsonObjectArrayListener.onSuccess(jsonResponseModel, invoiceModels);
                     } else {
                         //Si la respuesta es negativa devolvemos el error
                         webApiRequestJsonObjectArrayListener.onError(jsonResponseModel);
@@ -794,7 +796,7 @@ public class WebApiRequest {
                 params.put("consumption", String.valueOf(im.getConsumption()));
                 params.put("amount", String.valueOf(im.getAmount()));
                 params.put("idgroup", String.valueOf(im.getIdgroup()));
-                if (!im.getFile().isEmpty()){
+                if (im.getFile() != null) {
                     params.put("file", String.valueOf(im.getFile()));
                 }
 
@@ -831,14 +833,13 @@ public class WebApiRequest {
                             jsonObjectResponse.getString("message"));
 
                     if (jsonResponseModel.getId() > 0) {
-                    JSONObject jsonObjectGroup = json.getJSONObject("group");
-                    //Creamos la lista de grupos
-                   GroupModel group = new GroupModel(
-                           jsonObjectGroup.getInt("idgroup"),
-                           jsonObjectGroup.getString("name"),
-                           jsonObjectGroup.getString("description"),
-                           jsonObjectGroup.getString("currency"));
-
+                        JSONObject jsonObjectGroup = json.getJSONObject("group");
+                        //Creamos la lista de grupos
+                        GroupModel group = new GroupModel(
+                                jsonObjectGroup.getInt("idgroup"),
+                                jsonObjectGroup.getString("name"),
+                                jsonObjectGroup.getString("description"),
+                                jsonObjectGroup.getString("currency"));
 
 
                         //Creamos la lista de shared
@@ -973,7 +974,7 @@ public class WebApiRequest {
                 int c = 0;
                 for (MemberModel m : membersDel) {
                     String member = "membersDel" + c;
-                    Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member );
+                    Log.d("DEBUGME", m.getEmail() + " " + m.getRole() + " " + member);
                     params.put(member, m.getEmail());
                     c++;
                 }
@@ -1034,6 +1035,63 @@ public class WebApiRequest {
                 params.put("email", userEmail);
                 params.put("password", userPass);
                 params.put("newpassword", newPass);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
+
+    public void invoiceDelete(String userEmail, String userPass, InvoiceModel invoice, GroupModel group, WebApiRequestJsonResponseListener webApiRequestJsonResponseListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "deleteInvoice.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "invoiceDelete onResponse: response " + response);
+
+                try {
+                    JSONObject json = new JSONObject(response);
+
+//                    JSONObject jsonObjectResponse = json.getJSONObject("response");
+
+                    JsonResponseModel jsonResponseModel = new JsonResponseModel(
+                            json.getInt("id"),
+                            json.getString("message"));
+
+                    if (jsonResponseModel.getId() > 0) {
+                        webApiRequestJsonResponseListener.onSuccess(jsonResponseModel);
+                    } else {
+                        webApiRequestJsonResponseListener.onError(jsonResponseModel);
+                    }
+                } catch (JSONException e) {
+                    Log.d("DEBUGME", e.getMessage());
+                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "invoiceDelete JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "invoiceDelete VolleyError: " + error.getMessage());
+                webApiRequestJsonResponseListener.onError(new JsonResponseModel(-1, "invoiceDelete onErrorResponse: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", userEmail);
+                params.put("password", userPass);
+                params.put("invoiceid", String.valueOf(invoice.getIdInvoice()));
+                params.put("idgroup", String.valueOf(group.getId()));
+                params.put("groupname", String.valueOf(group.getName()));
+
 
                 return params;
             }

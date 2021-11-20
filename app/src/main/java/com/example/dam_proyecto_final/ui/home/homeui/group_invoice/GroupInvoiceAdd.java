@@ -114,7 +114,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         ibFileIcon = findViewById(R.id.ib_invoiceadd_fileicon);
 
 
-        Bundle param= this.getIntent().getExtras();
+        Bundle param = this.getIntent().getExtras();
         if (param != null) {
             groupModel = (GroupModel) param.getSerializable("groupModel");
             userEmail = param.getString("userEmail", "vacio");
@@ -156,11 +156,10 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     }
 
 
-
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bt_New) {
-            if (dateStart.before(dateEnd)){
+            if (dateStart.before(dateEnd)) {
                 SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
                 InvoiceModel invoiceModel = new InvoiceModel(
                         tietInvoiceNum.getText().toString(),
@@ -174,7 +173,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                         "0",
                         groupModel.getId()
                 );
-                if (!pdfFile.isEmpty()){
+                if (pdfFile != null) {
                     invoiceModel.setFile(pdfFile);
                 }
                 insertInvoice(invoiceModel);
@@ -188,11 +187,11 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             }
         } else if (v.getId() == R.id.tiet_date) {
             addCalendar(dateEmition, (TextInputEditText) v);
-        } else if (v.getId() == R.id.tiet_startPeriod){
+        } else if (v.getId() == R.id.tiet_startPeriod) {
             addCalendar(dateStart, (TextInputEditText) v);
-        } else if ( v.getId() == R.id.tiet_endPeriod){
+        } else if (v.getId() == R.id.tiet_endPeriod) {
             addCalendar(dateEnd, (TextInputEditText) v);
-        } else if (v.getId() == R.id.ll_invoiceadd_filepicker){
+        } else if (v.getId() == R.id.ll_invoiceadd_filepicker) {
 //            Intent intent = new Intent()
 //                    .setType("application/pdf")
 //                    .setAction(Intent.ACTION_GET_CONTENT);
@@ -202,35 +201,34 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     }
 
     private boolean checkFields() {
-        if(tietInvoiceNum.getText().toString().equals("")){
+        if (tietInvoiceNum.getText().toString().equals("")) {
             return false;
         }
-        if(tietProvider.getText().toString().equals("")){
+        if (tietProvider.getText().toString().equals("")) {
             return false;
         }
-        if(typeSelection == null || typeSelection.equals("")){
+        if (typeSelection == null || typeSelection.equals("")) {
             return false;
         }
-        if(tietDate.getText().toString().equals("")){
+        if (tietDate.getText().toString().equals("")) {
             return false;
         }
-        if(tietStartPeriod.getText().toString().equals("")){
+        if (tietStartPeriod.getText().toString().equals("")) {
             return false;
         }
-        if(tietEndPeriod.getText().toString().equals("")){
+        if (tietEndPeriod.getText().toString().equals("")) {
             return false;
         }
         // TODO si los campos periodo estan metidos comprobar que el inicio no sea superior al fin
-        if(tietConsumption.getText().toString().equals("")){
+        if (tietConsumption.getText().toString().equals("")) {
             return false;
         }
-        if(tietAmount.getText().toString().equals("")){
+        if (tietAmount.getText().toString().equals("")) {
             return false;
         }
 
         return true;
     }
-
 
 
     private void openFile() {
@@ -248,7 +246,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ( requestCode == PICK_PDF_FILE  && resultCode == Activity.RESULT_OK){
+        if (requestCode == PICK_PDF_FILE && resultCode == Activity.RESULT_OK) {
             Uri pdfPath = data.getData();
             pdfFile = getStringPdf(pdfPath);
             if (pdfPath.getScheme().equals("content")) {
@@ -269,11 +267,11 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    public String getStringPdf (Uri filepath){
+    public String getStringPdf(Uri filepath) {
         InputStream inputStream = null;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
-            inputStream =  getContentResolver().openInputStream(filepath);
+            inputStream = getContentResolver().openInputStream(filepath);
 
             byte[] buffer = new byte[1024];
             byteArrayOutputStream = new ByteArrayOutputStream();
@@ -299,7 +297,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    public void insertInvoice(InvoiceModel im){
+    public void insertInvoice(InvoiceModel im) {
 
         webApiRequest.insertInvoice(userEmail, userPass, im, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
@@ -308,8 +306,8 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                     Log.d("DEBUGME", "insertInvoice onSucess: " + id + " " + message);
 
                     Toast.makeText(getApplicationContext(), "Factura insertada con éxito: " + id, Toast.LENGTH_LONG).show();
-
                     Intent intent = new Intent(getApplicationContext(), GroupInvoiceTab.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("groupModel", groupModel);
                     intent.putExtra("userEmail", userEmail);
                     intent.putExtra("userPass", userPass);
@@ -351,7 +349,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
 
     private void checkStoragePermissions() {
-        if ( checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Se necesitan de almacenamiento para poder almacenar la factura")
@@ -370,7 +368,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                 // request permission
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         REQUEST_CODE_ASK_PERMISSIONS);
-                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     onBackPressed();
                 }
             }

@@ -62,7 +62,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.homeui.group_invoice.GroupInvoiceEmptyActivity"
-            android:noHistory="true"
             android:parentActivityName=".ui.home.HomeActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.dam_proyecto_final.ui.home.HomeActivity;
 import com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui.InvoiceOCRAddActivity;
 import com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup;
 import com.example.dam_proyecto_final.model.GroupModel;
@@ -27,13 +29,11 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
     private TextView txtv_EmptyDescription;
     private TextView txtv_EmptyTitle;
 
-    private ExtendedFloatingActionButton btOCR,btManual;
+    private ExtendedFloatingActionButton btOCR, btManual;
 
     GroupModel groupModel;
     private String userEmail;
     private String userPass;
-
-
 
 
     @Override
@@ -74,18 +74,23 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.ibAdd){
-            btManual.setVisibility(View.VISIBLE);
-            btOCR.setVisibility(View.VISIBLE);
-        } else if (v.getId() == R.id.btManual){
+        if (v.getId() == R.id.ibAdd) {
+            if (btManual.getVisibility() == View.INVISIBLE) {
+                btManual.setVisibility(View.VISIBLE);
+                btOCR.setVisibility(View.VISIBLE);
+            } else {
+                btManual.setVisibility(View.INVISIBLE);
+                btOCR.setVisibility(View.INVISIBLE);
+            }
+        } else if (v.getId() == R.id.btManual) {
             // Abre activity para añadir nuevas facturas manuales
             Intent intent = new Intent(getApplicationContext(), GroupInvoiceAdd.class);
+//            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.putExtra("groupModel", groupModel);
             intent.putExtra("userEmail", userEmail);
             intent.putExtra("userPass", userPass);
             startActivity(intent);
-        }
-        else if (v.getId() == R.id.btOCR){
+        } else if (v.getId() == R.id.btOCR) {
             //TODO: lectura factura por OCR
             Intent intentScan = new Intent(getApplicationContext(), InvoiceOCRAddActivity.class);
             intentScan.putExtra("idGroup", groupModel.getId());
@@ -126,5 +131,15 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        // Do what you need done here
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.left_to_rigth, R.anim.right_to_left);
+
+        this.finish();
+    }
 
 }

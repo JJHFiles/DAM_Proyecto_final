@@ -113,6 +113,7 @@
     <string name="registry_text2">Regístrate</string>
     <string name="name">Nombre</string>
     <string name="change_password">Cambiar contraseña</string>
+    <string name="delete">Eliminar</string>
 
 
 </resources>

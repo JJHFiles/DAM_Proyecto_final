@@ -5,22 +5,21 @@
     android:id="@+id/root_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.homeui.group_invoice.GroupInvoiceTab"
-    android:background="@color/background_lay_gray">
+    android:background="@color/background_lay_gray"
+    tools:context=".ui.home.homeui.group_invoice.GroupInvoiceTab">
 
 
     <ListView
         android:id="@+id/lv_invoice"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         android:background="@color/background_lay_gray"
         android:divider="@null"
-        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
- />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv"
@@ -36,10 +35,10 @@
         android:id="@+id/btManual"
         android:layout_width="190dp"
         android:layout_height="40dp"
-        android:backgroundTint="@color/gray"
+        android:backgroundTint="@color/white"
         android:gravity="center"
         android:text="Añadir de forma manual"
-        android:textColor="@color/black"
+        android:textColor="@color/primary_color"
         android:textSize="10dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -53,10 +52,10 @@
         android:id="@+id/btOCR"
         android:layout_width="190dp"
         android:layout_height="40dp"
-        android:backgroundTint="@color/gray"
+        android:backgroundTint="@color/white"
         android:gravity="center"
         android:text="Añadir escaneando, OCR"
-        android:textColor="@color/black"
+        android:textColor="@color/primary_color"
         android:textSize="10dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/ibAdd"
@@ -72,12 +71,12 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginBottom="30dp"
-        android:backgroundTint="@color/gray"
+        android:backgroundTint="@color/primary_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.909"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_plus" />
+        app:srcCompat="@drawable/ic_plus_white" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

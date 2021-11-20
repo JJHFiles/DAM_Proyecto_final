@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.dam_proyecto_final.ui.home.HomeActivity;
 import com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceFilter;
 import com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabChartFragment;
 import com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui.GroupInvoiceTabListFragment;
@@ -93,28 +94,32 @@ public class GroupInvoiceTab extends AppCompatActivity {
             public void onSuccess(JsonResponseModel response, List<?> data) {
                 Log.d("DEBUGME", "GroupInvoiceTab: " + response.getId() + " " + response.getMessage());
 
-                //Inicializamos la lista de facturas
-                arrIM = (ArrayList<InvoiceModel>) data;
+                if (response.getId() == 252) {
+                    Intent intent = new Intent(getApplicationContext(), GroupInvoiceEmptyActivity.class);
+                    intent.putExtra("groupModel", groupModel);
+                    intent.putExtra("userEmail", userEmail);
+                    intent.putExtra("userPass", userPass);
+                    finish();
+                    startActivity(intent);
+                } else {
 
-                //Si obtenemos la lista invocamos al fragment
-                GroupInvoiceTabListFragment fragment = GroupInvoiceTabListFragment.newInstance(
-                        groupModel, userEmail, userPass, arrIM
-                );
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fcv_AGITListChart, fragment, null)
-                        .commit();
+                    //Inicializamos la lista de facturas
+                    arrIM = (ArrayList<InvoiceModel>) data;
+
+                    //Si obtenemos la lista invocamos al fragment
+                    GroupInvoiceTabListFragment fragment = GroupInvoiceTabListFragment.newInstance(
+                            groupModel, userEmail, userPass, arrIM
+                    );
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fcv_AGITListChart, fragment, null)
+                            .commit();
+                }
+
             }
 
             @Override
             public void onError(JsonResponseModel response) {
-                //En caso de error al obtener las facturas lo indicamos al usaurio
-                if (response.getId() == -253) {
-                    //Si es -252 es que el usuario no tiene actividades
-                    Toast.makeText(getApplicationContext(), "Error " + response.getId(), Toast.LENGTH_LONG).show();
-                } else {
-                    //Si no ha podido ser cualquier error
-                    Toast.makeText(getApplicationContext(), "Error al obtener facturas" + response.getId(), Toast.LENGTH_LONG).show();
-                }
+
                 Log.d("DEBUGME", "GroupInvoiceTab: " + response.getId() + " " + response.getMessage());
             }
         });
@@ -186,7 +191,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
         if (position == 0) {
 //            bundle.putString("currency", groupModel.getCurrency());
             GroupInvoiceTabListFragment fragment = GroupInvoiceTabListFragment.newInstance(
-                    groupModel , userEmail, userPass, invoices
+                    groupModel, userEmail, userPass, invoices
             );
             fragmentManager.beginTransaction()
                     .replace(R.id.fcv_AGITListChart, fragment, null)
@@ -252,6 +257,17 @@ public class GroupInvoiceTab extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do what you need done here
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.left_to_rigth, R.anim.right_to_left);
+
+        this.finish();
     }
 
 

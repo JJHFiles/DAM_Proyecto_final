@@ -54,7 +54,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
 
     public static GroupInvoiceTabListFragment newInstance(GroupModel groupModel, String userEmail, String userPass,
-            ArrayList<InvoiceModel> invoices) {
+                                                          ArrayList<InvoiceModel> invoices) {
         GroupInvoiceTabListFragment fragment = new GroupInvoiceTabListFragment();
         Bundle args = new Bundle();
         args.putSerializable(GROUPMODEL, groupModel);
@@ -156,10 +156,10 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
             case R.id.ibAdd:
 
                 //FAB Principal
-                if(btManual.getVisibility() == View.INVISIBLE) {
+                if (btManual.getVisibility() == View.INVISIBLE) {
                     btManual.setVisibility(View.VISIBLE);
                     btOCR.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     btManual.setVisibility(View.INVISIBLE);
                     btOCR.setVisibility(View.INVISIBLE);
                 }
@@ -190,7 +190,10 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
                 btManual.setVisibility(View.INVISIBLE);
                 btOCR.setVisibility(View.INVISIBLE);
-
+        }
+        if (v.getId() != R.id.ibAdd) {
+            btManual.setVisibility(View.INVISIBLE);
+            btOCR.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -199,7 +202,9 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         Intent intent = new Intent(context, InvoiceDetail.class);
         intent.putExtra("userEmail", userEmail);
         intent.putExtra("userPass", userPass);
+        intent.putExtra("groupModel", groupModel);
         intent.putExtra("invoice", arrIM.get(i));
         startActivity(intent);
     }
+
 }
