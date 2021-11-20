@@ -3,14 +3,22 @@
 
 ## 0.1.7 XXXXXX
 ### Added
+- New screen with invoice detail
+- Now can delete invoice on invoice detal
+- Now can upload PDF with new invoice
+- New icons
+- New button style for delete options
 
 ### Changed
-
+- Navigation logic to better UX
+- FAB style
 
 ### Fixed
-
+- Now can upload a invoice without PDF file
 
 ### Removed
+
+
 
 
 
