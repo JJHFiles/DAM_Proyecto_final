@@ -45,6 +45,7 @@ public class WebApiRequest {
         this.context = context;
     }
 
+
     //Método callback
     public interface WebApiRequestListener {
         void onSuccess(int result);
@@ -84,6 +85,12 @@ public class WebApiRequest {
     //Método callback5 Devuelve una respuesta y 2 listas
     public interface WebApiRequestJsonObjectArrayListenerV2 {
         void onSuccess(JsonResponseModel response, GroupModel group, List<?> data);
+
+        void onError(JsonResponseModel response);
+    }
+
+    public interface WebApiRequestJsonResponseStringListener {
+        void onSuccess(JsonResponseModel response, String data);
 
         void onError(JsonResponseModel response);
     }
@@ -1092,6 +1099,63 @@ public class WebApiRequest {
                 params.put("idgroup", String.valueOf(group.getId()));
                 params.put("groupname", String.valueOf(group.getName()));
 
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
+
+    public void getFileInvoice(String userEmail, String userPass, InvoiceModel invoice, WebApiRequestJsonResponseStringListener webApiRequestJsonResponseStringListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "getFileInvoice.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "getFileInvoice onResponse: response " + response);
+
+                try {
+                    JSONObject json = new JSONObject(response);
+
+                    JSONObject jsonObjectResponse = json.getJSONObject("response");
+                    JsonResponseModel jsonResponseModel = new JsonResponseModel(
+                            jsonObjectResponse.getInt("id"),
+                            jsonObjectResponse.getString("message"));
+
+                    if (jsonResponseModel.getId() > 0) {
+                        if (jsonResponseModel.getId() == 841) {
+                            webApiRequestJsonResponseStringListener.onSuccess(jsonResponseModel, jsonObjectResponse.getString("file"));
+                        } else {
+                            webApiRequestJsonResponseStringListener.onSuccess(jsonResponseModel, "");
+                        }
+                    } else {
+                        webApiRequestJsonResponseStringListener.onError(jsonResponseModel);
+                    }
+                } catch (JSONException e) {
+                    Log.d("DEBUGME", e.getMessage());
+                    webApiRequestJsonResponseStringListener.onError(new JsonResponseModel(-2, "getFileInvoice JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "getFileInvoice VolleyError: " + error.getMessage());
+                webApiRequestJsonResponseStringListener.onError(new JsonResponseModel(-1, "getFileInvoice onErrorResponse: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", userEmail);
+                params.put("password", userPass);
+                params.put("invoiceid", String.valueOf(invoice.getIdInvoice()));
 
                 return params;
             }

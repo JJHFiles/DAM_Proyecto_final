@@ -22,7 +22,7 @@
             android:clickable="false"
             android:focusable="false"
             android:gravity="center"
-            android:hint="Número de factura"
+            android:hint="@string/invoice_num"
             app:boxStrokeWidth="0dp"
             app:hintAnimationEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,6 +36,7 @@
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 tools:text="Texto" />
 
@@ -49,7 +50,7 @@
             android:clickable="false"
             android:focusable="false"
             android:gravity="center"
-            android:hint="Proveedor"
+            android:hint="@string/provider"
             app:boxStrokeWidth="0dp"
             app:hintAnimationEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,6 +64,7 @@
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 tools:text="Texto" />
 
@@ -76,7 +78,7 @@
             android:clickable="false"
             android:focusable="false"
             android:gravity="center"
-            android:hint="Tipo de factura"
+            android:hint="@string/invoice_type"
             app:boxStrokeWidth="0dp"
             app:hintAnimationEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,6 +92,7 @@
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 tools:text="Texto" />
 
@@ -103,7 +106,7 @@
             android:clickable="false"
             android:focusable="false"
             android:gravity="center"
-            android:hint="Fecha de emisión"
+            android:hint="@string/date_emition"
             app:boxStrokeWidth="0dp"
             app:hintAnimationEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -117,6 +120,7 @@
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 tools:text="Texto" />
 
@@ -130,7 +134,7 @@
             android:clickable="false"
             android:focusable="false"
             android:gravity="center"
-            android:hint="Periodo de inicio"
+            android:hint="@string/start_period"
             app:boxStrokeWidth="0dp"
             app:hintAnimationEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -144,6 +148,7 @@
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 tools:text="Texto" />
 
@@ -157,7 +162,7 @@
             android:clickable="false"
             android:focusable="false"
             android:gravity="center"
-            android:hint="Periodo de fin"
+            android:hint="@string/end_period"
             app:boxStrokeWidth="0dp"
             app:hintAnimationEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -171,6 +176,7 @@
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 tools:text="Texto" />
 
@@ -184,7 +190,7 @@
             android:clickable="false"
             android:focusable="false"
             android:gravity="center"
-            android:hint="Consumo"
+            android:hint="@string/consumption"
             app:boxStrokeWidth="0dp"
             app:hintAnimationEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -198,6 +204,7 @@
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 tools:text="Texto" />
 
@@ -211,7 +218,7 @@
             android:clickable="false"
             android:focusable="false"
             android:gravity="center"
-            android:hint="Coste"
+            android:hint="@string/amount"
             app:boxStrokeWidth="0dp"
             app:hintAnimationEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -225,6 +232,7 @@
                 android:clickable="false"
                 android:cursorVisible="false"
                 android:focusable="false"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 tools:text="Texto" />
 
@@ -238,21 +246,21 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
-
-            >
+            android:visibility="invisible">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Ver factura" />
+                android:text="@string/show_invoice" />
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:clickable="false"
+                android:contentDescription="@string/eye_description"
                 android:focusable="false"
                 android:padding="4dp"
                 android:src="@drawable/ic_eye" />

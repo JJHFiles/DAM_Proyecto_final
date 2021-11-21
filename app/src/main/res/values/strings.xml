@@ -114,6 +114,16 @@
     <string name="name">Nombre</string>
     <string name="change_password">Cambiar contraseña</string>
     <string name="delete">Eliminar</string>
+    <string name="invoice_num">Número de factura</string>
+    <string name="provider">Proveedor</string>
+    <string name="invoice_type">Tipo de factura</string>
+    <string name="date_emition">Fecha de emisión</string>
+    <string name="start_period">Periodo de inicio</string>
+    <string name="end_period">Periodo de fin</string>
+    <string name="consumption">Consumo</string>
+    <string name="amount">Coste</string>
+    <string name="show_invoice">Ver factura</string>
+    <string name="eye_description">eye</string>
 
 
 </resources>

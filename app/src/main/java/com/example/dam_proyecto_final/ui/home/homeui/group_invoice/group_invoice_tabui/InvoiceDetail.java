@@ -1,7 +1,5 @@
 package com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +12,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.InvoiceModel;
@@ -21,9 +22,9 @@ import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.ui.home.homeui.group_invoice.GroupInvoiceTab;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Objects;
 
 public class InvoiceDetail extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,8 +41,9 @@ public class InvoiceDetail extends AppCompatActivity implements View.OnClickList
     EditText etDateEnd;
     EditText etConsumption;
     EditText etCost;
+    String file;
 
-
+    WebApiRequest webApiRequest;
 
 
     @Override
@@ -49,7 +51,7 @@ public class InvoiceDetail extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoice_detail);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 
         etNum = findViewById(R.id.et_invoicedetail_num);
@@ -70,9 +72,8 @@ public class InvoiceDetail extends AppCompatActivity implements View.OnClickList
         if (param != null) {
             userEmail = param.getString("userEmail", "vacio");
             userPass = param.getString("userPass", "vacio");
-            invoice = (InvoiceModel) param.getParcelable("invoice");
+            invoice = param.getParcelable("invoice");
             groupModel = (GroupModel) param.getSerializable("groupModel");
-
 
 
             this.setTitle("Factura " + invoice.getIdentifier());
@@ -89,14 +90,33 @@ public class InvoiceDetail extends AppCompatActivity implements View.OnClickList
             onBackPressed();
             Log.d("DEBUGME", "InvoiceDetail: Error grave, falta de parametros");
         }
+
+        webApiRequest = new WebApiRequest(getApplicationContext());
+        webApiRequest.getFileInvoice(userEmail, userPass, invoice, new WebApiRequest.WebApiRequestJsonResponseStringListener() {
+
+            @Override
+            public void onSuccess(JsonResponseModel response, String data) {
+                Log.d("DEBUGME", "InvoiceDetail getFileInvoice " + response.getId() + " " + response.getMessage());
+                if (response.getId() == 841) {
+                    llShowfile.setVisibility(View.VISIBLE);
+                    file = data;
+                }
+            }
+
+            @Override
+            public void onError(JsonResponseModel response) {
+                Log.d("DEBUGME", "InvoiceDetail: " + response.getMessage());
+                Toast.makeText(getApplicationContext(), "Se ha producido un error: " + response.getId(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_invoicedetail_deleteinvoice){
-            WebApiRequest webApiRequest = new WebApiRequest(getApplicationContext());
-            webApiRequest.invoiceDelete(userEmail, userPass, invoice, groupModel, new WebApiRequest.WebApiRequestJsonResponseListener(){
+        if (view.getId() == R.id.btn_invoicedetail_deleteinvoice) {
+            webApiRequest.invoiceDelete(userEmail, userPass, invoice, groupModel, new WebApiRequest.WebApiRequestJsonResponseListener() {
                 @Override
                 public void onSuccess(JsonResponseModel response) {
                     Toast.makeText(getApplicationContext(), "Factura borrada corretamente: " + response.getId(), Toast.LENGTH_SHORT).show();
@@ -114,36 +134,36 @@ public class InvoiceDetail extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(getApplicationContext(), "Se ha producido un error: " + response.getId(), Toast.LENGTH_SHORT).show();
                 }
             });
+        } else if (view.getId() == R.id.ll_invoicedetail_showfile) {
+            getStringToPdf();
         }
     }
 
-    public String getStringToPdf (Uri filepath){
-        InputStream inputStream = null;
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try {
-            inputStream =  getContentResolver().openInputStream(filepath);
+    public void getStringToPdf() {
+        File fileout = new File(getExternalFilesDir(null), "temp.pdf");
 
-            byte[] buffer = new byte[1024];
-            byteArrayOutputStream = new ByteArrayOutputStream();
+        try (FileOutputStream fos = new FileOutputStream(fileout)) {
 
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                byteArrayOutputStream.write(buffer, 0, bytesRead);
-            }
-        } catch (IOException e) {
+            byte[] decoder = Base64.decode(file, Base64.DEFAULT);
+
+            fos.write(decoder);
+            fos.flush();
+            fos.close();
+            Log.d("DEBUGME", "PDF File Saved");
+
+            Uri uri;
+            uri = FileProvider.getUriForFile(this,
+                    this.getApplicationContext().getPackageName() +
+                            ".provider", fileout);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, "application/pdf");
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                    Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-
-        byte[] pdfByteArray = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(pdfByteArray, Base64.DEFAULT);
     }
 
     @Override
