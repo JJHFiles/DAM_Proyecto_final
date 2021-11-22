@@ -182,7 +182,8 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
                 //TODO: lectura factura por OCR
                 Intent intentScan = new Intent(context, InvoiceOCRAddActivity.class);
                 intentScan.putExtra("groupModel", groupModel);
-
+                intentScan.putExtra("userEmail", userEmail);
+                intentScan.putExtra("userPass", userPass);
                 startActivity(intentScan);
                 break;
 

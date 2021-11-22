@@ -64,7 +64,6 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     ImageButton ibFileIcon;
     LinearLayout llFilePicker;
 
-
     private String typeSelection;
     private AutoCompleteTextView actvInvoiceType;
     private Button btNew;
@@ -119,7 +118,13 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             groupModel = (GroupModel) param.getSerializable("groupModel");
             userEmail = param.getString("userEmail", "vacio");
             userPass = param.getString("userPass", "vacio");
-
+            Uri uri = (Uri) param.getParcelable("uri");
+            if (uri != null){
+                pdfFile = getStringPdf(uri);
+                tvFileName.setText(uri.getLastPathSegment());
+                ibFileIcon.setVisibility(View.INVISIBLE);
+                llFilePicker.setClickable(false);
+            }
         }
         loadInvoiceType();
 
@@ -261,7 +266,6 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                 ibFileIcon.setVisibility(View.INVISIBLE);
                 llFilePicker.setClickable(false);
             }
-
         } else {
             Toast.makeText(this, "Error al seleccioanr el fichero", Toast.LENGTH_LONG).show();
         }
