@@ -129,7 +129,6 @@ public class InvoiceOCRAddActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-
         if (requestCode == TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             File imagereduce = new File(getExternalFilesDir(null), "imagereduce.png");
             File image = new File(getExternalFilesDir(null), "tempimage");
@@ -148,11 +147,13 @@ public class InvoiceOCRAddActivity extends AppCompatActivity {
                 FileOutputStream out = new FileOutputStream(imagereduce);
                 reduce.compress(Bitmap.CompressFormat.PNG, 100, out);
                 Bitmap bMapRotate = null;
-                if(reduce.getWidth() > reduce.getHeight()) {
+                if (reduce.getWidth() > reduce.getHeight()) {
 
                     Matrix mat = new Matrix();
                     mat.postRotate(90);
                     bMapRotate = Bitmap.createBitmap(reduce, 0, 0, reduce.getWidth(), reduce.getHeight(), mat, true);
+                } else {
+                    bMapRotate = reduce;
                 }
 
 
@@ -190,10 +191,10 @@ public class InvoiceOCRAddActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             } catch (FileNotFoundException e) {
-                Toast.makeText(this, "Error al guardar la imagen", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getText(R.string.error_saving_image), Toast.LENGTH_LONG).show();
                 onBackPressed();
             } catch (IOException e) {
-                Toast.makeText(this, "Error al guardar la imagen", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getText(R.string.error_saving_image), Toast.LENGTH_LONG).show();
                 onBackPressed();
             }
         }
@@ -279,7 +280,8 @@ public class InvoiceOCRAddActivity extends AppCompatActivity {
             }
         }*/
     }
-//    private void getPic(File file) {
+
+    //    private void getPic(File file) {
 //        // Get the dimensions of the View
 //        int targetW = imageView.getWidth();
 //        int targetH = imageView.getHeight();
@@ -301,20 +303,20 @@ public class InvoiceOCRAddActivity extends AppCompatActivity {
 //
 //        return bitmap;
 //    }
-public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
-    int width = image.getWidth();
-    int height = image.getHeight();
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
 
-    float bitmapRatio = (float)width / (float) height;
-    if (bitmapRatio > 1) {
-        width = maxSize;
-        height = (int) (width / bitmapRatio);
-    } else {
-        height = maxSize;
-        width = (int) (height * bitmapRatio);
+        float bitmapRatio = (float) width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
     }
-    return Bitmap.createScaledBitmap(image, width, height, true);
-}
 
 
 }
