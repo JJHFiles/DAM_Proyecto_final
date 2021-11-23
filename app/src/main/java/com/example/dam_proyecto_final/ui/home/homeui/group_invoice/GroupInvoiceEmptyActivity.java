@@ -91,9 +91,10 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
             intent.putExtra("userPass", userPass);
             startActivity(intent);
         } else if (v.getId() == R.id.btOCR) {
-            //TODO: lectura factura por OCR
             Intent intentScan = new Intent(getApplicationContext(), InvoiceOCRAddActivity.class);
-            intentScan.putExtra("idGroup", groupModel.getId());
+            intentScan.putExtra("groupModel", groupModel);
+            intentScan.putExtra("userEmail", userEmail);
+            intentScan.putExtra("userPass", userPass);
             startActivity(intentScan);
         }
 
@@ -116,8 +117,6 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Handle item selection
         if (item.getItemId() == R.id.mnu_GIHAEditGroup) {
             Intent intent = new Intent(getApplicationContext(), GroupInvoiceEditGroup.class);
             intent.putExtra("idGroup", groupModel.getId());
@@ -133,7 +132,6 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
 
     @Override
     public void onBackPressed() {
-        // Do what you need done here
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
