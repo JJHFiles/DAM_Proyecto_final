@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:enabled="false"
-                android:text="Añadir"
+                android:text="@string/add"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:gravity="center"
-                android:hint="Número de factura"
+                android:hint="@string/invoice_num"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:hint="Proveedor"
+                android:hint="@string/invoice_provider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/til_invoiceNum">
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="bottom"
-                android:hint="Tipo de Factura"
+                android:hint="@string/invoice_type"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/til_provider">
@@ -112,7 +112,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
+                    app:layout_constraintTop_toBottomOf="@+id/textInputEditText2"
+                    tools:ignore="LabelFor" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -124,7 +125,7 @@
                 android:clickable="true"
 
                 android:gravity="center"
-                android:hint="Fecha de emisión"
+                android:hint="@string/date_emition"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/til_invoiceType">
@@ -149,7 +150,8 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/til_date">
+                app:layout_constraintTop_toBottomOf="@+id/til_date"
+                android:baselineAligned="false">
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -157,11 +159,11 @@
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginEnd="6dp"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:hint="Periodo inicio">
+                    android:hint="@string/start_period">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_startPeriod"
@@ -181,11 +183,11 @@
                     style="@style/TextInputLayoutStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginStart="6dp"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:hint="Periodo fin">
+                    android:hint="@string/end_period">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_endPeriod"
@@ -209,7 +211,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:hint="Consumo"
+                android:hint="@string/invoice_consumption"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_agia_date">
@@ -230,7 +232,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:hint="Importe"
+                android:hint="@string/invoice_amount"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/til_Consumption">
@@ -258,16 +260,18 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="Adjuntar factura"
+                    android:text="@string/groupinvoiceadd_uploadtext"
                     />
 
                 <ImageButton
                     android:id="@+id/ib_invoiceadd_fileicon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:focusable="false"
                     android:clickable="false"
-                    android:src="@drawable/ic_plus"/>
+                    android:background="@null"
+                    android:src="@drawable/ic_plus"
+                    android:contentDescription="@string/ic_plus_description" />
 
             </LinearLayout>
 
