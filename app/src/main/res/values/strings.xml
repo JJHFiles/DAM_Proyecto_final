@@ -106,7 +106,7 @@
     <string name="password_change_passwordchanged">Ha cambiado la contraseña correctamente</string>
     <string name="password_change_warning_errorchanging">Error al cambiar la contraseña</string>
     <string name="password_change_warning_newpassnotequals">Las contraseñas no coinciden, por favor introducelas de nuevo</string>
-    <string name="blist_logo_description">Imagen del logo de la aplicación</string>
+    <string name="ic_logo_description">Imagen del logo de la aplicación</string>
     <string name="user">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="registry_text1">¿Aún no tienes cuenta?</string>
@@ -115,15 +115,24 @@
     <string name="change_password">Cambiar contraseña</string>
     <string name="delete">Eliminar</string>
     <string name="invoice_num">Número de factura</string>
-    <string name="provider">Proveedor</string>
+    <string name="invoice_provider">Proveedor</string>
     <string name="invoice_type">Tipo de factura</string>
     <string name="date_emition">Fecha de emisión</string>
     <string name="start_period">Periodo de inicio</string>
     <string name="end_period">Periodo de fin</string>
-    <string name="consumption">Consumo</string>
-    <string name="amount">Coste</string>
+    <string name="invoice_consumption">Consumo</string>
+    <string name="invoice_amount">Coste</string>
     <string name="show_invoice">Ver factura</string>
     <string name="eye_description">eye</string>
+    <string name="error_saving_image">Error al guardar la imagen</string>
+    <string name="add_invoice_photo">Añadir mediante camara</string>
+    <string name="add_invoice_manually">Añadir de forma manual</string>
+    <string name="empty_invoice_title">Sin facturas añadidas</string>
+    <string name="ic_plus_description">Simbolo de suma que describe la acción añadir</string>
+    <string name="warning_badperioddate">El periodo de fin debe ser superior al periodo de inicio</string>
+    <string name="groupinvoiceadd_defaultfilename">PDF creado a partir de foto</string>
+    <string name="add">Añadir</string>
+    <string name="groupinvoiceadd_uploadtext">Adjuntar factura</string>
 
 
 </resources>
