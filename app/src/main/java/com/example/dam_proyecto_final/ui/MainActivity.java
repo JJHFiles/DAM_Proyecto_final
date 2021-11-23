@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
                 String userEmail = preferencias.getString("email", null);
 
                 Intent intent;
-                if (!walktroughtDone){
+                if (!walktroughtDone) {
                     intent = new Intent(getApplicationContext(), WalktroughActivity.class);
-                } else if(userEmail != null) {
+                } else if (userEmail != null) {
                     intent = new Intent(getApplicationContext(), HomeActivity.class);
                 } else {
                     intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -43,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         Timer timer = new Timer();
-        timer.schedule(task, 200); // 4000
-
+        timer.schedule(task, 4000); // 4000
 
     }
 }
