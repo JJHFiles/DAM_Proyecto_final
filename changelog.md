@@ -1,7 +1,7 @@
 # CHANGELOG for blist proyect
 
 
-## 0.1.7 XXXXXX
+## 0.1.7 2021-11-23
 ### Added
 - New screen with invoice detail
 - Now can delete invoice on invoice detal
@@ -9,6 +9,7 @@
 - New icons
 - New button style for delete options
 - Now can upload invoices with PDF from camera
+- DB files on db root folder
 
 ### Changed
 - Navigation logic to better UX
@@ -23,6 +24,7 @@
 ### Removed
 - Comments and unnecesary code 
 - TODOs
+- ScanLibrary module
 
 
 
