@@ -133,6 +133,7 @@
     <string name="groupinvoiceadd_defaultfilename">PDF creado a partir de foto</string>
     <string name="add">Añadir</string>
     <string name="groupinvoiceadd_uploadtext">Adjuntar factura</string>
+    <string name="ic_empty_description">Imagen de una mujer con los brazos abiertos que describe que no hay nada</string>
 
 
 </resources>

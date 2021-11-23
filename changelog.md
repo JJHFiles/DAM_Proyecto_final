@@ -1,5 +1,20 @@
 # CHANGELOG for blist proyect
 
+## 0.1.8 XXXXXXXX
+### Added
+
+
+### Changed
+- New empty illustration
+
+### Fixed
+- Constraint of empty invoice screen
+
+### Removed
+
+
+
+
 
 ## 0.1.7 2021-11-23
 ### Added
