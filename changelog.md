@@ -8,6 +8,7 @@
 - Now can upload PDF with new invoice
 - New icons
 - New button style for delete options
+- Now can upload invoices with PDF from camera
 
 ### Changed
 - Navigation logic to better UX
@@ -15,10 +16,13 @@
 
 ### Fixed
 - Now can upload a invoice without PDF file
+- Hardcoded text
+- Icons with background
+- Bad Size of views
 
 ### Removed
-
-
+- Comments and unnecesary code 
+- TODOs
 
 
 
