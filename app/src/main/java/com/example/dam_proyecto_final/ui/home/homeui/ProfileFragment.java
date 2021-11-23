@@ -26,7 +26,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private Context context;
 
-    private String userEmail ="vacio", userPass ="vacio",name="vacio";
+    private String userEmail ="vacio", userPass ="vacio",name="";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -46,11 +46,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         LinearLayout lytsignoff = view.findViewById(R.id.lytsignoff);
         lytsignoff.setOnClickListener(this);
 
+        readSharedPreferences();
+
         TextView tvName = view.findViewById(R.id.tvName);
         tvName.setText(name);
-        // Pruebas JJ
-
-        readSharedPreferences();
 
         return view;
     }
@@ -60,7 +59,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         preferencias = getActivity().getSharedPreferences("savedData", Context.MODE_PRIVATE);
         userEmail = preferencias.getString("email","vacio");
         userPass = preferencias.getString("pass","vacio");
-        name= preferencias.getString("name","vacio");
+        name= preferencias.getString("name","");
     }
 
     @Override

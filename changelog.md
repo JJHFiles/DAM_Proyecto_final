@@ -9,6 +9,7 @@
 
 ### Fixed
 - Constraint of empty invoice screen
+- Bad name showed on profile screen
 
 ### Removed
 
