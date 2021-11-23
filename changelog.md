@@ -8,6 +8,7 @@
 ### Changed
 - New empty illustration
 - Navigation on home screen
+- Profile pic
 
 ### Fixed
 - Constraint of empty invoice screen

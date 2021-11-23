@@ -45,13 +45,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:text="Unkwow"
         android:textColor="@color/white"
-        android:textStyle="bold"
         android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/prfbanner"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/tvGreeting" />
+        app:layout_constraintTop_toBottomOf="@+id/tvGreeting"
+        tools:text="Unknow" />
 
     <!--    Mis datos-->
     <LinearLayout
@@ -59,8 +59,8 @@
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="24dp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/prfbanner">
 
         <ImageView
@@ -72,10 +72,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:textSize="18dp"
-            android:textStyle="bold"
             android:layout_weight="3"
-            android:text="Mis datos" />
+            android:text="Mis datos"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="0dp"
@@ -104,8 +104,8 @@
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="24dp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/lytmydata">
 
         <ImageView
@@ -117,10 +117,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:textSize="18dp"
-            android:textStyle="bold"
             android:layout_weight="3"
-            android:text="Cambiar password" />
+            android:text="Cambiar password"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="0dp"
@@ -149,8 +149,8 @@
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="24dp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/lytchangepsw">
 
         <ImageView
@@ -162,10 +162,10 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:textSize="18dp"
-            android:textStyle="bold"
             android:layout_weight="3"
-            android:text="Cerrar sesión" />
+            android:text="Cerrar sesión"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="0dp"
