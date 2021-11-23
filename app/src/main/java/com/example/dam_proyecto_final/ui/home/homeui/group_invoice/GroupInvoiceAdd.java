@@ -37,7 +37,6 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -119,13 +118,16 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             userEmail = param.getString("userEmail", "vacio");
             userPass = param.getString("userPass", "vacio");
             Uri uri = (Uri) param.getParcelable("uri");
-            if (uri != null){
+            if (uri != null) {
                 pdfFile = getStringPdf(uri);
-                tvFileName.setText(uri.getLastPathSegment());
+                tvFileName.setText(R.string.groupinvoiceadd_defaultfilename);
                 ibFileIcon.setVisibility(View.INVISIBLE);
                 llFilePicker.setClickable(false);
             }
         }
+
+        checkStoragePermissions();
+
         loadInvoiceType();
 
     }
@@ -186,7 +188,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             } else {
                 tietStartPeriod.setText("");
                 tietEndPeriod.setText("");
-                Toast.makeText(this, "El periodo de fin debe ser superior al periodo de inicio",
+                Toast.makeText(this, getResources().getText(R.string.warning_badperioddate),
                         Toast.LENGTH_LONG).show();
                 btNew.setEnabled(false);
             }
@@ -224,7 +226,6 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         if (tietEndPeriod.getText().toString().equals("")) {
             return false;
         }
-        // TODO si los campos periodo estan metidos comprobar que el inicio no sea superior al fin
         if (tietConsumption.getText().toString().equals("")) {
             return false;
         }
@@ -237,7 +238,6 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
 
     private void openFile() {
-        checkStoragePermissions();
 
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
