@@ -17,7 +17,7 @@
     <string name="txtvQuestion_passFirst">Introduzca tu contraseña</string>
     <string name="txtvQuestion_passSecond">Vuelva a inroducir su contraseña</string>
     <string name="edtInput_name">Nombre</string>
-    <string name="edtInput_email">Email</string>
+    <string name="email">Correo electrónico</string>
     <string name="edtInput_pass">Contraseña</string>
     <string name="cancel">Cancelar</string>
     <string name="btnContinue_Continue">Continuar</string>
@@ -134,6 +134,7 @@
     <string name="add">Añadir</string>
     <string name="groupinvoiceadd_uploadtext">Adjuntar factura</string>
     <string name="ic_empty_description">Imagen de una mujer con los brazos abiertos que describe que no hay nada</string>
+    <string name="my_data">Mis datos</string>
 
 
 </resources>

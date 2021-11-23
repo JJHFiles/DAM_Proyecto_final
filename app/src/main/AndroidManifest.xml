@@ -16,6 +16,10 @@
         android:theme="@style/Theme.DAM_Proyecto_final"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.home.homeui.profileui.MyDataActivity"
+            android:exported="true"
+            android:parentActivityName=".ui.home.homeui.group_invoice.GroupInvoiceTab" />
+        <activity
             android:name=".ui.home.homeui.group_invoice.group_invoice_tabui.InvoiceDetail"
             android:exported="true" />
         <activity
@@ -91,6 +95,4 @@
         </provider>
     </application>
 
-
 </manifest>
-

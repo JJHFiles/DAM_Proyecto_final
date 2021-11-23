@@ -77,7 +77,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             userName = txInEdTx.getText().toString();
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
                             txInEdTx.setText("");
-                            txInLaHint.setHint(getResources().getString(R.string.edtInput_email));
+                            txInLaHint.setHint(getResources().getString(R.string.email));
                             txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
                             step = 1; // se avanza al paso siguiente
                         } else {
@@ -220,7 +220,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                 txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
                 txInEdTx.setText("");
                 txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
-                txInLaHint.setHint(getResources().getString(R.string.edtInput_email));
+                txInLaHint.setHint(getResources().getString(R.string.email));
                 break;
 
             case 2:

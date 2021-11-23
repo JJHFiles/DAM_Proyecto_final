@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.dam_proyecto_final.ui.LoginActivity;
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.ui.home.homeui.profileui.MyDataActivity;
 import com.example.dam_proyecto_final.ui.home.homeui.profileui.PasswordChangeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -41,6 +42,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         context = view.getContext();
 
         LinearLayout lytprfmydata = view.findViewById(R.id.lytmydata);
+        lytprfmydata.setOnClickListener(this);
         LinearLayout lytchangepsw = view.findViewById(R.id.lytchangepsw);
         lytchangepsw.setOnClickListener(this);
         LinearLayout lytsignoff = view.findViewById(R.id.lytsignoff);
@@ -66,7 +68,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
 
         if (view.getId() == R.id.lytmydata){
-            // TODO acción de mis datos
+            Intent intentMyData = new Intent(context, MyDataActivity.class);
+            intentMyData.putExtra("userEmail", userEmail);
+            intentMyData.putExtra("name", name);
+            startActivity(intentMyData);
         } else if (view.getId() == R.id.lytchangepsw){
             GoogleSignInAccount accountPass = GoogleSignIn.getLastSignedInAccount(context);
             if (accountPass != null) {
