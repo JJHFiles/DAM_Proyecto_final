@@ -2,10 +2,12 @@
 
 ## 0.1.8 XXXXXXXX
 ### Added
+- MyData screen added
 
 
 ### Changed
 - New empty illustration
+- Navigation on home screen
 
 ### Fixed
 - Constraint of empty invoice screen

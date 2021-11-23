@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class HomeActivity extends FragmentActivity implements NavigationBarView.OnItemSelectedListener {
 
     static private BottomNavigationView bottom_navigation;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class HomeActivity extends FragmentActivity implements NavigationBarView.
         bottom_navigation.setOnItemSelectedListener(this);
 
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fcvHome, GroupFragment.class, null)
                 .commit();
@@ -38,34 +39,42 @@ public class HomeActivity extends FragmentActivity implements NavigationBarView.
 
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
 
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.page_group:
                 fragmentManager.beginTransaction()
                         .replace(R.id.fcvHome, GroupFragment.class, null)
-                        .addToBackStack(null) // name can be null
                         .commit();
                 return true;
             case R.id.page_activity:
                 fragmentManager.beginTransaction()
                         .replace(R.id.fcvHome, ActivityFragment.class, null)
-                        .addToBackStack(null) // name can be null
                         .commit();
                 return true;
             case R.id.page_profile:
                 fragmentManager.beginTransaction()
                         .replace(R.id.fcvHome, ProfileFragment.class, null)
-                        .addToBackStack(null) // name can be null
                         .commit();
                 return true;
             default:
                 fragmentManager.beginTransaction()
                         .replace(R.id.fcvHome, GroupFragment.class, null)
-                        .addToBackStack(null) // name can be null
                         .commit();
                 return true;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (bottom_navigation.getSelectedItemId() == R.id.page_group){
+            finish();
+        } else {
+            fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fcvHome, GroupFragment.class, null)
+                    .commit();
+            bottom_navigation.setSelectedItemId(R.id.page_group);
         }
     }
 }
