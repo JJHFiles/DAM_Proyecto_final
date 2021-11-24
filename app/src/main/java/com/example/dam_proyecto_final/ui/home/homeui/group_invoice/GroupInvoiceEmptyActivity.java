@@ -31,9 +31,11 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
 
     private ExtendedFloatingActionButton btOCR, btManual;
 
-    GroupModel groupModel;
+    private GroupModel groupModel;
     private String userEmail;
     private String userPass;
+    private Menu menu;
+    ImageButton ibAdd;
 
 
     @Override
@@ -42,7 +44,7 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
         setContentView(R.layout.activity_group_invoice_home);
         txtv_EmptyDescription = findViewById(R.id.txtv_EmptyDescription);
         txtv_EmptyTitle = findViewById(R.id.txtv_EmptyTitle);
-        ImageButton ibAdd = findViewById(R.id.ibAdd);
+        ibAdd = findViewById(R.id.ibAdd);
         ibAdd.setOnClickListener(this);
 
 
@@ -111,6 +113,8 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_invoice_empty_menu, menu);
+        this.menu=menu;
+        applyPermission();
         return true;
     }
 
@@ -138,6 +142,14 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
         overridePendingTransition(R.anim.left_to_rigth, R.anim.right_to_left);
 
         this.finish();
+    }
+
+    public void applyPermission(){
+        if(this.groupModel.getRole()>=2) {
+            MenuItem item = menu.findItem(R.id.mnu_GIHAEditGroup);
+            item.setVisible(false);
+            ibAdd.setVisibility(View.INVISIBLE);
+        }
     }
 
 }

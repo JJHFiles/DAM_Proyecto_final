@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
     int typeChart;
     Calendar dateFromFilter;
     Calendar dateTofilter;
+    private Menu menu;
 
 
     @Override
@@ -77,6 +79,8 @@ public class GroupInvoiceTab extends AppCompatActivity {
             Log.d("DEBUGME", "GroupInvoiceTab: ERROR GRAVE idGroup = null");
         }
 
+
+
         //Establecemos titulo al banner y flecha de back
         this.setTitle(groupModel.getName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -101,6 +105,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
                     intent.putExtra("userPass", userPass);
                     finish();
                     startActivity(intent);
+
                 } else {
 
                     //Inicializamos la lista de facturas
@@ -215,6 +220,8 @@ public class GroupInvoiceTab extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.group_invoice_home_activity_menu, menu);
+        this.menu = menu;
+        applyPermission();
         return true;
     }
 
@@ -270,5 +277,13 @@ public class GroupInvoiceTab extends AppCompatActivity {
         this.finish();
     }
 
+    public void applyPermission(){
+        if(this.groupModel.getRole()>=2) {
+            MenuItem item = menu.findItem(R.id.mnu_GIHAEditGroup);
+            item.setVisible(false);
+          //  ibAdd.setVisibility(View.INVISIBLE);
+
+        }
+    }
 
 }

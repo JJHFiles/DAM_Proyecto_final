@@ -8,7 +8,7 @@ public class GroupModel implements Serializable {
     private String name;
     private String description;
     private String currency;
-    private String role;
+    private int role;
 
     //TODO Meter permisos a esta parte para controlar que puede hacer en cada uno cuando lo seleccione
     public GroupModel(int id, String name, String description) {
@@ -24,7 +24,7 @@ public class GroupModel implements Serializable {
         this.currency = currency;
 
     }
-    public GroupModel(int id, String name, String description, String currency, String role) {
+    public GroupModel(int id, String name, String description, String currency, int role) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -49,7 +49,7 @@ public class GroupModel implements Serializable {
         return currency;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 

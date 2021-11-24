@@ -380,7 +380,8 @@ public class WebApiRequest {
                                     jsonObjectGroup.getInt("groupid"),
                                     jsonObjectGroup.getString("groupname"),
                                     jsonObjectGroup.getString("groupdescription"),
-                                    jsonObjectGroup.getString("currency")
+                                    jsonObjectGroup.getString("currency"),
+                                    jsonObjectGroup.getInt("role")
                             ));
                         }
 

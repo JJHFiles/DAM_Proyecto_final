@@ -39,6 +39,7 @@
 - Hardcoded text
 - Icons with background
 - Bad Size of views
+- Edit invoice and Edit group by permission
 
 ### Removed
 - Comments and unnecesary code 

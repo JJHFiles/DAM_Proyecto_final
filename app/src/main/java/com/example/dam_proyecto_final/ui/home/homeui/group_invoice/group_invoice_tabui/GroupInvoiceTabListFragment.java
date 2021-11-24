@@ -9,6 +9,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -37,6 +39,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
     private ExtendedFloatingActionButton btOCR, btManual;
 
 
+
     private static final String GROUPMODEL = "groupModel";
     private static final String USEREMAIL = "userEmail";
     private static final String USERPASS = "userPass";
@@ -47,6 +50,8 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
     private String userEmail;
     private String userPass;
     private ArrayList<InvoiceModel> arrIM;
+
+
 
     public GroupInvoiceTabListFragment() {
         // Required empty public constructor
@@ -104,6 +109,7 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         //TabLayout, seleccionamos la tab correspondiente por si venimos de hacer back
         tabLayout = getActivity().findViewById(R.id.tabLayout);
         tabLayout.getTabAt(0).select();
+        applyPermission();
 
 
         if (getArguments() != null) {
@@ -208,4 +214,10 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
         startActivity(intent);
     }
 
+    public void applyPermission(){
+        if(this.groupModel.getRole()>=2) {
+   ibAdd.setVisibility(View.INVISIBLE);
+
+        }
+    }
 }
