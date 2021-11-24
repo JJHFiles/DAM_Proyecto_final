@@ -191,7 +191,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                                 dec = -1;
                             }
                             //Controlamos que no se agregue un usuario que ya estaba en la lista original membersOld
-                            for (int x = 0; x < membersOld.size()+dec; x++) {
+                            for (int x = 0; x < membersOld.size() + dec; x++) {
                                 if (!edt_AGIEG_AddMember.getText().toString().equals(membersOld.get(x).getEmail())) {
 
                                     // Si el usuario está pendiente de eliminarse del grupo ya no eliminará
@@ -260,43 +260,54 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                     currencySelection != null) {
                 groupDescription = edt_AGIEG_Description.getText().toString() + "";
 
-                webApiRequest.updateGroup(
-                        userEmail,
-                        userPass,
-                        idGroup + "",/* Cast a String*/
-                        edt_AGIEG_GroupName.getText().toString(),
-                        edt_AGIEG_Description.getText().toString(),
-                        currencySelection,
-                        membersAdd,
-                        membersUpd,
-                        membersDel,
-                        new WebApiRequest.WebApiRequestJsonResponseListener() {
-                            @Override
-                            public void onSuccess(JsonResponseModel response) {
-                                Toast.makeText(context, "Grupo actualizado correctamente", Toast.LENGTH_LONG).show();
-
-                                //Volvemos al login activity
-                                Intent intent = new Intent(context, HomeActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
+                for (int x = 0; x < membersUpd.size(); x++) {
+                    for (int i = 0; i < membersOld.size(); i++) {
+                        if(membersUpd.get(x).getEmail().equals(membersOld.get(i).getEmail())){
+                            if(membersUpd.get(x).getRole()==membersOld.get(i).getRole()){
+                                membersUpd.remove(x);
                             }
+                        }
+                    }
+                }
 
-                            @Override
-                            public void onError(JsonResponseModel response) {
-                                Toast.makeText(context, response.getId() + "", Toast.LENGTH_LONG).show();
-                            }
-                        });
-            } else {
-                Toast.makeText(this, "Por favor, rellene todos los campos", Toast.LENGTH_LONG).show();
-            }
-        } //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
+
+            webApiRequest.updateGroup(
+                    userEmail,
+                    userPass,
+                    idGroup + "",/* Cast a String*/
+                    edt_AGIEG_GroupName.getText().toString(),
+                    edt_AGIEG_Description.getText().toString(),
+                    currencySelection,
+                    membersAdd,
+                    membersUpd,
+                    membersDel,
+                    new WebApiRequest.WebApiRequestJsonResponseListener() {
+                        @Override
+                        public void onSuccess(JsonResponseModel response) {
+                            Toast.makeText(context, "Grupo actualizado correctamente", Toast.LENGTH_LONG).show();
+
+                            //Volvemos al login activity
+                            Intent intent = new Intent(context, HomeActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onError(JsonResponseModel response) {
+                            Toast.makeText(context, response.getId() + "", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        } else {
+            Toast.makeText(this, "Por favor, rellene todos los campos", Toast.LENGTH_LONG).show();
+        }
+    } //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
 //            finish();
 //            overridePendingTransition(0, 0);
 //            startActivity(getIntent());
 //            overridePendingTransition(0, 0);
 //        }
 
-    }
+}
 
     private void setListViewHeightBasedOnChildren(ListView listView) {
         GroupInvoiceEditGroupMemberAdapter listAdapter = (GroupInvoiceEditGroupMemberAdapter) listView.getAdapter();
