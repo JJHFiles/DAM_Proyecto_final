@@ -10,6 +10,7 @@
 - Navigation on home screen
 - Profile pic
 - Now editor user cannot delete/add invoices and edit groups
+- Add group button only activated on full form 
 
 ### Fixed
 - Constraint of empty invoice screen
@@ -17,11 +18,16 @@
 
 ### Security
 - Registry screen not admit especial characters on name and email inputs
+- Add Group screen not admit especial characters on name, description and email inputs
+- Add invoice screen not admit especial characters on multiple inputs
+- edit group screen not admit especial characters on multiple inputs
+
+
 
 
 ### Removed
-
-
+- Unused and unnecesarry code
+- Calendar utility (comment)
 
 
 
