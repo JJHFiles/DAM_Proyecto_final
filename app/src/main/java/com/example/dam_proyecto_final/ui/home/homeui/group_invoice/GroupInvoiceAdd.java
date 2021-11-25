@@ -72,9 +72,9 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     private String userPass;
     private WebApiRequest webApiRequest;
 
-    private Calendar dateEmition = Calendar.getInstance();
-    private Calendar dateStart = Calendar.getInstance();
-    private Calendar dateEnd = Calendar.getInstance();
+    private final Calendar dateEmition = Calendar.getInstance();
+    private final Calendar dateStart = Calendar.getInstance();
+    private final Calendar dateEnd = Calendar.getInstance();
 
 
     @Override
@@ -199,10 +199,6 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         } else if (v.getId() == R.id.tiet_endPeriod) {
             addCalendar(dateEnd, (TextInputEditText) v);
         } else if (v.getId() == R.id.ll_invoiceadd_filepicker) {
-//            Intent intent = new Intent()
-//                    .setType("application/pdf")
-//                    .setAction(Intent.ACTION_GET_CONTENT);
-//            startActivity(intent);
             openFile();
         }
     }
