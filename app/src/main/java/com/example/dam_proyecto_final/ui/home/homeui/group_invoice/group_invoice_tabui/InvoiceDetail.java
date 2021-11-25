@@ -86,6 +86,10 @@ public class InvoiceDetail extends AppCompatActivity implements View.OnClickList
             etConsumption.setText(String.valueOf(invoice.getConsumption()));
             etCost.setText(String.valueOf(invoice.getAmount()));
 
+            if (groupModel.getRole() < 2){
+                btnDeleteInvoice.setVisibility(View.VISIBLE);
+            }
+
         } else {
             onBackPressed();
             Log.d("DEBUGME", "InvoiceDetail: Error grave, falta de parametros");
