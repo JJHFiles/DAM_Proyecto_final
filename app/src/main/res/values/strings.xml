@@ -135,6 +135,7 @@
     <string name="groupinvoiceadd_uploadtext">Adjuntar factura</string>
     <string name="ic_empty_description">Imagen de una mujer con los brazos abiertos que describe que no hay nada</string>
     <string name="my_data">Mis datos</string>
-
-
+    <string name="allow_character">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúüÇç</string>
+    <string name="allow_character_withnumbers">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúüÇç0123456789</string>
+    <string name="allow_character_email">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789@._-</string>
 </resources>

@@ -3,7 +3,10 @@ package com.example.dam_proyecto_final.ui.registry;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -27,6 +30,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     private TextInputLayout txInLaHint;
     private Button btnCancel, btnContinue;
     private int step = 0; //0->name, 1->email, 2->pass first, 3->pass second
+    String charactersLimits;
 
     private String userName = "No introducido", userEmail = "No introducido", userPass = "";
 
@@ -44,6 +48,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
         txtvQuestion = findViewById(R.id.txtvQuestion);
         txInEdTx = findViewById(R.id.txInEdTx);
+        txInEdTx.setFilters(new InputFilter[] { filter });
         txInLaHint = findViewById(R.id.txInLaHint);
         btnCancel = findViewById(R.id.btnCancel);
         btnContinue = findViewById(R.id.btnContinue);
@@ -53,6 +58,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         //WebApiRequest
         webApiRequest = new WebApiRequest(this);
 
+        charactersLimits = getString(R.string.allow_character);
     }
 
 
@@ -78,7 +84,9 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
                             txInEdTx.setText("");
                             txInLaHint.setHint(getResources().getString(R.string.email));
-                            txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+                            charactersLimits = getString(R.string.allow_character_email);
+
+
                             step = 1; // se avanza al paso siguiente
                         } else {
                             Toast.makeText(this, R.string.name_empty, Toast.LENGTH_LONG).show();
@@ -87,6 +95,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                     case 1:// introduccion del email, segundo paso
                         if (Patterns.EMAIL_ADDRESS.matcher(txInEdTx.getText().toString()).matches()) {
+                            charactersLimits = "";
                             userEmail = txInEdTx.getText().toString();
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
                             txInEdTx.setText("");
@@ -232,4 +241,31 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
+
+    private InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+
+            if (source instanceof SpannableStringBuilder) {
+                SpannableStringBuilder sourceAsSpannableBuilder = (SpannableStringBuilder) source;
+                for (int i = end - 1; i >= start; i--) {
+                    char currentChar = source.charAt(i);
+                    if (!charactersLimits.contains(String.valueOf(currentChar))) {
+                        sourceAsSpannableBuilder.delete(i, i + 1);
+                    }
+                }
+                return source;
+            } else {
+                StringBuilder filteredStringBuilder = new StringBuilder();
+                for (int i = start; i < end; i++) {
+                    char currentChar = source.charAt(i);
+                    if (charactersLimits.contains(String.valueOf(currentChar))) {
+                        filteredStringBuilder.append(currentChar);
+                    }
+                }
+                return filteredStringBuilder.toString();
+            }
+        }
+    };
 }

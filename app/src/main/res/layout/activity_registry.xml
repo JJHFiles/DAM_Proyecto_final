@@ -41,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_height="59dp"
+        android:layout_height="60dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:hint="@string/name"
@@ -52,8 +52,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txInEdTx"
             android:layout_width="364dp"
-            android:layout_height="56dp"
-            android:inputType="text" />
+            android:layout_height="56dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
