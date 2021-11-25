@@ -23,6 +23,7 @@
                 android:id="@+id/btn_AGAAdd"
                 style="@style/PrimaryButton"
                 android:layout_width="0dp"
+                android:enabled="false"
                 android:layout_height="match_parent"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
@@ -59,6 +60,7 @@
                     android:id="@+id/edt_AGAGroupName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="@string/allow_character_withnumbersspace"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -74,6 +76,7 @@
                     android:id="@+id/edt_AGADescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="@string/allow_character_withnumbersspace"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -129,6 +132,7 @@
                         android:id="@+id/edt_AddMember"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:digits="@string/allow_character_email"
                         android:inputType="text"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -157,8 +161,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:background="@color/white"
-                    android:src="@drawable/ic_plus"
-                    android:contentDescription="@string/imgb_AGAAddMemberContentDescription" />
+                    android:contentDescription="@string/imgb_AGAAddMemberContentDescription"
+                    android:src="@drawable/ic_plus" />
             </LinearLayout>
 
         </LinearLayout>
