@@ -1,7 +1,7 @@
- <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-     android:id="@+id/coord"
+    android:id="@+id/coord"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-
         android:background="@color/white"
         app:contentInsetStart="0dp"
         app:elevation="0.1dp">
@@ -61,6 +60,7 @@
                     android:id="@+id/edt_AGIEG_GroupName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="@string/allow_character_withnumbersspace"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -76,6 +76,7 @@
                     android:id="@+id/edt_AGIEG_Description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="@string/allow_character_withnumbersspace"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -131,6 +132,7 @@
                         android:id="@+id/edt_AGIEG_AddMember"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:digits="@string/allow_character_email"
                         android:inputType="text"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -159,8 +161,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:background="@color/white"
-                    android:src="@drawable/ic_plus"
-                    android:contentDescription="@string/imgb_AGAAddMemberContentDescription" />
+                    android:contentDescription="@string/imgb_AGAAddMemberContentDescription"
+                    android:src="@drawable/ic_plus" />
             </LinearLayout>
 
         </LinearLayout>
