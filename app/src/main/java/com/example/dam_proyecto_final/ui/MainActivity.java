@@ -21,14 +21,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO SplashScreen
         getSupportActionBar().hide();
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
-                Boolean walktroughtDone = preferencias.getBoolean("walktroughtDone", false);
+                boolean walktroughtDone = preferencias.getBoolean("walktroughtDone", false);
                 String userEmail = preferencias.getString("email", null);
 
                 Intent intent;
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         Timer timer = new Timer();
-        timer.schedule(task, 4000); // 4000
+        timer.schedule(task, 400); // 4000
 
     }
 }
