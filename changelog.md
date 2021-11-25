@@ -9,10 +9,15 @@
 - New empty illustration
 - Navigation on home screen
 - Profile pic
+- Now editor user cannot delete/add invoices and edit groups
 
 ### Fixed
 - Constraint of empty invoice screen
 - Bad name showed on profile screen
+
+### Security
+- Registry screen not admit especial characters on name and email inputs
+
 
 ### Removed
 
