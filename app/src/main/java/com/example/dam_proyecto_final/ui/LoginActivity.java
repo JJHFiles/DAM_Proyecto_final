@@ -28,12 +28,8 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.Objects;
 
-// Admite login y registro de usuarios Google y NO Google.
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
-
-    private Button btnsignGoogle, btnSignIn;
-    private LinearLayout llay_SignUp;
 
     private static final int RC_SIGN_IN = 1;
     private GoogleSignInClient mGoogleSignInClient;
@@ -44,10 +40,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText edtUserEmail, edtUserPass;
 
-    private String userEmail = "", userPass = "", userName = "";
+    private String userEmail = "", userPass = "";
 
-
-    // TODO Lanzar el tutorial si el usuario no esta creado y es la primera vez que abre la app.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +57,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d("DEBUGME ", "metodo onCreate");
 
         //Instanciamos botones establecemos el listeners
-        btnsignGoogle = findViewById(R.id.btnSignGoogle);
+        Button btnsignGoogle = findViewById(R.id.btnSignGoogle);
         btnsignGoogle.setOnClickListener(this);
-        btnSignIn = findViewById(R.id.btnSignin);
+        Button btnSignIn = findViewById(R.id.btnSignin);
         btnSignIn.setOnClickListener(this);
-        llay_SignUp = findViewById(R.id.llay_SignUp);
+        LinearLayout llay_SignUp = findViewById(R.id.llay_SignUp);
         llay_SignUp.setOnClickListener(this);
 
 
@@ -93,8 +87,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
         Log.d("DEBUGME ", "metodo on start");
-
-        //TODO se ve ligeramente la ventana antes de ir a la home, seguramente esta comprobación habrá que hacerla en una activity previa
 
         //Comprobamos si existe previamente un usuario Google logeado
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -131,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
 
                             //Guardamos el usuario en las SharedPreferences
-                            SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+                            SharedPreferences preferences = getSharedPreferences("savedData", MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("email", account.getEmail());
                             editor.putString("name", account.getDisplayName());
@@ -156,18 +148,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.d("DEBUGME ", "Google sign in failed", e);
-                //Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                //txtvdebug.setText(e.getMessage());
+                Toast.makeText(this, getString(R.string.warning_login_failed_google), Toast.LENGTH_LONG).show();
             }
         }
-        /*else {
-         //   Toast.makeText(context, "requestCode != RC_SIGN_IN", Toast.LENGTH_LONG).show();
-
-        }
-
-         */
     }
-
 
     //Método de click compuesto por 3 botones: Login no Google, login Google y registro
     @Override
@@ -201,12 +185,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
     //Metodo de limpieza de los EditText tras hacerlos foco
     @Override
     public void onFocusChange(View view, boolean b) {
         EditText edt = (EditText) view;
-        //  Toast.makeText(this, String.valueOf(edt.getId()), Toast.LENGTH_LONG).show();
         switch (edt.getId()) {
             case R.id.edtUserEmail:
                 if (edt.getText().toString().equals(getResources().getString(R.string.edtuseremail_text))) {
@@ -220,22 +202,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     // Chequea si ya existe el usuario creado
-    private boolean checkSharedPreferences() {
-        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        userEmail = preferencias.getString("email", "vacio");
-        userPass = preferencias.getString("pass", "vacio");
-        userName = preferencias.getString("name", "vacio");
+//    private boolean checkSharedPreferences() {
+//        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
+//        userEmail = preferencias.getString("email", "vacio");
+//        userPass = preferencias.getString("pass", "vacio");
+//
+//        if (edtUserEmail.getText().toString().equals(userEmail) && edtUserPass.getText().toString().equals(userPass)) {
+//            return true; // Con true puede entrar en sesion si posteriormente se comprueba que el ususario existe en la bd
+//
+//        } else {
+//            return false;
+//        }
+//    }
 
-        if (edtUserEmail.getText().toString().equals(userEmail) && edtUserPass.getText().toString().equals(userPass)) {
-            return true; // con true puede entrar en sesion si posteriormente se comprueba que el ususario existe en la bd
-
-        } else {
-//  Toast.makeText(this, getResources().getString(R.string.sharedPreferences_empty), Toast.LENGTH_LONG).show();
-            return false;
-        }
-    }
-
-    // comprueba que el email que recibe como parametro esta en la bd, llama al método getNameByEmail(), para sesion No google
+    // Comprueba que el email que recibe como parametro esta en la bd, llama al método getNameByEmail(), para sesion No google
     public void validateUser(String userEmail) {
 
         webApiRequest.validateUser(userEmail, userPass, new WebApiRequest.WebApiRequestJsonResponseListener() {
@@ -259,7 +239,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    // cConsulta y recibe el nombre del usuario de la bd, e inicia sesion No google, graba shared preferences
+    // Consulta y recibe el nombre del usuario de la bd, e inicia sesion No google, graba shared preferences
     public void getNameByEmail(String email, String password) {
         webApiRequest.getNameByEmail(email, password, new WebApiRequest.WebApiRequestJsonObjectListener_getName() {
             @Override
@@ -267,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (id > 0) {
                     Log.d("DEBUGME", "recibido nombre: " + name);
                     //     Toast.makeText(context, "recibido nombre: " + name, Toast.LENGTH_LONG).show();
-                    SharedPreferences preferences = getSharedPreferences("savedData", getApplicationContext().MODE_PRIVATE);
+                    SharedPreferences preferences = getSharedPreferences("savedData", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("email", userEmail);
                     editor.putString("pass", userPass);
@@ -277,41 +257,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 } else if (id < 0) {
                     Log.d("DEBUGME", "No encontrado nombre para ese email");
-                    //   Toast.makeText(context, "No encontrado nombre para ese email " + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "Volley error: " + id + " " + message);
-                //   Toast.makeText(context, "Volley error. Codigo de error: " + id + "message: " + message, Toast.LENGTH_LONG).show();
             }
         });
     }
 
-
     // Utilidad de desarrollo, solo para tester
-    private void deleteAllSharedPreferences() {
-        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        preferencias.edit().clear().apply();
-        //   Toast.makeText(this, "Shared Preferences eliminadas", Toast.LENGTH_LONG).show();
-    }
+//    private void deleteAllSharedPreferences() {
+//        SharedPreferences preferencias = getSharedPreferences("savedData", Context.MODE_PRIVATE);
+//        preferencias.edit().clear().apply();
+//    }
 
 
     //Método de que invoca el Intent para pantalla de iniciar sesión
     private void signIn() {
         Intent signInIntent = new Intent(getApplicationContext(), HomeActivity.class);
-        //TODO este intent no tiene que permitir volver atras (ahora si lo permite)
         signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        //  createSharedPreferences();
         startActivity(signInIntent);
     }
 
     //Método de que invoca el Intent para pantalla de iniciar sesión con Google
     private void googleSignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        //signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-}//End Class
+}
