@@ -907,7 +907,6 @@ public class WebApiRequest {
 
     }
 
-    // TODO Poner comentario
     public void updateGroup(String email,
                             String password,
                             String groupid,
