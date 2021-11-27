@@ -625,7 +625,7 @@ public class WebApiRequest {
 
     }
 
-    public void getInvoiceByGroup(int idGroup, WebApiRequestJsonObjectArrayListener webApiRequestJsonObjectArrayListener) {
+    public void getInvoiceByGroup(String userEmail, String userPass, int idGroup, WebApiRequestJsonObjectArrayListener webApiRequestJsonObjectArrayListener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "getInvoiceByGroup.php", new Response.Listener<String>() {
             @Override
@@ -699,6 +699,8 @@ public class WebApiRequest {
             protected Map<String, String> getParams() {
                 Log.d("DEBUGME", "getInvoiceByGroup getparams: idgroup" + idGroup);
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("email", userEmail);
+                params.put("password", userPass);
                 params.put("idgroup", String.valueOf(idGroup));
 
                 return params;

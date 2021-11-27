@@ -59,7 +59,6 @@
                     android:id="@+id/edt_AGAGroupName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="@string/allow_character_withnumbersspace"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -75,7 +74,6 @@
                     android:id="@+id/edt_AGADescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="@string/allow_character_withnumbersspace"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>

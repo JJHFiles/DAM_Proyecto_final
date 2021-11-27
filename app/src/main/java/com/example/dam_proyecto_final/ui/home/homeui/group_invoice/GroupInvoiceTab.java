@@ -93,7 +93,7 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
         //Obtenemos la lista de facturas que pasaremos a los fragment, al ser la carga inicial tambien invocamos al fragment de lista principal
         WebApiRequest webApiRequest = new WebApiRequest(this);
-        webApiRequest.getInvoiceByGroup(groupModel.getId(), new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
+        webApiRequest.getInvoiceByGroup(userEmail, userPass, groupModel.getId(), new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
             @Override
             public void onSuccess(JsonResponseModel response, List<?> data) {
                 Log.d("DEBUGME", "GroupInvoiceTab: " + response.getId() + " " + response.getMessage());
