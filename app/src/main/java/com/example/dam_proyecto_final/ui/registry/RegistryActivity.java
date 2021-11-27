@@ -30,7 +30,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     private TextInputLayout txInLaHint;
     private Button btnCancel, btnContinue;
     private int step = 0; //0->name, 1->email, 2->pass first, 3->pass second
-    String charactersLimits;
+//    String charactersLimits;
 
     private String userName = "No introducido", userEmail = "No introducido", userPass = "";
 
@@ -48,7 +48,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
         txtvQuestion = findViewById(R.id.txtvQuestion);
         txInEdTx = findViewById(R.id.txInEdTx);
-        txInEdTx.setFilters(new InputFilter[] { filter });
+//        txInEdTx.setFilters(new InputFilter[] { filter });
         txInLaHint = findViewById(R.id.txInLaHint);
         btnCancel = findViewById(R.id.btnCancel);
         btnContinue = findViewById(R.id.btnContinue);
@@ -58,7 +58,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         //WebApiRequest
         webApiRequest = new WebApiRequest(this);
 
-        charactersLimits = getString(R.string.allow_character);
+//        charactersLimits = getString(R.string.allow_character);
     }
 
 
@@ -84,7 +84,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
                             txInEdTx.setText("");
                             txInLaHint.setHint(getResources().getString(R.string.email));
-                            charactersLimits = getString(R.string.allow_character_email);
+//                            charactersLimits = getString(R.string.allow_character_email);
 
 
                             step = 1; // se avanza al paso siguiente
@@ -95,7 +95,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                     case 1:// introduccion del email, segundo paso
                         if (Patterns.EMAIL_ADDRESS.matcher(txInEdTx.getText().toString()).matches()) {
-                            charactersLimits = "";
+//                            txInEdTx.setFilters(new InputFilter[] { });
                             userEmail = txInEdTx.getText().toString();
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
                             txInEdTx.setText("");
@@ -144,25 +144,24 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
             public void onSuccess(int id, String message) {
                 if (id ==222) {
                     Log.d("DEBUGME", "usuario " + userEmail + " existe, mensa: " + message);
-                    Toast.makeText(getApplicationContext(), "usuario " + userEmail + " existe vuelva a intentarlo con otro correo electrónico, mensa: " + message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.warning_registry_email_exists) + message, Toast.LENGTH_LONG).show();
 
                 } else if (id ==223) {
                     Log.d("DEBUGME", "Usuario no existe, recibido: "+ id);
-                  //  Toast.makeText(getApplicationContext(), "usuario no existe " + id, Toast.LENGTH_LONG).show();
-                    isertUserInBD();
+                    insertUserInBD();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
-                Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
             }
         });
     }
 
     // introduce el usuario en la bd e inicia sesion No google.
-    public void isertUserInBD() {
+    public void insertUserInBD() {
         webApiRequest.userInsert(userEmail, userPass, userName, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
@@ -181,14 +180,14 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                     signIn();
                 } else if (id < 0) {
                     Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
-                    Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
-                Toast.makeText(getApplicationContext(), "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -242,30 +241,30 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private InputFilter filter = new InputFilter() {
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end,
-                                   Spanned dest, int dstart, int dend) {
-
-            if (source instanceof SpannableStringBuilder) {
-                SpannableStringBuilder sourceAsSpannableBuilder = (SpannableStringBuilder) source;
-                for (int i = end - 1; i >= start; i--) {
-                    char currentChar = source.charAt(i);
-                    if (!charactersLimits.contains(String.valueOf(currentChar))) {
-                        sourceAsSpannableBuilder.delete(i, i + 1);
-                    }
-                }
-                return source;
-            } else {
-                StringBuilder filteredStringBuilder = new StringBuilder();
-                for (int i = start; i < end; i++) {
-                    char currentChar = source.charAt(i);
-                    if (charactersLimits.contains(String.valueOf(currentChar))) {
-                        filteredStringBuilder.append(currentChar);
-                    }
-                }
-                return filteredStringBuilder.toString();
-            }
-        }
-    };
+//    private InputFilter filter = new InputFilter() {
+//        @Override
+//        public CharSequence filter(CharSequence source, int start, int end,
+//                                   Spanned dest, int dstart, int dend) {
+//
+//            if (source instanceof SpannableStringBuilder) {
+//                SpannableStringBuilder sourceAsSpannableBuilder = (SpannableStringBuilder) source;
+//                for (int i = end - 1; i >= start; i--) {
+//                    char currentChar = source.charAt(i);
+//                    if (!charactersLimits.contains(String.valueOf(currentChar))) {
+//                        sourceAsSpannableBuilder.delete(i, i + 1);
+//                    }
+//                }
+//                return source;
+//            } else {
+//                StringBuilder filteredStringBuilder = new StringBuilder();
+//                for (int i = start; i < end; i++) {
+//                    char currentChar = source.charAt(i);
+//                    if (charactersLimits.contains(String.valueOf(currentChar))) {
+//                        filteredStringBuilder.append(currentChar);
+//                    }
+//                }
+//                return filteredStringBuilder.toString();
+//            }
+//        }
+//    };
 }

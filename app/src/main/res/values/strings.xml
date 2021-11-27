@@ -143,6 +143,8 @@
     <string name="warning_member_on_list">Ya se ha incluido al miembro en la lista</string>
     <string name="warning_member_max">No se pueden añadir más de 10 miembros</string>
     <string name="warning_group_created">Grupo creado correctamente</string>
+    <string name="warning_registry_email_exists">El usuario ya existe prueba a introducir otro email</string>
+    <string name="warning_generic_error">Se ha producido un error :</string>
 
 
 </resources>
