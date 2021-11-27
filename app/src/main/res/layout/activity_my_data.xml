@@ -33,7 +33,7 @@
             android:focusable="false"
             android:importantForAutofill="no"
             android:inputType="text"
-            tools:text="Texto" />
+            tools:text="@string/input_text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,7 +63,7 @@
             android:focusable="false"
             android:importantForAutofill="no"
             android:inputType="text"
-            tools:text="Texto" />
+            tools:text="@string/input_text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

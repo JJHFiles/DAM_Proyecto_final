@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Tipo de factura"
+                android:text="@string/invoice_model"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Tipo de dato a representar en gráficas"
+                android:text="@string/date_model"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fl_GIFCheckTypeInvoice" />
@@ -111,12 +111,12 @@
                 <RadioButton
                     android:id="@+id/rb_GIFConsumption"
                     style="@style/CheckRadio"
-                    android:text="Consumo" />
+                    android:text="@string/invoice_consumption" />
 
                 <RadioButton
                     android:id="@+id/rb_GIFCost"
                     style="@style/CheckRadio"
-                    android:text="Coste" />
+                    android:text="@string/invoice_amount" />
 
 
             </RadioGroup>
@@ -126,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Rango de fechas"
+                android:text="@string/date_period"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fl_GIFCheckTypeChart" />
@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:hint="Desde">
+                    android:hint="@string/start_from">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_GIFStartPeriod"
@@ -169,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:hint="Hasta">
+                    android:hint="@string/end_at">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_GIFEndPeriod"

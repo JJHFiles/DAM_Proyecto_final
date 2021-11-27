@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:text="Hola"
+        android:text="@string/hello"
         android:textColor="@color/white"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/tvName"
@@ -51,7 +51,7 @@
         app:layout_constraintBottom_toTopOf="@+id/prfbanner"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/tvGreeting"
-        tools:text="Unknow" />
+        tools:text="@string/input_text" />
 
     <!--    Mis datos-->
     <LinearLayout
@@ -73,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="Mis datos"
+            android:text="@string/my_data"
             android:textSize="18dp"
             android:textStyle="bold" />
 
@@ -118,7 +118,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="Cambiar password"
+            android:text="@string/change_password"
             android:textSize="18dp"
             android:textStyle="bold" />
 
@@ -163,7 +163,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="Cerrar sesión"
+            android:text="@string/close_session"
             android:textSize="18dp"
             android:textStyle="bold" />
 
