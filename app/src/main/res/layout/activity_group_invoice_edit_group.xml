@@ -60,7 +60,6 @@
                     android:id="@+id/edt_AGIEG_GroupName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="@string/allow_character_withnumbersspace"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -76,7 +75,6 @@
                     android:id="@+id/edt_AGIEG_Description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="@string/allow_character_withnumbersspace"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -132,7 +130,6 @@
                         android:id="@+id/edt_AGIEG_AddMember"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:digits="@string/allow_character_email"
                         android:inputType="text"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
