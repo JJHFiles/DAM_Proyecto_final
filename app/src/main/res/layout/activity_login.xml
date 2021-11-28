@@ -17,12 +17,12 @@
         android:layout_marginStart="96dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="96dp"
+        android:contentDescription="@string/ic_logo_description"
         android:src="@drawable/ic_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/ic_logo_description" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout4"
@@ -77,7 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="36dp"
-        android:background="@drawable/round_button"
+        android:background="@drawable/round_button_g"
         android:text="@string/btnsigngoogle"
         app:backgroundTint="@null"
         app:icon="@drawable/btn_google"
@@ -131,27 +131,27 @@
         android:id="@+id/llay_SignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="@string/registry_text1" />
+            android:text="@string/registry_text1"
+            android:textSize="16sp" />
 
         <TextView
-            android:layout_marginStart="4dp"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/primary_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/registry_text2" />
+            android:layout_marginStart="4dp"
+            android:text="@string/registry_text2"
+            android:textColor="@color/primary_color"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

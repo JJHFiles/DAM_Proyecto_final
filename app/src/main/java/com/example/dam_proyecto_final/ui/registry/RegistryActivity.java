@@ -3,12 +3,12 @@ package com.example.dam_proyecto_final.ui.registry;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputFilter;
+import android.text.Editable;
 import android.text.InputType;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,13 +17,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.ui.LoginActivity;
 import com.example.dam_proyecto_final.ui.home.HomeActivity;
 import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 // Para el registro de usuarios NO Google
-public class RegistryActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegistryActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
     private TextView txtvQuestion;
     private TextInputEditText txInEdTx;
@@ -48,7 +49,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
         txtvQuestion = findViewById(R.id.txtvQuestion);
         txInEdTx = findViewById(R.id.txInEdTx);
-//        txInEdTx.setFilters(new InputFilter[] { filter });
+        txInEdTx.addTextChangedListener(this);
         txInLaHint = findViewById(R.id.txInLaHint);
         btnCancel = findViewById(R.id.btnCancel);
         btnContinue = findViewById(R.id.btnContinue);
@@ -69,7 +70,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.btnCancel:
                 // Cierra la actividad y vuelve  la ventana login
-                finish();
+                goToLogin();
                 break;
 
             case R.id.btnContinue:
@@ -126,7 +127,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                     case 3: // introduccion de la contraseña por segunda vez, verificacion de coincidencia de caracteres, cuarto y ultimo paso.
                         if (txInEdTx.getText().toString().equals(userPass)) {
-                         //   isertUserInBD();
+                            //   isertUserInBD();
                             isUserEmailInBD(userEmail);
 
                         } else {
@@ -143,12 +144,12 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         webApiRequest.isUserEmailInBd(userEmail, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
-                if (id ==222) {
+                if (id == 222) {
                     Log.d("DEBUGME", "usuario " + userEmail + " existe, mensa: " + message);
-                    Toast.makeText(getApplicationContext(), getString(R.string.warning_registry_email_exists) + message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.warning_registry_email_exists), Toast.LENGTH_LONG).show();
 
-                } else if (id ==223) {
-                    Log.d("DEBUGME", "Usuario no existe, recibido: "+ id);
+                } else if (id == 223) {
+                    Log.d("DEBUGME", "Usuario no existe, recibido: " + id);
                     insertUserInBD();
                 }
             }
@@ -199,12 +200,6 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         startActivity(signInIntent);
     }
 
-    // Método que controla el click en la flecha ActionBar
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 
     // Retrocede a la opc anterior dentro de la misma actividad
     @Override
@@ -233,6 +228,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case 2:
+                btnContinue.setText(getString(R.string.btnContinue_Continue));
                 btnContinue.setText(R.string.btnContinue_Continue);
                 txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
                 txInEdTx.setText("");
@@ -242,30 +238,36 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-//    private InputFilter filter = new InputFilter() {
-//        @Override
-//        public CharSequence filter(CharSequence source, int start, int end,
-//                                   Spanned dest, int dstart, int dend) {
-//
-//            if (source instanceof SpannableStringBuilder) {
-//                SpannableStringBuilder sourceAsSpannableBuilder = (SpannableStringBuilder) source;
-//                for (int i = end - 1; i >= start; i--) {
-//                    char currentChar = source.charAt(i);
-//                    if (!charactersLimits.contains(String.valueOf(currentChar))) {
-//                        sourceAsSpannableBuilder.delete(i, i + 1);
-//                    }
-//                }
-//                return source;
-//            } else {
-//                StringBuilder filteredStringBuilder = new StringBuilder();
-//                for (int i = start; i < end; i++) {
-//                    char currentChar = source.charAt(i);
-//                    if (charactersLimits.contains(String.valueOf(currentChar))) {
-//                        filteredStringBuilder.append(currentChar);
-//                    }
-//                }
-//                return filteredStringBuilder.toString();
-//            }
-//        }
-//    };
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            goToLogin();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void goToLogin() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    // Métodos para habilitar el botón con el form completo
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (txInEdTx.getText().toString().length() == 0) {
+            btnContinue.setEnabled(false);
+        } else {
+            btnContinue.setEnabled(true);
+        }
+    }
 }

@@ -73,6 +73,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.registry.RegistryActivity"
+            android:parentActivityName=".ui.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.HomeActivity"
