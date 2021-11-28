@@ -126,7 +126,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     // Comprueba si existe el usuario en la bd
     public void isInvoiceByGroup(String groupId, ArrayList<GroupModel> groupModel, int position) {
-        webApiRequest.isInvoiceByGroup(groupId, new WebApiRequest.WebApiRequestJsonObjectListener() {
+        webApiRequest.isInvoiceByGroup(userEmail, userPass, groupId, new WebApiRequest.WebApiRequestJsonObjectListener() {
             @Override
             public void onSuccess(int id, String message) {
                 if (id == 222) {
