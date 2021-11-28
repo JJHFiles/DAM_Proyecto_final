@@ -1,9 +1,26 @@
 # CHANGELOG for blist proyect
 
-## 0.1.8 XXXXXXXX
+
+
+isInvoiceByGroup changed to validate user/password
+## 0.1.9 2021-11-27
+### Added
+
+
+### Changed
+- Removed all characters limits of inputs. Now admit symbols with security
+
+### Fixed
+
+
+### Security
+- SQL Inyection fixed for all backend scripts
+- Use email/password validation to all Volley request
+
+
+## 0.1.8 2021-11-27
 ### Added
 - MyData screen added
-
 
 ### Changed
 - New empty illustration
@@ -15,13 +32,13 @@
 ### Fixed
 - Constraint of empty invoice screen
 - Bad name showed on profile screen
+- Bad width values on registry screen
 
 ### Security
-- Registry screen not admit especial characters on name and email inputs
 - Add Group screen not admit especial characters on name, description and email inputs
 - Add invoice screen not admit especial characters on multiple inputs
 - edit group screen not admit especial characters on multiple inputs
-
+- SQL Inyection for many backend scripts
 
 
 
