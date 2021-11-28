@@ -24,6 +24,8 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:letterSpacing">-0</item>
+        <item name="backgroundTint">@null</item>
+
         <item name="android:background">@drawable/round_button</item>
         <item name="android:height">48dp</item>
     </style>

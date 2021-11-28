@@ -208,7 +208,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
         switch (step) {
             case -1:
                 // Cierra la actividad y vuelve  la ventana login
-                finish();
+                goToLogin();
                 break;
             case 0:
                 btnContinue.setText(R.string.btnContinue_Continue);
@@ -241,7 +241,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            goToLogin();
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }

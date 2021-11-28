@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BLIST</string>
     <string name="edtpass_text">Escribe tu contraseña</string>
-    <string name="btnsignin_text">Iniciar sesión con correo electrónico</string>
+    <string name="btnsignin_text">Iniciar sesión</string>
     <string name="btnsigngoogle">Acceder con Google</string>
     <string name="txtvpass_text">Contraseña</string>
     <string name="edtuseremail_text">Escribe tu correo electrónico</string>
@@ -23,7 +23,7 @@
     <string name="btnContinue_Finalize">Finalizar</string>
     <string name="pass_NotEquals">Las contraseñas no coinciden</string>
     <string name="email_NoMatch">Formato de correo electrónico incorrecto</string>
-    <string name="password_failure">Debe introducir una contraseña con un mínimo 4 caracteres y sin espacios en blanco</string>
+    <string name="password_failure">Debe introducir una contraseña con un mínimo 4 caracteres</string>
     <string name="name_empty">Debe introducir su nombre</string>
     <string name="sharedPreferences_empty">Usuario no registrado en el dispositivo</string>
     <string name="login_failure">Usuario o contraseña incorrecta, pruebe de nuevo</string>
