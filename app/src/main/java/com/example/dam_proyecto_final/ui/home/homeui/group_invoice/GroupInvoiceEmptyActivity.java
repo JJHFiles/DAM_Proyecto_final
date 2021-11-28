@@ -130,6 +130,9 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
             intent.putExtra("userPass", userPass);
             startActivity(intent);
             return true;
+        } else if (item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

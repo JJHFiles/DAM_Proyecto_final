@@ -232,14 +232,14 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(this, "No se puede agregar un usuario que ya estaba en el grupo con anterioridad", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(this, getString(R.string.warning_adduser_inlist), Toast.LENGTH_LONG).show();
                                 }
                             }
                         } else {
-                            Toast.makeText(this, "Ya se ha incluido al miembro en la lista", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, getString(R.string.warning_adduser_duplicated), Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Toast.makeText(this, "No se pueden añadir más de 10 miembros", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.warning_members_limit), Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(this, R.string.role_noselected, Toast.LENGTH_LONG).show();
@@ -298,7 +298,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                         }
                     });
         } else {
-            Toast.makeText(this, "Por favor, rellene todos los campos", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.warning_form_not_full), Toast.LENGTH_LONG).show();
         }
     } //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
 //            finish();

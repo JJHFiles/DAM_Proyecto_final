@@ -212,13 +212,13 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
                             setResult(Activity.RESULT_OK, returnIntent);
                             finish();
                         } else {
-                            Toast.makeText(this, "No hay ninguna factura que coincida con los parametros establecidos", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, getString(R.string.warning_filter_without_invoice), Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Toast.makeText(this, "La fecha \"Desde\" no puede ser superior a la fecha \"Hasta\"", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.warning_period_not_allowed), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(this, "No ha seleccionado ningún tipo de dato a representar en gráficas", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.warning_filter_not_selected), Toast.LENGTH_LONG).show();
                 }
 
                 break;
@@ -234,7 +234,7 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
             String[] dateEmitionStr = i.getDate().split("-");
             Calendar dateEmition = Calendar.getInstance(Locale.getDefault());
             dateEmition.set(Integer.parseInt(dateEmitionStr[0]),
-                    Integer.parseInt(dateEmitionStr[1])-1,
+                    Integer.parseInt(dateEmitionStr[1]) - 1,
                     Integer.parseInt(dateEmitionStr[2]));
             dateEmition.getTime();
             //Si la factura está en rango la incorporamos a nueva lista de retorno

@@ -111,6 +111,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                         if (!txInEdTx.getText().toString().contains(getResources().getString(R.string.edtpass_text))
                                 && txInEdTx.getText().toString().length() >= getResources().getInteger(R.integer.min_pass_length)) //4)
                         {
+                            btnContinue.setText(getString(R.string.finalize));
                             step = 3;
                             userPass = txInEdTx.getText().toString();
                             txInEdTx.setText(R.string.btnContinue_Finalize);

@@ -231,8 +231,11 @@ public class GroupInvoiceTab extends AppCompatActivity {
 
         // Handle item selection
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
             case R.id.mnu_GIHAFilter:
-                //TODO crear flujo de filtro
                 Intent intentFilter = new Intent(this, GroupInvoiceFilter.class);
                 intentFilter.putExtra("invoices", arrIM);
                 intentFilter.putExtra("currency", groupModel.getCurrency());

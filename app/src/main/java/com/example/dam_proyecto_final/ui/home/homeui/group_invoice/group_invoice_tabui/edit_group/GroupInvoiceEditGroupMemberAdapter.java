@@ -108,8 +108,6 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                     if (membersUpd.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
                         membersUpd.get(x).setRole(position);
                         membersLis.get(i).setRole(position);
-                        Toast.makeText(context, "" +
-                                "Role:" + position, Toast.LENGTH_LONG).show();
                         isRoleChanged = true;
                     }
                 }

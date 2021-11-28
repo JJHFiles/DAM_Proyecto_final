@@ -12,9 +12,9 @@
     <string name="tab_text_3">Perfil</string>
     <string name="txtvTitle">Introduce tus datos</string>
     <string name="txtvQuestion_name">¿Cómo te llamas?</string>
-    <string name="txtvQuestion_email">¿Cual es tu correo electrónico?</string>
+    <string name="txtvQuestion_email">¿Cuál es tu correo electrónico?</string>
     <string name="txtvQuestion_passFirst">Introduzca tu contraseña</string>
-    <string name="txtvQuestion_passSecond">Vuelva a inroducir su contraseña</string>
+    <string name="txtvQuestion_passSecond">Vuelva a introducir su contraseña</string>
     <string name="edtInput_name">Nombre</string>
     <string name="email">Correo electrónico</string>
     <string name="edtInput_pass">Contraseña</string>
@@ -23,20 +23,13 @@
     <string name="btnContinue_Finalize">Finalizar</string>
     <string name="pass_NotEquals">Las contraseñas no coinciden</string>
     <string name="email_NoMatch">Formato de correo electrónico incorrecto</string>
-    <string name="password_failure">Debe introducir una contraseña de como mínimo 4 caracteres y sin espacios en blanco</string>
+    <string name="password_failure">Debe introducir una contraseña con un mínimo 4 caracteres y sin espacios en blanco</string>
     <string name="name_empty">Debe introducir su nombre</string>
-    <string name="sharedPreferences_empty">Usuario NO registrado en el dispositivo</string>
+    <string name="sharedPreferences_empty">Usuario no registrado en el dispositivo</string>
     <string name="login_failure">Usuario o contraseña incorrecta, pruebe de nuevo</string>
-
     <string name="separator_text">o</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Siguiente</string>
     <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="page_group">Grupos</string>
     <string name="page_activity">Actividad</string>
     <string name="page_profile">Perfil</string>
@@ -55,28 +48,18 @@
     <string name="dd_AGADescription">Descripción</string>
     <string name="btn_AGAAdd">Crear</string>
     <string name="edt_agagroupname">Nombre del grupo</string>
-    <string name="imgb_AGAAddMemberContentDescription">Plus image to add member</string>
+    <string name="imgb_AGAAddMemberContentDescription">Imagen con simbolo más que indica añadir</string>
     <string name="txtv_AGAMemberLabel">Miembros del grupo</string>
     <string name="filter">Filtrar</string>
     <string name="edit">Editar</string>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="select_date">Selecciona una fecha</string>
     <string name="cleanButton">Limpiar</string>
-
     <!-- TODO: los siguientes Strings afectan a GroupInvoiceTabListFragment y su XML, sin aplicar-->
     <string name="tab_Graphics">Gráficas</string>
     <string name="tab_Invoice">Listado</string>
     <string name="tab_ManualAdd">Añadir de forma manual</string>
-    <string name="tab_OCR_Add">Añadir escaneando, OCR</string>
     <string name="tab_Kw">Kw</string>
     <string name="tab_m3">m3</string>
-    <string name="tab_Hour">Hour(s)</string>
-    <string name="tab_Day">Day(s)</string>
-    <string name="tab_Month">Month(s)</string>
-    <string name="tab_Year">Year(s)</string>
     <string name="tab_Type">Tipo: </string>
     <string name="tab_Amount">Gasto: </string>
     <string name="tab_Date">Fecha: </string>
@@ -86,7 +69,7 @@
     <string name="tab_Electricity">Electricidad</string>
     <string name="tab_Gas">Electricidad</string>
     <string name="tab_Water">Agua</string>
-    <string name="tab_Telephone">Telephonia</string>
+    <string name="tab_Telephone">Telefonía</string>
     <string name="tab_CarRenting">Renting de coche</string>
     <string name="tab_IBI">IBI</string>
     <string name="today">Hoy</string>
@@ -95,7 +78,7 @@
     <string name="walktrough_title_2">Sube tus facturas</string>
     <string name="walktrough_title_3">Visualiza tus gastos</string>
     <string name="walktrough_description_1">Crea un grupo y añade a quien tu quieras. Podréis ir añadiendo todas las facturas que compartáis.</string>
-    <string name="walktrough_description_2">\"Sube tus facturas de forma manual o mediante OCR. ¡Podrás añadir todas las facturas que quieras! \"</string>
+    <string name="walktrough_description_2">Sube tus facturas de forma manual o mediante OCR. ¡Podrás añadir todas las facturas que quieras!</string>
     <string name="walktrough_description_3">Podrás visualizar todas las facturas añadidas a cada grupo en formato lista o en modo gráfica. ¡Hay 3 diferentes!</string>
     <string name="empty_invoices_text">Aún no tienes ninguna factura añadida a este grupo.\n Cuando añadas una esta te aparecerá aquí</string>
     <string name="password_change_text1">Para poder cambiar tu contraseña, necesitamos que introduzcas tu contraseña actual.</string>
@@ -132,19 +115,14 @@
     <string name="groupinvoiceadd_defaultfilename">PDF creado a partir de foto</string>
     <string name="add">Añadir</string>
     <string name="groupinvoiceadd_uploadtext">Adjuntar factura</string>
-    <string name="ic_empty_description">Imagen de una mujer con los brazos abiertos que describe que no hay nada</string>
+    <string name="ic_empty_description">Imagen de una mujer con los brazos abiertos que describe que no hay nada que mostrar</string>
     <string name="my_data">Mis datos</string>
-    <string name="allow_character">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúüÇç</string>
-    <string name="allow_character_withnumbers">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúüÇç0123456789</string>
-    <string name="allow_character_withnumbersspace">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñ opqrstuvwxyzáéíóúüÇç0123456789</string>
-    <string name="allow_character_email">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789@._-</string>
     <string name="warning_login_failed_google">Inicio de sesión con google ha fallado</string>
     <string name="warning_member_on_list">Ya se ha incluido al miembro en la lista</string>
     <string name="warning_member_max">No se pueden añadir más de 10 miembros</string>
     <string name="warning_group_created">Grupo creado correctamente</string>
     <string name="warning_registry_email_exists">El usuario ya existe prueba a introducir otro correo electrónico</string>
     <string name="warning_generic_error">Se ha producido un error :</string>
-
     <string name="hello">Hola</string>
     <string name="input_text">Texto</string>
     <string name="input_date">Fecha</string>
@@ -162,11 +140,19 @@
     <string name="end_at">Hasta</string>
     <string name="list">Listado</string>
     <string name="chart">Gráfica</string>
+    <string name="warning_select_file_fail">Error al seleccionar el fichero</string>
+    <string name="warning_filter_without_invoice">No hay ninguna factura que coincida con los parametros establecidos</string>
+    <string name="warning_period_not_allowed">La fecha \"Desde\" no puede ser superior a la fecha \"Hasta\"</string>
+    <string name="warning_filter_not_selected">No ha seleccionado ningún tipo de dato a representar en gráficas</string>
+    <string name="warning_adduser_inlist">No se puede agregar un usuario que ya estaba en el grupo con anterioridad</string>
+    <string name="warning_adduser_duplicated">Ya se ha incluido al miembro en la lista</string>
+    <string name="warning_members_limit">No se pueden añadir más de 10 miembros</string>
+    <string name="warning_form_not_full">Por favor, rellene todos los campos</string>
+    <string name="finalize">Finalizar</string>
 
-
-
-
-
-
+    <!--    <string name="allow_character">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúüÇç</string>
+        <string name="allow_character_withnumbers">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúüÇç0123456789</string>
+        <string name="allow_character_withnumbersspace">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñ opqrstuvwxyzáéíóúüÇç0123456789</string>
+        <string name="allow_character_email">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789@._-</string>-->
 
 </resources>

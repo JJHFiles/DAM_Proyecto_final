@@ -263,7 +263,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                 llFilePicker.setClickable(false);
             }
         } else {
-            Toast.makeText(this, "Error al seleccioanr el fichero", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.warning_select_file_fail), Toast.LENGTH_LONG).show();
         }
     }
 

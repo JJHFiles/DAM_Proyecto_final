@@ -188,7 +188,7 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                         }
                 });
             } else {
-                Toast.makeText(this, "Por favor, rellene todos los campos", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.warning_form_not_full), Toast.LENGTH_LONG).show();
             }
         } //else if ( view.getId() == R.id.btn_AGACancel ){
 //            finish();
