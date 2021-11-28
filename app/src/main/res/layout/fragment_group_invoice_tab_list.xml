@@ -36,23 +36,23 @@
         android:id="@+id/btManual"
         android:layout_width="210dp"
         android:layout_height="40dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/white"
         android:gravity="center"
         android:text="@string/add_invoice_manually"
         android:textColor="@color/primary_color"
         android:textSize="11sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.809"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.735" />
+        app:layout_constraintBottom_toTopOf="@+id/btOCR"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btOCR"
         android:layout_width="210dp"
         android:layout_height="40dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/white"
         android:gravity="center"
         android:text="@string/add_invoice_photo"
@@ -60,11 +60,7 @@
         android:textSize="11sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/ibAdd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.809"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btManual"
-        app:layout_constraintVertical_bias="0.368" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
         android:id="@+id/ibAdd"

@@ -35,8 +35,7 @@
             style="@style/CheckRadio"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:text="Lineas"
 
@@ -45,10 +44,9 @@
         <RadioButton
             android:id="@+id/rb_gitc_chartpie"
             style="@style/CheckRadio"
+            android:layout_marginRight="0dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:text="Circular"
 

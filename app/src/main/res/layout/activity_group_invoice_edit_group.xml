@@ -123,7 +123,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="4dp"
-                    android:layout_weight="64"
+                    android:layout_weight="62"
                     android:hint="@string/edt_AGAMemberOfGroup">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -131,14 +131,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="36"
+                    android:layout_weight="38"
                     android:hint="@string/dd_AGARole"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -149,6 +150,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType=""
+                        android:singleLine="true"
                         tools:ignore="LabelFor" />
 
                 </com.google.android.material.textfield.TextInputLayout>
