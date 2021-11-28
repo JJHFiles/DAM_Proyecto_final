@@ -1,19 +1,18 @@
 <resources>
     <string name="app_name">BLIST</string>
     <string name="edtpass_text">Escribe tu contraseña</string>
-    <string name="btnsignin_text">Iniciar sesión con email</string>
+    <string name="btnsignin_text">Iniciar sesión con correo electrónico</string>
     <string name="btnsigngoogle">Acceder con Google</string>
-    <string name="txtvpass_text">Password</string>
+    <string name="txtvpass_text">Contraseña</string>
     <string name="edtuseremail_text">Escribe tu correo electrónico</string>
     <string name="txtvuseremail_text">Email</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="tab_text_1">Grupos</string>
     <string name="tab_text_2">Actividad</string>
     <string name="tab_text_3">Perfil</string>
-    <string name="title_activity_login2">LoginActivity2</string>
     <string name="txtvTitle">Introduce tus datos</string>
     <string name="txtvQuestion_name">¿Cómo te llamas?</string>
-    <string name="txtvQuestion_email">¿Cual es tu email?</string>
+    <string name="txtvQuestion_email">¿Cual es tu correo electrónico?</string>
     <string name="txtvQuestion_passFirst">Introduzca tu contraseña</string>
     <string name="txtvQuestion_passSecond">Vuelva a inroducir su contraseña</string>
     <string name="edtInput_name">Nombre</string>
@@ -143,8 +142,31 @@
     <string name="warning_member_on_list">Ya se ha incluido al miembro en la lista</string>
     <string name="warning_member_max">No se pueden añadir más de 10 miembros</string>
     <string name="warning_group_created">Grupo creado correctamente</string>
-    <string name="warning_registry_email_exists">El usuario ya existe prueba a introducir otro email</string>
+    <string name="warning_registry_email_exists">El usuario ya existe prueba a introducir otro correo electrónico</string>
     <string name="warning_generic_error">Se ha producido un error :</string>
+
+    <string name="hello">Hola</string>
+    <string name="input_text">Texto</string>
+    <string name="input_date">Fecha</string>
+    <string name="close_session">Cerrar sesión</string>
+    <string name="create_your_b_list">Crea tu B-List</string>
+    <string name="create_b_list">Crear BLIST</string>
+    <string name="invoice_added">Añadida factura</string>
+    <string name="no_activity">Sin Actividad</string>
+    <string name="no_group_changes">Aún no ha habido cambios en tus grupos. Lo verás aquí cuando haya modficaciones.</string>
+    <string name="save_changes">Guardar cambios</string>
+    <string name="invoice_model">Tipo de factura</string>
+    <string name="date_model">Tipo de dato a representar en gráficas</string>
+    <string name="date_period">Guardar cambios</string>
+    <string name="start_from">Desde</string>
+    <string name="end_at">Hasta</string>
+    <string name="list">Listado</string>
+    <string name="chart">Gráfica</string>
+
+
+
+
+
 
 
 </resources>

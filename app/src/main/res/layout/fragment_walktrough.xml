@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lav_fw_animation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:text="Crea tu B-List"/>
+        tools:text="@string/create_your_b_list"/>
 
     <TextView
         android:id="@+id/txtv_fw_description"
@@ -54,7 +54,7 @@
         android:layout_marginLeft="24dp"
         android:textSize="16sp"
         android:textAlignment="center"
-        tools:text="Creaun grupo ajsdbak djfh djfghs d djfh sakdfh skdjfh skjdhf "
+        tools:text="@string/input_text"
         app:layout_constraintTop_toBottomOf="@+id/txtv_fw_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
