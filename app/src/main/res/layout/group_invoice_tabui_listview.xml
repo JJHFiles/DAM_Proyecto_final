@@ -23,9 +23,10 @@
                 android:id="@+id/tvType"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:gravity="bottom"
                 android:paddingLeft="16dp"
+                android:text=""
                 android:textColor="@color/primary_color"
                 android:textSize="16dp"
                 android:textStyle="bold" />
@@ -34,7 +35,7 @@
                 android:id="@+id/tvAmount"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
-                android:layout_weight="1"
+                android:layout_weight="4"
                 android:gravity="bottom|right"
                 android:paddingRight="16dp"
                 android:textSize="16dp"
@@ -53,7 +54,7 @@
                 android:id="@+id/tvDate"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
-                android:layout_weight="1"
+                android:layout_weight="6"
                 android:gravity="top"
                 android:paddingLeft="16dp" />
 
@@ -61,7 +62,7 @@
                 android:id="@+id/tvConsumption"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
-                android:layout_weight="1"
+                android:layout_weight="4"
                 android:gravity="top|right"
                 android:paddingRight="16dp" />
 
