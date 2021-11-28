@@ -718,7 +718,7 @@ public class WebApiRequest {
     }
 
     //Comprobacion, si existe el usuario creado en BD
-    public void isInvoiceByGroup(String idGroup, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
+    public void isInvoiceByGroup(String userEmail, String userPass, String idGroup, WebApiRequestJsonObjectListener webapirequestjsonobjectlistener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(Request.Method.POST, URL + "isInvoiceByGroup.php", new Response.Listener<String>() {
             @Override
@@ -748,6 +748,8 @@ public class WebApiRequest {
             protected Map<String, String> getParams() {
                 Log.d("DEBUGME", "getparams: " + idGroup);
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("email", userEmail);
+                params.put("password", userPass);
                 params.put("idgroup", idGroup);
 
                 return params;
