@@ -46,7 +46,7 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
         this.lstv_Members = lstv_Members;
         this.guiUser = guiUser;
         this.guiUserRole = guiUserRole;
-        this.guiUserRole = 0;
+        this.guiUserRole =2;
     }
 
 
@@ -114,7 +114,7 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                             Toast.makeText(context, "1 ", Toast.LENGTH_LONG).show();
                         }
                         // los editores pueden cambiar a los demas editores y de lectura
-                        else if (guiUserRole > 0 && (membersUpd.get(x).getRole() > 0)) {
+                        else if (guiUserRole == 1 && (membersUpd.get(x).getRole() > 0)) {
 
                                 if(position>0) {
                                     membersUpd.get(x).setRole(position);
@@ -132,7 +132,7 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                         membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
                         Toast.makeText(context, "3 , posicion: " + position, Toast.LENGTH_LONG).show();
 
-                    } else if (guiUserRole > 0 && (membersLis.get(i).getRole() > 0)) {
+                    } else if (guiUserRole ==1 && (membersLis.get(i).getRole() > 0)) {
                         if(position>0) {
                             membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
                             Toast.makeText(context, "4 ", Toast.LENGTH_LONG).show();
