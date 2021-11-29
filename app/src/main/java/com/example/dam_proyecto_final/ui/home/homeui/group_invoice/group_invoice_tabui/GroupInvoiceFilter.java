@@ -156,7 +156,7 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
         switch (view.getId()) {
             //DatePicker
             case R.id.tiet_GIFStartPeriod:
-                Log.d("DEBUGME", "GroupInvoiceFilter onclick! desde");
+                Log.d("DEBUGME", "GroupInvoiceFilter onclick! from");
                 addCalendar(dateFrom, tiet_GIFStartPeriod);
 
                 break;
@@ -213,12 +213,18 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
                             finish();
                         } else {
                             Toast.makeText(this, getString(R.string.warning_filter_without_invoice), Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.warning_filter_without_invoice));
+
                         }
                     } else {
                         Toast.makeText(this, getString(R.string.warning_period_not_allowed), Toast.LENGTH_LONG).show();
+                        Log.d("DEBUGME",getString(R.string.warning_period_not_allowed));
+
                     }
                 } else {
                     Toast.makeText(this, getString(R.string.warning_filter_not_selected), Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME",getString(R.string.warning_filter_not_selected));
+
                 }
 
                 break;

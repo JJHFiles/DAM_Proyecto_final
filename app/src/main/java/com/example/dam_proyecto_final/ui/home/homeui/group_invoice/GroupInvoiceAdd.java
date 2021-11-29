@@ -83,7 +83,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_invoice_add);
-        setTitle("Insertar nueva factura");
+        setTitle(getString(R.string.userNoDB));
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         webApiRequest = new WebApiRequest(getApplicationContext());
@@ -137,7 +137,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
 
     public void loadInvoiceType() {
         //Asignamos lista a DropDowns
-        String[] type = {"Electricidad", "Agua", "Gas", "Telefonía"};
+        String[] type = {getString(R.string.tab_Electricity),getString(R.string.tab_Water), getString(R.string.tab_Gas), getString(R.string.tab_Telephone)};
         ArrayAdapter typeAdapter = new ArrayAdapter(this, R.layout.activity_group_add_dropdown_item, type);
         actvInvoiceType.setAdapter(typeAdapter);
         actvInvoiceType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -193,6 +193,9 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                 tietEndPeriod.setText("");
                 Toast.makeText(this, getResources().getText(R.string.warning_badperioddate),
                         Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME",getString(R.string.warning_badperioddate));
+
+
                 btNew.setEnabled(false);
             }
         } else if (v.getId() == R.id.tiet_date) {
@@ -267,6 +270,9 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
             }
         } else {
             Toast.makeText(this, getString(R.string.warning_select_file_fail), Toast.LENGTH_LONG).show();
+            Log.d("DEBUGME",getString(R.string.warning_select_file_fail));
+
+
         }
     }
 
@@ -308,7 +314,8 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                 if (id > 0) {
                     Log.d("DEBUGME", "insertInvoice onSucess: " + id + " " + message);
 
-                    Toast.makeText(getApplicationContext(), "Factura insertada con éxito: " + id, Toast.LENGTH_LONG).show();
+                 //   Toast.makeText(getApplicationContext(), getString(R.string.invoice_inserted) + id, Toast.LENGTH_LONG).show();
+
                     Intent intent = new Intent(getApplicationContext(), GroupInvoiceTab.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("groupModel", groupModel);
@@ -317,14 +324,14 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
                     startActivity(intent);
                 } else if (id < 0) {
                     Log.d("DEBUGME", "insertInvoice onSucess: " + id + " " + message);
-                    Toast.makeText(getApplicationContext(), "Error al insertar factura. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                 //   Toast.makeText(getApplicationContext(), "Error inserting invoice. Error code: " + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
-                Log.d("DEBUGME", "insertInvoice onerror: " + id + " " + message);
-                Toast.makeText(getApplicationContext(), "Error al insertar factura. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME", "insertInvoice onError: " + id + " " + message);
+               // Toast.makeText(getApplicationContext(), "Error inserting invoice. Error code: " + id, Toast.LENGTH_LONG).show();
                 btNew.setClickable(false);
             }
         });
@@ -363,9 +370,9 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Se necesitan de almacenamiento para poder almacenar la factura")
-                        .setTitle("Permisos denegados")
-                        .setNeutralButton("Lo he entendido", new DialogInterface.OnClickListener() {
+                builder.setMessage(getString(R.string.need_camera_grants))
+                        .setTitle(getString(R.string.not_granted))
+                        .setNeutralButton(getString(R.string.understand), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},

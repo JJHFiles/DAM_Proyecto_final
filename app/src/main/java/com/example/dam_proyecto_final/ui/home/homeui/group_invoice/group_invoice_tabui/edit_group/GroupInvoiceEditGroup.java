@@ -74,15 +74,15 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
 
 //            Toast.makeText(context, "idGroup " + idGroup, Toast.LENGTH_LONG).show();
-            Log.d("DEBUGME", "GroupInvoiceTab: grupo " + idGroup);
+            Log.d("DEBUGME", "GroupInvoiceTab: group " + idGroup);
 
         } else {
-            Log.d("DEBUGME", "GroupInvoiceTab: ERROR GRAVE idGroup = null");
+            Log.d("DEBUGME", "GroupInvoiceTab: Fatal Error idGroup = null");
 //            Toast.makeText(context, "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
         }
 
         //Editamos la barra superior con nombre y botón back
-        getSupportActionBar().setTitle("Editar grupo " + groupName);
+        getSupportActionBar().setTitle(getString(R.string.edit_group_title) + groupName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         membersLis = new ArrayList<MemberModel>(); // Miembros que se listan en la GUI. Los introducidos manualmente (nuevos o Add) y los que ya estaban en el grupo (Old).
@@ -230,24 +230,34 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                                         @Override
                                         public void onError(JsonResponseModel response) {
                                             edt_AGIEG_AddMember.setText("");
-                                            Toast.makeText(context, R.string.userNoDB, Toast.LENGTH_LONG).show();
+                                            Toast.makeText(context, getString(R.string.userNoDB), Toast.LENGTH_LONG).show();
+                                            Log.d("DEBUGME",getString(R.string.userNoDB));
                                         }
                                     });
                                 } else {
                                     Toast.makeText(this, getString(R.string.warning_adduser_inlist), Toast.LENGTH_LONG).show();
+                                    Log.d("DEBUGME",getString(R.string.warning_adduser_inlist));
+
                                 }
                             }
                         } else {
                             Toast.makeText(this, getString(R.string.warning_adduser_duplicated), Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.warning_adduser_duplicated));
                         }
                     } else {
                         Toast.makeText(this, getString(R.string.warning_members_limit), Toast.LENGTH_LONG).show();
+                        Log.d("DEBUGME",getString(R.string.warning_members_limit));
+
                     }
                 } else {
-                    Toast.makeText(this, R.string.role_noselected, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.role_noselected), Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME",getString(R.string.role_noselected));
+
                 }
             } else {
-                Toast.makeText(this, R.string.email_NoMatch, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.email_NoMatch), Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME",getString(R.string.warning_members_limit));
+
             }
 
             /* TODO IMPORTANTE comprobar que algún usuario del grupo es administrador nates de grabar en BD
@@ -271,8 +281,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                                 }
                             }
                         } catch (Exception e) {
-                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-
+                            Log.d("DEBUGME",e.getMessage()+"");
                         }
                     }
                 }
@@ -291,7 +300,8 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                         new WebApiRequest.WebApiRequestJsonResponseListener() {
                             @Override
                             public void onSuccess(JsonResponseModel response) {
-                                Toast.makeText(context, "Grupo actualizado correctamente", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, getString(R.string.group_updated), Toast.LENGTH_LONG).show();
+                                Log.d("DEBUGME", getString(R.string.group_updated));
 
                                 //Volvemos al login activity
                                 Intent intent = new Intent(context, HomeActivity.class);
@@ -301,11 +311,15 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                             @Override
                             public void onError(JsonResponseModel response) {
-                                Toast.makeText(context, response.getId() + "", Toast.LENGTH_LONG).show();
+                               // Toast.makeText(context, response.getId() + "", Toast.LENGTH_LONG).show();
+                                Log.d("DEBUGME", "UpdateGroup onError "+ response.getId() + "");
+
                             }
                         });
             } else {
                 Toast.makeText(this, getString(R.string.warning_form_not_full), Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME", getString(R.string.warning_form_not_full));
+
             }
         } //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
 //            finish();
@@ -376,11 +390,15 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                     @Override
                     public void onError(JsonResponseModel response) {
                         if (response.getId() == -252) {
-                            Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
+                         //   Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME", "Error " + response.getId());
+
 
                         } else {
                             //Si no ha podido ser cualquier error
-                            Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
+                       //     Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME", "Error " + response.getId());
+
                         }
                     }
                 });

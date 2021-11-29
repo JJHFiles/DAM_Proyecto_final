@@ -1,4 +1,4 @@
-package com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui;
+package com.example.dam_proyecto_final.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

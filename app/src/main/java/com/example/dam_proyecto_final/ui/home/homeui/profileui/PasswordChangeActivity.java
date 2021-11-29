@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -71,6 +72,8 @@ public class PasswordChangeActivity extends AppCompatActivity implements View.On
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.password_change_warning_baddpassword)
                             , Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME",getString(R.string.password_change_warning_baddpassword));
+
                 }
                 tietPass.setText("");
                 btnNextPassChange.setEnabled(false);
@@ -81,6 +84,8 @@ public class PasswordChangeActivity extends AppCompatActivity implements View.On
                     changeText(state);
                 } else {
                     Toast.makeText(this, R.string.password_failure, Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME",getString(R.string.password_failure));
+
                 }
             } else if (state == 2) {
                 String newPass2 = tietPass.getText().toString();
@@ -100,6 +105,8 @@ public class PasswordChangeActivity extends AppCompatActivity implements View.On
 
                             Toast.makeText(getApplicationContext(), getString(R.string.password_change_passwordchanged)
                                     , Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.password_change_passwordchanged));
+
                             finish();
                         }
 
@@ -107,6 +114,8 @@ public class PasswordChangeActivity extends AppCompatActivity implements View.On
                         public void onError(JsonResponseModel response) {
                             Toast.makeText(getApplicationContext(), getString(R.string.password_change_warning_errorchanging) + response.getId()
                                     , Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.password_change_warning_newpassnotequals));
+
                         }
                     });
                 } else {
@@ -116,6 +125,8 @@ public class PasswordChangeActivity extends AppCompatActivity implements View.On
                     btnNextPassChange.setEnabled(false);
                     Toast.makeText(getApplicationContext(), getString(R.string.password_change_warning_newpassnotequals)
                             , Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME",getString(R.string.password_change_warning_newpassnotequals));
+
                 }
             }
         }

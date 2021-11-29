@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         webApiRequest = new WebApiRequest(this);
         context = getApplicationContext();
 
-        Log.d("DEBUGME ", "metodo onCreate");
+        Log.d("DEBUGME ", "method onCreate");
 
         //Instanciamos botones establecemos el listeners
         Button btnsignGoogle = findViewById(R.id.btnSignGoogle);
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("DEBUGME ", "metodo on start");
+        Log.d("DEBUGME ", "method onStart");
 
         //Comprobamos si existe previamente un usuario Google logeado
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //Si alguno de los dos no es nulo hay inicio de sesión previo
         if (account != null || userEmail != null) {
-            Log.d("DEBUGME ", "LoginActivity onStart: inicio de sesión cacheado");
+            Log.d("DEBUGME ", "LoginActivity onStart: Session started and cached");
             //Iniciamos sesión
             signIn();
         }
@@ -133,15 +133,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             //Iniciamos sesión
                             signIn();
                         } else if (id < 0) {
-                            Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
-                            Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME", "LoginActivity onSucess: " + id + " " + message);
+                           // Toast.makeText(context, "Error starting session. Error code: " + id, Toast.LENGTH_LONG).show();
                         }
                     }
 
                     @Override
                     public void onError(int id, String message) {
-                        Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
-                        Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+                        Log.d("DEBUGME", "LoginActivity oneError: " + id + " " + message);
+                       // Toast.makeText(context, "Error starting session. Error code: " + id, Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -174,6 +174,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     validateUser(edtUserEmail.getText().toString());
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.login_failure), Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME ", getString(R.string.login_failure));
+
                 }
                 break;
 
@@ -221,18 +223,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         webApiRequest.validateUser(userEmail, userPass, new WebApiRequest.WebApiRequestJsonResponseListener() {
             @Override
             public void onSuccess(JsonResponseModel response) {
-                Log.d("DEBUGME", "loginActivity: usuario logeado" + " " + response.getId() + " " + response.getMessage());
+                Log.d("DEBUGME", "LoginActivity: User logged" + " " + response.getId() + " " + response.getMessage());
                 getNameByEmail(userEmail, userPass);
             }
 
             @Override
             public void onError(JsonResponseModel response) {
                 if (response.getId() == -210) {
-                    Log.d("DEBUGME", "loginActivity: " + response.getId());
-                    Toast.makeText(context, "Usuario o contraseña incorrectos", Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME", "loginActivity, User or password failed: " + response.getId());
+                   // Toast.makeText(context, "User or password failed", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d("DEBUGME", "loginActivity: " + response.getId());
-                    Toast.makeText(context, "Error" + response.getId(), Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(context, "Error" + response.getId(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -245,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onSuccess(int id, String message, String name) {
                 if (id > 0) {
-                    Log.d("DEBUGME", "recibido nombre: " + name);
+                    Log.d("DEBUGME", "Name recived: " + name);
                     //     Toast.makeText(context, "recibido nombre: " + name, Toast.LENGTH_LONG).show();
                     SharedPreferences preferences = getSharedPreferences("savedData", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
@@ -256,13 +258,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     signIn();
 
                 } else if (id < 0) {
-                    Log.d("DEBUGME", "No encontrado nombre para ese email");
+                    Log.d("DEBUGME", "Email without userName");
                 }
             }
 
             @Override
             public void onError(int id, String message) {
-                Log.d("DEBUGME", "Volley error: " + id + " " + message);
+                Log.d("DEBUGME", "FATAL Volley error: " + id + " " + message);
             }
         });
     }

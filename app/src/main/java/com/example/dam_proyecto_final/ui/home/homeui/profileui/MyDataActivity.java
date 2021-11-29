@@ -23,8 +23,8 @@ public class MyDataActivity extends AppCompatActivity {
         EditText et_mydata_name = findViewById(R.id.et_mydata_name);
         EditText et_mydata_email = findViewById(R.id.et_mydata_email);
 
-        String userEmail = getIntent().getExtras().getString("userEmail", "");
-        String name = getIntent().getExtras().getString("name", "");
+        String userEmail = getIntent().getExtras().getString("userEmail", "vacio");
+        String name = getIntent().getExtras().getString("name", "vacio");
 
         et_mydata_name.setText(name);
         et_mydata_email.setText(userEmail);

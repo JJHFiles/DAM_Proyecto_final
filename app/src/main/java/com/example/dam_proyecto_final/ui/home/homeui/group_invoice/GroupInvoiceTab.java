@@ -73,10 +73,10 @@ public class GroupInvoiceTab extends AppCompatActivity {
             userEmail = parametros.getString("userEmail", "vacio");
             userPass = parametros.getString("userPass", "vacio");
 
-            Log.d("DEBUGME", "GroupInvoiceTab: grupo " + groupModel.getId());
+            Log.d("DEBUGME", "GroupInvoiceTab: group " + groupModel.getId());
 
         } else {
-            Log.d("DEBUGME", "GroupInvoiceTab: ERROR GRAVE idGroup = null");
+            Log.d("DEBUGME", "GroupInvoiceTab: FATAL ERROR idGroup = null");
         }
 
 

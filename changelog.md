@@ -33,6 +33,8 @@ isInvoiceByGroup changed to validate user/password
 - Constraint of empty invoice screen
 - Bad name showed on profile screen
 - Bad width values on registry screen
+- Roles check
+- Strings.XML from classes and XMLs checked
 
 ### Security
 - Add Group screen not admit especial characters on name, description and email inputs

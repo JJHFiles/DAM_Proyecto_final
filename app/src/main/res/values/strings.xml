@@ -56,10 +56,11 @@
     <string name="cleanButton">Limpiar</string>
     <!-- TODO: los siguientes Strings afectan a GroupInvoiceTabListFragment y su XML, sin aplicar-->
     <string name="tab_Graphics">Gráficas</string>
-    <string name="tab_Invoice">Listado</string>
+    <string name="tab_Invoice_list">Listado</string>
     <string name="tab_ManualAdd">Añadir de forma manual</string>
-    <string name="tab_Kw">Kw</string>
-    <string name="tab_m3">m3</string>
+    <string name="tab_Kw"> Kw</string>
+    <string name="tab_month"> mes</string>
+    <string name="tab_m3"> m3</string>
     <string name="tab_Type">Tipo: </string>
     <string name="tab_Amount">Gasto: </string>
     <string name="tab_Date">Fecha: </string>
@@ -72,6 +73,9 @@
     <string name="tab_Telephone">Telefonía</string>
     <string name="tab_CarRenting">Renting de coche</string>
     <string name="tab_IBI">IBI</string>
+    <string name="tab_rental">Alquiler</string>
+    <string name="tab_others">otros</string>
+    <string name="tab_invoice">Factura </string>
     <string name="today">Hoy</string>
     <string name="yesterday">Ayer</string>
     <string name="walktrough_title_1">Crea tu B-list</string>
@@ -154,5 +158,27 @@
         <string name="allow_character_withnumbers">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúüÇç0123456789</string>
         <string name="allow_character_withnumbersspace">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñ opqrstuvwxyzáéíóúüÇç0123456789</string>
         <string name="allow_character_email">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789@._-</string>-->
+
+    <string name="group_updated">Grupo actualizado correctamente</string>
+    <string name="edit_group_title">Editar grupo </string>
+    <string name="leave_group">Saliendo de grupo</string>
+    <string name="no_view_data">No hay datos que representar</string>
+    <string name="consumption">Consumo</string>
+    <string name="invoice_deleted">Factura borrada correctamente: </string>
+    <string name="invoice_inserted">Factura insertada con éxito: </string>
+    <string name="need_camera_grants">Se necesitan permisos de camara para poder hacer fotográfías de la factura</string>
+    <string name="not_granted">Permisos denegados</string>
+    <string name="understand">Lo he entendido</string>
+    <string name="need_storage">Se necesitan de almacenamiento para poder almacenar la factura</string>
+    <string name="insert_invoice">Insertar nueva factura</string>
+    <string name="SimpleDateFormat_pattern">dd/MM/yyyy</string>
+    <string name="create_group">Crear grupo</string>
+    <string name="init_google_account">Cuenta de google iniciada, no hay contraseña que cambiar</string>
+    <string name="emplty">No introducido</string>
+
+
+    <!-- getString(R.string.warning_form_not_full)
+        Log.d("DEBUGME",getString(R.string.userNoDB));
+-->
 
 </resources>

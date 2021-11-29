@@ -9,8 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.model.InvoiceListModel;
 import com.example.dam_proyecto_final.ui.home.homeui.group_invoice.GroupInvoiceAdd;
 import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.model.InvoiceModel;
@@ -127,23 +126,23 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
             String measure = "";
 
             //Obtenemos measure
-            if (arrIM.get(x).getType().equals("Electricidad")) {
-                measure = " kW";
-            } else if (arrIM.get(x).getType().equals("Gas")) {
-                measure = " kW";
-            } else if (arrIM.get(x).getType().equals("Agua")) {
-                measure = " m3";
-            } else if (arrIM.get(x).getType().equals("Telefonia")) {
-                measure = " mes";
-            } else if (arrIM.get(x).getType().equals("Alquiler")) {
-                measure = " mes";
-            } else if (arrIM.get(x).getType().equals("Otros")) {
+            if (arrIM.get(x).getType().equals(getString(R.string.tab_Electricity))) {
+                measure = getString(R.string.tab_Kw);
+            } else if (arrIM.get(x).getType().equals(getString(R.string.tab_Gas))) {
+                measure = getString(R.string.tab_Kw);
+            } else if (arrIM.get(x).getType().equals(getString(R.string.tab_Water))) {
+                measure = getString(R.string.tab_m3);
+            } else if (arrIM.get(x).getType().equals(getString(R.string.tab_Telephone))) {
+                measure = getString(R.string.tab_month);
+            } else if (arrIM.get(x).getType().equals(getString(R.string.tab_rental))) {
+                measure = getString(R.string.tab_month);
+            } else if (arrIM.get(x).getType().equals(getString(R.string.tab_others))) {
                 measure = "";
             }
 
 
             ilm.add(new InvoiceListModel());
-            ilm.get(x).setType("Factura " + arrIM.get(x).getType());
+            ilm.get(x).setType(getString(R.string.tab_invoice) + arrIM.get(x).getType());
             ilm.get(x).setAmount(arrIM.get(x).getAmount() + " " + groupModel.getCurrency());
             ilm.get(x).setDate(arrIM.get(x).getDate());
             ilm.get(x).setConsumption(arrIM.get(x).getConsumption() + measure);

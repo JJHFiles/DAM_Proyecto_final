@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -216,7 +217,9 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         //Opciones de gráfico
         barChart.setVisibleXRangeMaximum(3);
         barChart.setExtraBottomOffset(12);
-        barChart.setNoDataText("No hay datos que representar");
+        barChart.setNoDataText(getString(R.string.no_view_data));
+        Log.d("DEBUGME",getString(R.string.no_view_data));
+
 
         //Descripción
         Description description = new Description();
@@ -276,7 +279,9 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         //Opciones de gráfico
         lineChart.setVisibleXRangeMaximum(3);
         lineChart.setExtraBottomOffset(12);
-        lineChart.setNoDataText("No hay datos que representar");
+        lineChart.setNoDataText(getString(R.string.no_view_data));
+        Log.d("DEBUGME",getString(R.string.no_view_data));
+
 
         //Descripción
         Description description = new Description();
@@ -308,7 +313,9 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
         //Opciones de gráfico
         pieChart.setExtraBottomOffset(12);
-        pieChart.setNoDataText("No hay datos que representar");
+        pieChart.setNoDataText(getString(R.string.no_view_data));
+        Log.d("DEBUGME",getString(R.string.no_view_data));
+
 
         //Descripción
         Description description = new Description();
@@ -477,7 +484,7 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
 
         // Obtenemos la lista de tipos con su suma de valores
         HashMap<String, Float> values = new HashMap<>();
-            cad = "Consumo";
+            cad = getString(R.string.consumption);
             for (int t = 0; t < types.size(); t++) {
                 String type = types.get(t);
                 for (InvoiceModel i : invoices) {

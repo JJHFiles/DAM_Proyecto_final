@@ -62,7 +62,9 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
             Log.d("DEBUGME", "Grupo: " + groupModel.getId());
 
         } else {
-            Toast.makeText(getApplicationContext(), "ERROR GRAVE idGroup = null", Toast.LENGTH_LONG).show();
+           // Toast.makeText(getApplicationContext(), "FATAL ERROR idGroup = null", Toast.LENGTH_LONG).show();
+            Log.d("DEBUGME", "FATAL ERROR idGroup = null");
+
         }
 
         this.setTitle(groupModel.getName());

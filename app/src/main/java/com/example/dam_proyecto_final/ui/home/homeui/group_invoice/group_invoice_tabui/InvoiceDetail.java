@@ -110,7 +110,7 @@ public class InvoiceDetail extends AppCompatActivity implements View.OnClickList
             @Override
             public void onError(JsonResponseModel response) {
                 Log.d("DEBUGME", "InvoiceDetail: " + response.getMessage());
-                Toast.makeText(getApplicationContext(), "Se ha producido un error: " + response.getId(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "Se ha producido un error: " + response.getId(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -123,7 +123,10 @@ public class InvoiceDetail extends AppCompatActivity implements View.OnClickList
             webApiRequest.invoiceDelete(userEmail, userPass, invoice, groupModel, new WebApiRequest.WebApiRequestJsonResponseListener() {
                 @Override
                 public void onSuccess(JsonResponseModel response) {
-                    Toast.makeText(getApplicationContext(), "Factura borrada corretamente: " + response.getId(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.invoice_deleted) + response.getId(), Toast.LENGTH_SHORT).show();
+                    Log.d("DEBUGME", getString(R.string.invoice_deleted));
+                    Log.d("DEBUGME", "InvoiceDetail: " + response.getMessage());
+
                     Intent intent = new Intent(getApplicationContext(), GroupInvoiceTab.class);
                     intent.putExtra("groupModel", groupModel);
                     intent.putExtra("userEmail", userEmail);
@@ -135,7 +138,7 @@ public class InvoiceDetail extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onError(JsonResponseModel response) {
                     Log.d("DEBUGME", "InvoiceDetail: " + response.getMessage());
-                    Toast.makeText(getApplicationContext(), "Se ha producido un error: " + response.getId(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), "Error: " + response.getId(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else if (view.getId() == R.id.ll_invoicedetail_showfile) {

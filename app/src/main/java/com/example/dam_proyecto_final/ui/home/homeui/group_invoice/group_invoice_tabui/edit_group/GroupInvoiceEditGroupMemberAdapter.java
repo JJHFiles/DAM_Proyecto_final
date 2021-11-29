@@ -4,6 +4,7 @@ package com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoic
 import static com.example.dam_proyecto_final.R.layout.activity_group_invoice_edit_group_member_adapter_item;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
         this.lstv_Members = lstv_Members;
         this.guiUser = guiUser;
         this.guiUserRole = guiUserRole;
-        this.guiUserRole =2;
+        this.guiUserRole = 2;
     }
 
 
@@ -111,17 +112,15 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                             membersUpd.get(x).setRole(position);
                             membersLis.get(i).setRole(position);
                             isRoleChanged = true;
-                            Toast.makeText(context, "1 ", Toast.LENGTH_LONG).show();
                         }
                         // los editores pueden cambiar a los demas editores y de lectura
                         else if (guiUserRole == 1 && (membersUpd.get(x).getRole() > 0)) {
 
-                                if(position>0) {
-                                    membersUpd.get(x).setRole(position);
-                                    membersLis.get(i).setRole(position);
-                                    isRoleChanged = true;
-                                    Toast.makeText(context, "2 ", Toast.LENGTH_LONG).show();
-                                }
+                            if (position > 0) {
+                                membersUpd.get(x).setRole(position);
+                                membersLis.get(i).setRole(position);
+                                isRoleChanged = true;
+                            }
 
                         }
 
@@ -130,12 +129,9 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                 if (!isRoleChanged) {
                     if (guiUserRole == 0) {
                         membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
-                        Toast.makeText(context, "3 , posicion: " + position, Toast.LENGTH_LONG).show();
-
-                    } else if (guiUserRole ==1 && (membersLis.get(i).getRole() > 0)) {
-                        if(position>0) {
+                    } else if (guiUserRole == 1 && (membersLis.get(i).getRole() > 0)) {
+                        if (position > 0) {
                             membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
-                            Toast.makeText(context, "4 ", Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -145,7 +141,8 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(context, "nothing selected", Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME", "Nothing selected");
+
 
             }
         });
@@ -208,15 +205,17 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                                 if (!membersDel.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
                                     membersDel.add(membersLis.get(i));
                                     Toast.makeText(context, "" +
-                                            "saliendo del grupo ", Toast.LENGTH_LONG).show();
-                                    // membersLis.remove(membersLis.get(i));
+                                            context.getString(R.string.leave_group), Toast.LENGTH_LONG).show();
+                                    Log.d("DEBUGME", context.getString(R.string.userNoDB));
+
                                 }
                             }
                         } else {
                             membersDel.add(membersLis.get(i));
                             Toast.makeText(context, "" +
-                                    "saliendo del grupo ", Toast.LENGTH_LONG).show();
-                            //    membersLis.remove(membersLis.get(i));
+                                    context.getString(R.string.leave_group), Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME", context.getString(R.string.userNoDB));
+
                         }
                     }
                 }

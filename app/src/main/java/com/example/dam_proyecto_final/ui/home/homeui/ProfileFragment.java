@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +60,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void readSharedPreferences(){
         SharedPreferences preferencias;
         preferencias = getActivity().getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        userEmail = preferencias.getString("email","vacio");
-        userPass = preferencias.getString("pass","vacio");
+        userEmail = preferencias.getString("email","vacioEmail");
+        userPass = preferencias.getString("pass","vacioPass");
         name= preferencias.getString("name","");
     }
 
@@ -76,8 +77,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             GoogleSignInAccount accountPass = GoogleSignIn.getLastSignedInAccount(context);
             if (accountPass != null) {
                 Toast.makeText(getActivity().getApplicationContext(),
-                        "Cuenta de google iniciada, no hay contraseña que cambiar"
+                        getString(R.string.init_google_account)
                         , Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME",getString(R.string.init_google_account));
+
             } else {
                 Intent intentPass = new Intent(context, PasswordChangeActivity.class);
                 intentPass.putExtra("userEmail", userEmail);

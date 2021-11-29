@@ -15,10 +15,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.pdf.PdfDocument;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -51,9 +51,9 @@ public class InvoiceOCRAddActivity extends AppCompatActivity {
                 checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Se necesitan permisos de camara para poder hacer fotográfías de la factura")
-                        .setTitle("Permisos denegados")
-                        .setNeutralButton("Lo he entendido", new DialogInterface.OnClickListener() {
+                builder.setMessage(getString(R.string.need_camera_grants))
+                        .setTitle(getString(R.string.not_granted))
+                        .setNeutralButton(getString(R.string.understand), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -65,9 +65,9 @@ public class InvoiceOCRAddActivity extends AppCompatActivity {
                 dialog.show();
             } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Se necesitan de almacenamiento para poder almacenar la factura")
-                        .setTitle("Permisos denegados")
-                        .setNeutralButton("Lo he entendido", new DialogInterface.OnClickListener() {
+                builder.setMessage(getString(R.string.need_camera_grants))
+                        .setTitle(getString(R.string.not_granted))
+                        .setNeutralButton(getString(R.string.understand), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -192,9 +192,13 @@ public class InvoiceOCRAddActivity extends AppCompatActivity {
                 }
             } catch (FileNotFoundException e) {
                 Toast.makeText(this, getResources().getText(R.string.error_saving_image), Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME",getString(R.string.error_saving_image));
+
                 onBackPressed();
             } catch (IOException e) {
                 Toast.makeText(this, getResources().getText(R.string.error_saving_image), Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME",getString(R.string.error_saving_image));
+
                 onBackPressed();
             }
         }

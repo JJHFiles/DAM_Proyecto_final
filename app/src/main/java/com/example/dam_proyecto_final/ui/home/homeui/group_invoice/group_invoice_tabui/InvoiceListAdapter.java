@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.model.InvoiceListModel;
 
 import java.util.ArrayList;
 

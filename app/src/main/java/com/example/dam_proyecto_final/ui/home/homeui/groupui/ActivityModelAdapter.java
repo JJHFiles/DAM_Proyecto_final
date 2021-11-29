@@ -90,7 +90,7 @@ public class ActivityModelAdapter extends BaseAdapter {
         }
 
         // Si el día es hoy
-        SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy",
+        SimpleDateFormat sdf2 = new SimpleDateFormat(context.getString(R.string.SimpleDateFormat_pattern),
                 Locale.getDefault());
         String datea = sdf2.format(calToday.getTime());
         String dateb = sdf2.format(calActivity.getTime());

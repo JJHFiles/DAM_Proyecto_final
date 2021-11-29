@@ -10,7 +10,7 @@ public class GroupModel implements Serializable {
     private String currency;
     private int role;
 
-    //TODO Meter permisos a esta parte para controlar que puede hacer en cada uno cuando lo seleccione
+    //TODO Meter permisos a esta parte para controlar que puede hacer en cada uno cuando lo selecciones
     public GroupModel(int id, String name, String description) {
         this.id = id;
         this.name = name;

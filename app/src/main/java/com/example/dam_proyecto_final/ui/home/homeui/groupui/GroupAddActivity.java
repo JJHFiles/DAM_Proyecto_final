@@ -57,7 +57,7 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
         webApiRequest = new WebApiRequest(context);
 
         //Editamos la barra superior con nombre y botón back
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Crear grupo");
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.create_group));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Cogemos el usuario/contraseña para las consultas
@@ -149,19 +149,29 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                                 public void onError(JsonResponseModel response) {
                                     edt_AddMember.setText("");
                                     Toast.makeText(context, R.string.userNoDB, Toast.LENGTH_LONG).show();
+                                    Log.d("DEBUGME",getString(R.string.userNoDB));
+
                                 }
                             });
                         } else {
                             Toast.makeText(this, getString(R.string.warning_member_on_list), Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.warning_member_on_list));
+
                         }
                     } else {
                         Toast.makeText(this, getString(R.string.warning_member_max), Toast.LENGTH_LONG).show();
+                        Log.d("DEBUGME",getString(R.string.warning_member_max));
+
                     }
                 } else {
                     Toast.makeText(this, R.string.role_noselected, Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME",getString(R.string.role_noselected));
+
                 }
             } else {
                 Toast.makeText(this, R.string.email_NoMatch, Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME",getString(R.string.email_NoMatch));
+
             }
         } else if ( view.getId() == R.id.btn_AGAAdd ){
             //Revisar elementos no nulos y si no nulos insertar en BBDD
@@ -175,6 +185,8 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
                         @Override
                         public void onSuccess(JsonResponseModel response) {
                             Toast.makeText(context, getString(R.string.warning_group_created), Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.warning_group_created));
+
 
                             //Volvemos al login activity
                             Intent intent = new Intent(context, HomeActivity.class);
@@ -184,11 +196,15 @@ public class GroupAddActivity extends AppCompatActivity implements View.OnClickL
 
                         @Override
                         public void onError(JsonResponseModel response) {
-                            Toast.makeText(context, response.getId(), Toast.LENGTH_LONG).show();
+                          //  Toast.makeText(context, response.getId(), Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME","ERROR: " +response.getId());
+
                         }
                 });
             } else {
                 Toast.makeText(this, getString(R.string.warning_form_not_full), Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME",getString(R.string.warning_form_not_full));
+
             }
         } //else if ( view.getId() == R.id.btn_AGACancel ){
 //            finish();

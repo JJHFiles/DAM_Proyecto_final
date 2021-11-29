@@ -67,8 +67,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
         //Cogemos el usuario/contraseña para las consultas
         SharedPreferences preferencias = context.getSharedPreferences("savedData", Context.MODE_PRIVATE);
-        userEmail = preferencias.getString("email", "vacio1");
-        userPass = preferencias.getString("pass", "vacio2");
+        userEmail = preferencias.getString("email", "vacioMail");
+        userPass = preferencias.getString("pass", "vacioPassword");
 
         //Invocamos los grupos
         webApiRequest = new WebApiRequest(context);
@@ -108,7 +108,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
                 } else {
                     //Si no ha podido ser cualquier error
-                    Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG);
+                   // Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG);
+                    Log.d("DEBUGME","ERROR: " + response.getId());
+
                 }
             }
         });
@@ -130,7 +132,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onSuccess(int id, String message) {
                 if (id == 222) {
-                    Log.d("DEBUGME", "Con facturas en el grupo:" + groupId + ", " + message);
+                    Log.d("DEBUGME", "Group without invoices:" + groupId + ", " + message);
 
                     Intent intent = new Intent(context, GroupInvoiceTab.class);
                     intent.putExtra("groupModel", groupModel.get(position));
@@ -139,7 +141,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     startActivity(intent);
 
                 } else if (id == 223) {
-                    Log.d("DEBUGME", "Sin facturas en el grupo: " + groupId + ", id:" + id);
+                    Log.d("DEBUGME", "Group without invoices: " + groupId + ", id:" + id);
 
                     Intent intent = new Intent(context, GroupInvoiceEmptyActivity.class);
                     intent.putExtra("groupModel", groupModel.get(position));
@@ -152,7 +154,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "GroupFragment onError: " + id + " " + message);
-                Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
+              //  Toast.makeText(context, "Error al inicar sesión. Codigo de error: " + id, Toast.LENGTH_LONG).show();
             }
         });
     }

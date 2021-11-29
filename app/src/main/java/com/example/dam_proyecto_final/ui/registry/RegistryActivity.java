@@ -33,7 +33,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     private int step = 0; //0->name, 1->email, 2->pass first, 3->pass second
 //    String charactersLimits;
 
-    private String userName = "No introducido", userEmail = "No introducido", userPass = "";
+    private String userName = getString(R.string.userNoDB), userEmail = getString(R.string.userNoDB), userPass = "";
 
     private WebApiRequest webApiRequest;
 
@@ -91,6 +91,8 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             step = 1; // se avanza al paso siguiente
                         } else {
                             Toast.makeText(this, R.string.name_empty, Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.name_empty));
+
                         }
                         break;
 
@@ -105,6 +107,8 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             step = 2;
                         } else {
                             Toast.makeText(this, R.string.email_NoMatch, Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.email_NoMatch));
+
                         }
                         break;
 
@@ -122,6 +126,8 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             txInLaHint.setHint(getResources().getString(R.string.edtInput_pass));
                         } else {
                             Toast.makeText(this, R.string.password_failure, Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.password_failure));
+
                         }
                         break;
 
@@ -132,6 +138,8 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
                         } else {
                             Toast.makeText(this, R.string.pass_NotEquals, Toast.LENGTH_LONG).show();
+                            Log.d("DEBUGME",getString(R.string.pass_NotEquals));
+
                         }
                         break; //fin de -> case 3:
                 }
@@ -145,19 +153,19 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onSuccess(int id, String message) {
                 if (id == 222) {
-                    Log.d("DEBUGME", "usuario " + userEmail + " existe, mensa: " + message);
-                    Toast.makeText(getApplicationContext(), getString(R.string.warning_registry_email_exists), Toast.LENGTH_LONG).show();
+                    Log.d("DEBUGME", "user " + userEmail + " exist, mensa: " + message);
+                 //   Toast.makeText(getApplicationContext(), getString(R.string.warning_registry_email_exists), Toast.LENGTH_LONG).show();
 
                 } else if (id == 223) {
-                    Log.d("DEBUGME", "Usuario no existe, recibido: " + id);
+                    Log.d("DEBUGME", "User not exist, received: " + id);
                     insertUserInBD();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
-                Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
-                Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
+                Log.d("DEBUGME", "LoginActivity onError: " + id + " " + message);
+             //   Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -182,14 +190,14 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                     signIn();
                 } else if (id < 0) {
                     Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
-                    Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(int id, String message) {
                 Log.d("DEBUGME", "loginactivity onerror: " + id + " " + message);
-                Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
+             //   Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
             }
         });
     }
