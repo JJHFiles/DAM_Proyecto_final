@@ -49,7 +49,8 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
     private String userPass;
     private WebApiRequest webApiRequest;
     private Context context;
-    ViewGroup.LayoutParams params;
+    private ViewGroup.LayoutParams params;
+    private int userRole;
     //private ArrayList<GroupModel> groupModels;
     // private GroupModel groupModel;
 
@@ -154,6 +155,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
+        //  try {
         //TODO revisar que el elemento no esté ya en la lista
         if (view.getId() == R.id.imgb_AGIEG_AddMember) {
             //Comprobamos que el email y el rol no esten vacios y que el email se ajuste formato. Tambien que el miembro no esté ya en la lista
@@ -262,52 +264,58 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                 for (int x = 0; x < membersUpd.size(); x++) {
                     for (int i = 0; i < membersOld.size(); i++) {
-                        if(membersUpd.get(x).getEmail().equals(membersOld.get(i).getEmail())){
-                            if(membersUpd.get(x).getRole()==membersOld.get(i).getRole()){
-                                membersUpd.remove(x);
+                        try {
+                            if (membersUpd.get(x).getEmail().equals(membersOld.get(i).getEmail())) {
+                                if (membersUpd.get(x).getRole() == membersOld.get(i).getRole()) {
+                                    membersUpd.remove(x);
+                                }
                             }
+                        } catch (Exception e) {
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 }
 
 
-            webApiRequest.updateGroup(
-                    userEmail,
-                    userPass,
-                    idGroup + "",/* Cast a String*/
-                    edt_AGIEG_GroupName.getText().toString(),
-                    edt_AGIEG_Description.getText().toString(),
-                    currencySelection,
-                    membersAdd,
-                    membersUpd,
-                    membersDel,
-                    new WebApiRequest.WebApiRequestJsonResponseListener() {
-                        @Override
-                        public void onSuccess(JsonResponseModel response) {
-                            Toast.makeText(context, "Grupo actualizado correctamente", Toast.LENGTH_LONG).show();
+                webApiRequest.updateGroup(
+                        userEmail,
+                        userPass,
+                        idGroup + "",/* Cast a String*/
+                        edt_AGIEG_GroupName.getText().toString(),
+                        edt_AGIEG_Description.getText().toString(),
+                        currencySelection,
+                        membersAdd,
+                        membersUpd,
+                        membersDel,
+                        new WebApiRequest.WebApiRequestJsonResponseListener() {
+                            @Override
+                            public void onSuccess(JsonResponseModel response) {
+                                Toast.makeText(context, "Grupo actualizado correctamente", Toast.LENGTH_LONG).show();
 
-                            //Volvemos al login activity
-                            Intent intent = new Intent(context, HomeActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                        }
+                                //Volvemos al login activity
+                                Intent intent = new Intent(context, HomeActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
 
-                        @Override
-                        public void onError(JsonResponseModel response) {
-                            Toast.makeText(context, response.getId() + "", Toast.LENGTH_LONG).show();
-                        }
-                    });
-        } else {
-            Toast.makeText(this, getString(R.string.warning_form_not_full), Toast.LENGTH_LONG).show();
-        }
-    } //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
+                            @Override
+                            public void onError(JsonResponseModel response) {
+                                Toast.makeText(context, response.getId() + "", Toast.LENGTH_LONG).show();
+                            }
+                        });
+            } else {
+                Toast.makeText(this, getString(R.string.warning_form_not_full), Toast.LENGTH_LONG).show();
+            }
+        } //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
 //            finish();
 //            overridePendingTransition(0, 0);
 //            startActivity(getIntent());
 //            overridePendingTransition(0, 0);
 //        }
+        //   }catch(Exception e){}
 
-}
+    }
 
     private void setListViewHeightBasedOnChildren(ListView listView) {
         GroupInvoiceEditGroupMemberAdapter listAdapter = (GroupInvoiceEditGroupMemberAdapter) listView.getAdapter();
@@ -357,7 +365,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                         //ListView de miembros
                         lstv_Members = findViewById(R.id.lstv_AGIEG_Members);
                         //  members = new ArrayList<MemberModel>();
-                        membersAdapter = new GroupInvoiceEditGroupMemberAdapter(getApplicationContext(), membersLis, membersAdd, membersUpd, membersDel, lstv_Members, userEmail);
+                        membersAdapter = new GroupInvoiceEditGroupMemberAdapter(getApplicationContext(), membersLis, membersAdd, membersUpd, membersDel, lstv_Members, userEmail, userRole);
                         lstv_Members.setAdapter(membersAdapter);
                         // Vuelve a cargar el adaptador y lo refresca actualizado
                         membersAdapter.notifyDataSetChanged();

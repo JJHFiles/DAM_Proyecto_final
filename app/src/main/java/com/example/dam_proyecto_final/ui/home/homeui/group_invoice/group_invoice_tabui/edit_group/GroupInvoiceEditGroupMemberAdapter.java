@@ -16,12 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.widget.NestedScrollView;
-
 import com.example.dam_proyecto_final.R;
 import com.example.dam_proyecto_final.model.MemberModel;
-import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 
@@ -31,6 +27,7 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
     private ArrayList<MemberModel> membersLis, membersAdd, membersUpd, membersDel;
     private ListView lstv_Members;
     private String guiUser, roleSelection;
+    private int guiUserRole;
 
     public GroupInvoiceEditGroupMemberAdapter(Context context,
                                               ArrayList<MemberModel> membersLis,
@@ -38,7 +35,8 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                                               ArrayList<MemberModel> membersUpd,
                                               ArrayList<MemberModel> membersDel,
                                               ListView lstv_Members,
-                                              String guiUser) {
+                                              String guiUser,
+                                              int guiUserRole) {
         super();
         this.context = context;
         this.membersLis = membersLis;
@@ -47,6 +45,8 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
         this.membersDel = membersDel;
         this.lstv_Members = lstv_Members;
         this.guiUser = guiUser;
+        this.guiUserRole = guiUserRole;
+        this.guiUserRole = 0;
     }
 
 
@@ -106,20 +106,47 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                 boolean isRoleChanged = false;
                 for (int x = 0; x < membersUpd.size(); x++) {
                     if (membersUpd.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
-                        membersUpd.get(x).setRole(position);
-                        membersLis.get(i).setRole(position);
-                        isRoleChanged = true;
+                        //Solo admin puede cambiar role de admin
+                        if (guiUserRole == 0) {
+                            membersUpd.get(x).setRole(position);
+                            membersLis.get(i).setRole(position);
+                            isRoleChanged = true;
+                            Toast.makeText(context, "1 ", Toast.LENGTH_LONG).show();
+                        }
+                        // los editores pueden cambiar a los demas editores y de lectura
+                        else if (guiUserRole > 0 && (membersUpd.get(x).getRole() > 0)) {
+
+                                if(position>0) {
+                                    membersUpd.get(x).setRole(position);
+                                    membersLis.get(i).setRole(position);
+                                    isRoleChanged = true;
+                                    Toast.makeText(context, "2 ", Toast.LENGTH_LONG).show();
+                                }
+
+                        }
+
                     }
                 }
                 if (!isRoleChanged) {
-                    membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
+                    if (guiUserRole == 0) {
+                        membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
+                        Toast.makeText(context, "3 , posicion: " + position, Toast.LENGTH_LONG).show();
 
+                    } else if (guiUserRole > 0 && (membersLis.get(i).getRole() > 0)) {
+                        if(position>0) {
+                            membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
+                            Toast.makeText(context, "4 ", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
 
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(context, "nothing selected", Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -133,8 +160,8 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                 for (int x = 0; x < membersAdd.size(); x++) {
                     if (membersAdd.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
                         membersAdd.remove(membersAdd.get(x));
-                      //  isUserFound = true;
-                     //   membersLis.remove(membersLis.get(i));
+                        //  isUserFound = true;
+                        //   membersLis.remove(membersLis.get(i));
                     }
                 }
 
@@ -142,8 +169,8 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                     for (int x = 0; x < membersUpd.size(); x++) {
                         if (membersUpd.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
                             membersUpd.remove(membersUpd.get(x));
-                        //    isUserFound = true;
-                        //    membersLis.remove(membersLis.get(i));
+                            //    isUserFound = true;
+                            //    membersLis.remove(membersLis.get(i));
 
                         }
                     }
@@ -156,14 +183,14 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                             for (int x = 0; x < membersDel.size(); x++) {
                                 if (!membersDel.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
                                     membersDel.add(membersLis.get(i));
-                             //       isUserFound = true;
-                             //       membersLis.remove(membersLis.get(i));
+                                    //       isUserFound = true;
+                                    //       membersLis.remove(membersLis.get(i));
                                 }
                             }
                         } else {
                             membersDel.add(membersLis.get(i));
-                         //   isUserFound = true;
-                         //   membersLis.remove(membersLis.get(i));
+                            //   isUserFound = true;
+                            //   membersLis.remove(membersLis.get(i));
 
 
                         }
@@ -182,14 +209,14 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
                                     membersDel.add(membersLis.get(i));
                                     Toast.makeText(context, "" +
                                             "saliendo del grupo ", Toast.LENGTH_LONG).show();
-                                   // membersLis.remove(membersLis.get(i));
+                                    // membersLis.remove(membersLis.get(i));
                                 }
                             }
                         } else {
                             membersDel.add(membersLis.get(i));
                             Toast.makeText(context, "" +
                                     "saliendo del grupo ", Toast.LENGTH_LONG).show();
-                        //    membersLis.remove(membersLis.get(i));
+                            //    membersLis.remove(membersLis.get(i));
                         }
                     }
                 }
@@ -224,7 +251,7 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
         listView.setLayoutParams(params);
         listView.requestLayout();
 
-        }
+    }
 
 
 }
