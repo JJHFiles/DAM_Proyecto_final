@@ -2,7 +2,7 @@
 
 
 
-## 0.1.9 2021-11-27
+## 0.2.0 2021-11-29
 ### Added
 - Delete group option on edit group
 
