@@ -130,6 +130,7 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
             intent.putExtra("currency", groupModel.getCurrency());
             intent.putExtra("userEmail", userEmail);
             intent.putExtra("userPass", userPass);
+            intent.putExtra("groupRole", groupModel.getRole());
             startActivity(intent);
             return true;
         } else if (item.getItemId() == android.R.id.home){

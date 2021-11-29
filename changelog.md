@@ -11,7 +11,8 @@ isInvoiceByGroup changed to validate user/password
 - Removed all characters limits of inputs. Now admit symbols with security
 
 ### Fixed
-
+- Roles check
+- Strings.XML from classes and XMLs checked
 
 ### Security
 - SQL Inyection fixed for all backend scripts
@@ -33,8 +34,7 @@ isInvoiceByGroup changed to validate user/password
 - Constraint of empty invoice screen
 - Bad name showed on profile screen
 - Bad width values on registry screen
-- Roles check
-- Strings.XML from classes and XMLs checked
+
 
 ### Security
 - Add Group screen not admit especial characters on name, description and email inputs

@@ -29,6 +29,7 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
     private ListView lstv_Members;
     private String guiUser, roleSelection;
     private int guiUserRole;
+    private int count=0;
 
     public GroupInvoiceEditGroupMemberAdapter(Context context,
                                               ArrayList<MemberModel> membersLis,
@@ -47,7 +48,7 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
         this.lstv_Members = lstv_Members;
         this.guiUser = guiUser;
         this.guiUserRole = guiUserRole;
-        this.guiUserRole = 2;
+
     }
 
 
@@ -101,42 +102,61 @@ public class GroupInvoiceEditGroupMemberAdapter extends BaseAdapter {
 
         membersRole.setSelection(membersLis.get(i).getRole());
 
+
+
         membersRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 boolean isRoleChanged = false;
-                for (int x = 0; x < membersUpd.size(); x++) {
-                    if (membersUpd.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
-                        //Solo admin puede cambiar role de admin
-                        if (guiUserRole == 0) {
-                            membersUpd.get(x).setRole(position);
-                            membersLis.get(i).setRole(position);
-                            isRoleChanged = true;
-                        }
-                        // los editores pueden cambiar a los demas editores y de lectura
-                        else if (guiUserRole == 1 && (membersUpd.get(x).getRole() > 0)) {
 
-                            if (position > 0) {
-                                membersUpd.get(x).setRole(position);
-                                membersLis.get(i).setRole(position);
-                                isRoleChanged = true;
-                            }
+              if(count>=membersLis.size()) {
 
-                        }
+                  for (int x = 0; x < membersUpd.size(); x++) {
+                      if (membersUpd.get(x).getEmail().equals(membersLis.get(i).getEmail())) {
+                          //Solo admin puede cambiar role de admin
+                          if (guiUserRole == 0) {
+                              membersUpd.get(x).setRole(position);
+                              membersLis.get(i).setRole(position);
+                              isRoleChanged = true;
+                          }
+                          // los editores pueden cambiar a los demas editores y de lectura
+                           else if (guiUserRole == 1 && (membersUpd.get(x).getRole() == 0)) {
+                              Toast.makeText(context, context.getString(R.string.warning_editor_cant_modify_admin), Toast.LENGTH_LONG).show();
+                              Log.d("DEBUGME", "Warning: " + context.getString(R.string.warning_editor_cant_modify_admin));
+                          } else if (guiUserRole == 1 && position == 0) {
+                              Toast.makeText(context, context.getString(R.string.warning_editor_cant_modify_admin), Toast.LENGTH_LONG).show();
+                              Log.d("DEBUGME", "Warning: " + context.getString(R.string.warning_editor_cant_modify_admin));
+                          }else if (guiUserRole == 1 && (membersUpd.get(x).getRole() > 0)) {
 
-                    }
-                }
-                if (!isRoleChanged) {
-                    if (guiUserRole == 0) {
-                        membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
-                    } else if (guiUserRole == 1 && (membersLis.get(i).getRole() > 0)) {
-                        if (position > 0) {
-                            membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
-                        }
+                              if (position > 0) {
+                                  membersUpd.get(x).setRole(position);
+                                  membersLis.get(i).setRole(position);
+                                  isRoleChanged = true;
+                              }
 
-                    }
+                          }
+                      }
+                  }
+                  if (!isRoleChanged) {
+                      if (guiUserRole == 0) {
+                          membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
+                      } else if (guiUserRole == 1 && (membersLis.get(i).getRole() == 0)) {
+                          Toast.makeText(context, context.getString(R.string.warning_editor_cant_modify_admin), Toast.LENGTH_LONG).show();
+                          Log.d("DEBUGME", "Warning: " + context.getString(R.string.warning_editor_cant_modify_admin));
+                      }  else if (guiUserRole == 1 && position == 0) {
+                          Toast.makeText(context, context.getString(R.string.warning_editor_cant_modify_admin), Toast.LENGTH_LONG).show();
+                          Log.d("DEBUGME", "Warning: " + context.getString(R.string.warning_editor_cant_modify_admin));
+                      } else if (guiUserRole == 1 && (membersLis.get(i).getRole() > 0)) {
+                          if (position > 0) {
+                              membersUpd.add(new MemberModel(membersLis.get(i).getEmail(), position));
+                          }
 
-                }
+                      }
+
+                  }
+              }else{
+                  count++;
+              }
             }
 
             @Override

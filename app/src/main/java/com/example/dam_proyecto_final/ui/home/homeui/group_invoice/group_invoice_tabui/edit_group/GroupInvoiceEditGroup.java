@@ -71,6 +71,8 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
             userEmail = parametros.getString("userEmail", "vacio");
             userPass = parametros.getString("userPass", "vacio");
             currency = parametros.getString("currency", "vacioCurrency");
+            userRole = parametros.getInt("groupRole", 50);
+
 
 
 //            Toast.makeText(context, "idGroup " + idGroup, Toast.LENGTH_LONG).show();
@@ -274,14 +276,12 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                 for (int x = 0; x < membersUpd.size(); x++) {
                     for (int i = 0; i < membersOld.size(); i++) {
-                        try {
+                        if(membersUpd.size()!=0||membersOld.size()!=0){
                             if (membersUpd.get(x).getEmail().equals(membersOld.get(i).getEmail())) {
                                 if (membersUpd.get(x).getRole() == membersOld.get(i).getRole()) {
                                     membersUpd.remove(x);
                                 }
                             }
-                        } catch (Exception e) {
-                            Log.d("DEBUGME",e.getMessage()+"");
                         }
                     }
                 }

@@ -152,6 +152,7 @@
     <string name="warning_adduser_duplicated">Ya se ha incluido al miembro en la lista</string>
     <string name="warning_members_limit">No se pueden añadir más de 10 miembros</string>
     <string name="warning_form_not_full">Por favor, rellene todos los campos</string>
+    <string name="warning_editor_cant_modify_admin">Un usuario Editor no puede modificar un Administrador, los cambios no se aplicarán</string>
     <string name="finalize">Finalizar</string>
 
     <!--    <string name="allow_character">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúüÇç</string>
@@ -175,6 +176,7 @@
     <string name="create_group">Crear grupo</string>
     <string name="init_google_account">Cuenta de google iniciada, no hay contraseña que cambiar</string>
     <string name="emplty">No introducido</string>
+
 
 
     <!-- getString(R.string.warning_form_not_full)

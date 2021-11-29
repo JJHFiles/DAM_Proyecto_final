@@ -261,6 +261,8 @@ public class GroupInvoiceTab extends AppCompatActivity {
                 intent.putExtra("userEmail", userEmail);
                 intent.putExtra("userPass", userPass);
                 intent.putExtra("currency", groupModel.getCurrency());
+                intent.putExtra("groupRole", groupModel.getRole());
+
                 startActivity(intent);
                 return true;
 
