@@ -176,7 +176,13 @@
     <string name="create_group">Crear grupo</string>
     <string name="init_google_account">Cuenta de google iniciada, no hay contraseña que cambiar</string>
     <string name="emplty">No introducido</string>
-
+    <string name="delete_group">Borrar grupo</string>
+    <string name="warning_dialog_deletegroup_title">¿Estas seguro de querer eliminar el grupo?</string>
+    <string name="warning_dialog_deletegroup_message">Esto borrará todas las facturas y actividades asociadas</string>
+    <string name="warning_dialog_deletegroup_negative">No, quiero conservar el grupo</string>
+    <string name="warning_dialog_deletegroup_positive">Sí, quiero borrar el grupo</string>
+    <string name="warning_delete_group_done">Grupo eliminado correctamente</string>
+    <string name="warning_deletegroup_error">Ha habido un error al eliminar el grupo</string>
 
 
     <!-- getString(R.string.warning_form_not_full)

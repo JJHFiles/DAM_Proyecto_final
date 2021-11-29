@@ -1173,4 +1173,57 @@ public class WebApiRequest {
         };
         queue.add(sr);
     }
+
+    public void deleteGroup(String userEmail, String userPass, int idGroup, WebApiRequestJsonResponseListener webApiRequestJsonResponseListener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest sr = new StringRequest(Request.Method.POST, URL + "deleteGroup.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUGME", "deleteGroup onResponse: response " + response);
+
+                try {
+                    JSONObject json = new JSONObject(response);
+                    JSONObject jsonObjectResponse = json.getJSONObject("response");
+
+                    JsonResponseModel jsonResponseModel = new JsonResponseModel(
+                            jsonObjectResponse.getInt("id"),
+                            jsonObjectResponse.getString("message"));
+
+                    if (jsonResponseModel.getId() > 0) {
+                        webApiRequestJsonResponseListener.onSuccess(jsonResponseModel);
+                    } else {
+                        webApiRequestJsonResponseListener.onError(jsonResponseModel);
+                    }
+                } catch (JSONException e) {
+                    Log.d("DEBUGME", e.getMessage());
+                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "deleteGroup JSONException: Error al generar el objeto JSON"));
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUGME", "getFileInvoice VolleyError: " + error.getMessage());
+                webApiRequestJsonResponseListener.onError(new JsonResponseModel(-1, "deleteGroup onErrorResponse: " + error.getMessage()));
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", userEmail);
+                params.put("password", userPass);
+                params.put("groupid", String.valueOf(idGroup));
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+        queue.add(sr);
+    }
 }

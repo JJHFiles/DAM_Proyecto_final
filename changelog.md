@@ -2,21 +2,38 @@
 
 
 
-isInvoiceByGroup changed to validate user/password
 ## 0.1.9 2021-11-27
 ### Added
-
+- Delete group option on edit group
 
 ### Changed
 - Removed all characters limits of inputs. Now admit symbols with security
+- Visual edits on add group and group edit screens
+- FAB size values
+- Filter button size values
+- Profile icons and size values
+- Invoice item list layout
+- Removed nigth mode files
+- Navigation transactions
+- Text on registry flow in final button
+- Registry and change password navigations
+- Disable buttons with unfull forms
+- Button disabled styles
 
 ### Fixed
 - Roles check
 - Strings.XML from classes and XMLs checked
+- Hardcoded texts
 
 ### Security
 - SQL Inyection fixed for all backend scripts
 - Use email/password validation to all Volley request
+- WbApiRequest isInvoiceByGroup changed to validate user/password
+
+### Removed
+- Depuration toast
+
+
 
 
 ## 0.1.8 2021-11-27
@@ -41,7 +58,6 @@ isInvoiceByGroup changed to validate user/password
 - Add invoice screen not admit especial characters on multiple inputs
 - edit group screen not admit especial characters on multiple inputs
 - SQL Inyection for many backend scripts
-
 
 
 ### Removed

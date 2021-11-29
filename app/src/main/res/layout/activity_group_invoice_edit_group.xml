@@ -17,14 +17,25 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_AGIEG_Delete"
+                style="@style/TerciaryButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="24dp"
+                android:layout_weight="1"
+                android:text="@string/delete_group" />
 
             <Button
                 android:id="@+id/btn_AGIEG_Add"
                 style="@style/PrimaryButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="24dp"
                 android:layout_weight="1"

@@ -18,5 +18,6 @@
     <color name="background_shadow_gray">#5BE6E4E4</color>
     <color name="activity_circle">#D8F2DA</color>
     <color name="red">#D73333</color>
+    <color name="red_disable">#40D73333</color>
 
 </resources>

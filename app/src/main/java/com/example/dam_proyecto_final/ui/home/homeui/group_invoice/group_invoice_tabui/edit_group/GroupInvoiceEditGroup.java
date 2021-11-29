@@ -1,6 +1,8 @@
 package com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui.edit_group;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,7 +74,6 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
             userPass = parametros.getString("userPass", "vacio");
             currency = parametros.getString("currency", "vacioCurrency");
             userRole = parametros.getInt("groupRole", 50);
-
 
 
 //            Toast.makeText(context, "idGroup " + idGroup, Toast.LENGTH_LONG).show();
@@ -150,6 +151,14 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         //Buttons
         btn_AGIEG_Add = findViewById(R.id.btn_AGIEG_Add);
         btn_AGIEG_Add.setOnClickListener(this);
+        Button btnDelete = findViewById(R.id.btn_AGIEG_Delete);
+        if (userRole == 0){
+            btnDelete.setOnClickListener(this);
+        } else {
+            btnDelete.setTextColor(getColor(R.color.red_disable));
+            btnDelete.setEnabled(false);
+        }
+
 
 
     }
@@ -233,32 +242,32 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                                         public void onError(JsonResponseModel response) {
                                             edt_AGIEG_AddMember.setText("");
                                             Toast.makeText(context, getString(R.string.userNoDB), Toast.LENGTH_LONG).show();
-                                            Log.d("DEBUGME",getString(R.string.userNoDB));
+                                            Log.d("DEBUGME", getString(R.string.userNoDB));
                                         }
                                     });
                                 } else {
                                     Toast.makeText(this, getString(R.string.warning_adduser_inlist), Toast.LENGTH_LONG).show();
-                                    Log.d("DEBUGME",getString(R.string.warning_adduser_inlist));
+                                    Log.d("DEBUGME", getString(R.string.warning_adduser_inlist));
 
                                 }
                             }
                         } else {
                             Toast.makeText(this, getString(R.string.warning_adduser_duplicated), Toast.LENGTH_LONG).show();
-                            Log.d("DEBUGME",getString(R.string.warning_adduser_duplicated));
+                            Log.d("DEBUGME", getString(R.string.warning_adduser_duplicated));
                         }
                     } else {
                         Toast.makeText(this, getString(R.string.warning_members_limit), Toast.LENGTH_LONG).show();
-                        Log.d("DEBUGME",getString(R.string.warning_members_limit));
+                        Log.d("DEBUGME", getString(R.string.warning_members_limit));
 
                     }
                 } else {
                     Toast.makeText(this, getString(R.string.role_noselected), Toast.LENGTH_LONG).show();
-                    Log.d("DEBUGME",getString(R.string.role_noselected));
+                    Log.d("DEBUGME", getString(R.string.role_noselected));
 
                 }
             } else {
                 Toast.makeText(this, getString(R.string.email_NoMatch), Toast.LENGTH_LONG).show();
-                Log.d("DEBUGME",getString(R.string.warning_members_limit));
+                Log.d("DEBUGME", getString(R.string.warning_members_limit));
 
             }
 
@@ -276,7 +285,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                 for (int x = 0; x < membersUpd.size(); x++) {
                     for (int i = 0; i < membersOld.size(); i++) {
-                        if(membersUpd.size()!=0||membersOld.size()!=0){
+                        if (membersUpd.size() != 0 || membersOld.size() != 0) {
                             if (membersUpd.get(x).getEmail().equals(membersOld.get(i).getEmail())) {
                                 if (membersUpd.get(x).getRole() == membersOld.get(i).getRole()) {
                                     membersUpd.remove(x);
@@ -311,8 +320,8 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
                             @Override
                             public void onError(JsonResponseModel response) {
-                               // Toast.makeText(context, response.getId() + "", Toast.LENGTH_LONG).show();
-                                Log.d("DEBUGME", "UpdateGroup onError "+ response.getId() + "");
+                                // Toast.makeText(context, response.getId() + "", Toast.LENGTH_LONG).show();
+                                Log.d("DEBUGME", "UpdateGroup onError " + response.getId() + "");
 
                             }
                         });
@@ -321,7 +330,26 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                 Log.d("DEBUGME", getString(R.string.warning_form_not_full));
 
             }
-        } //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
+
+        } else if (view.getId() == R.id.btn_AGIEG_Delete) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.warning_dialog_deletegroup_title));
+            builder.setMessage(getString(R.string.warning_dialog_deletegroup_message))
+                    .setNegativeButton(getString(R.string.warning_dialog_deletegroup_negative), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // nothing
+                        }
+                    })
+                    .setPositiveButton(R.string.warning_dialog_deletegroup_positive, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            deleteGroup();
+                        }
+                    });
+
+            builder.create().show();
+        }
+
+        //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
 //            finish();
 //            overridePendingTransition(0, 0);
 //            startActivity(getIntent());
@@ -329,6 +357,29 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 //        }
         //   }catch(Exception e){}
 
+    }
+
+    private void deleteGroup() {
+        webApiRequest.deleteGroup(userEmail, userPass, idGroup, new WebApiRequest.WebApiRequestJsonResponseListener() {
+            @Override
+            public void onSuccess(JsonResponseModel response) {
+                if (response.getId() > 0){
+                    Toast.makeText(getApplicationContext(), getString(R.string.warning_delete_group_done), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } else {
+                    Log.d("DEBUGME", response.getId() + " " + response.getMessage());
+                    Toast.makeText(getApplicationContext(), getString(R.string.warning_deletegroup_error), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(JsonResponseModel response) {
+                Log.d("DEBUGME", response.getId() + " " + response.getMessage());
+                Toast.makeText(getApplicationContext(), getString(R.string.warning_deletegroup_error), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void setListViewHeightBasedOnChildren(ListView listView) {
@@ -390,13 +441,13 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
                     @Override
                     public void onError(JsonResponseModel response) {
                         if (response.getId() == -252) {
-                         //   Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
+                            //   Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
                             Log.d("DEBUGME", "Error " + response.getId());
 
 
                         } else {
                             //Si no ha podido ser cualquier error
-                       //     Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
+                            //     Toast.makeText(context, "Error " + response.getId(), Toast.LENGTH_LONG).show();
                             Log.d("DEBUGME", "Error " + response.getId());
 
                         }
