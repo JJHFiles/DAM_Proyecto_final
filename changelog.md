@@ -4,7 +4,8 @@
 
 ## 0.2.0 2021-11-29
 ### Added
-- Delete group option on edit group
+- Delete group option on edit group 
+- Editor users can exit from groups
 
 ### Changed
 - Removed all characters limits of inputs. Now admit symbols with security
