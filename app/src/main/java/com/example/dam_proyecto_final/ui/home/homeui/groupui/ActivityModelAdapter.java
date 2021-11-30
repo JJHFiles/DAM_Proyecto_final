@@ -49,21 +49,16 @@ public class ActivityModelAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         view = inflater.inflate(R.layout.fragment_activity_item, null);
 
-
-        // TODO agregar iconos de figma y setearlos al imagenview∑
         ActivityModel activity = activitys.get(i);
         int icon = R.drawable.ic_activity_group;
         switch (activity.getIcon()){
             case 0:
-                // TODO icon grupo
                 icon = R.drawable.ic_activity_group;
                 break;
             case 1:
-                // TODO icon factura
                 icon = R.drawable.ic_activity_invoice;
                 break;
             case 2:
-                // TODO icon person
                 icon = R.drawable.ic_activity_person;
                 break;
             default:

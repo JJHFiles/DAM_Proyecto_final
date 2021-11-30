@@ -166,8 +166,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        //  try {
-        //TODO revisar que el elemento no esté ya en la lista
+
         if (view.getId() == R.id.imgb_AGIEG_AddMember) {
             //Comprobamos que el email y el rol no esten vacios y que el email se ajuste formato. Tambien que el miembro no esté ya en la lista
             if (Patterns.EMAIL_ADDRESS.matcher(edt_AGIEG_AddMember.getText().toString()).matches()) {
@@ -271,9 +270,6 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
             }
 
-            /* TODO IMPORTANTE comprobar que algún usuario del grupo es administrador nates de grabar en BD
-               si no es así no dejar hacer update en el grupo hasta que un usuario tenga rol admin
-             */
         } else if (view.getId() == R.id.btn_AGIEG_Add) {
             //Revisar elementos no nulos y si no nulos insertar en BBDD
             Log.d("DEBUGME", userEmail + " " + userPass + " " + edt_AGIEG_GroupName.getText().toString() + " " +
@@ -348,15 +344,6 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
 
             builder.create().show();
         }
-
-        //else if ( view.getId() == R.id.btn_AGIEG_Cancel ){
-//            finish();
-//            overridePendingTransition(0, 0);
-//            startActivity(getIntent());
-//            overridePendingTransition(0, 0);
-//        }
-        //   }catch(Exception e){}
-
     }
 
     private void deleteGroup() {

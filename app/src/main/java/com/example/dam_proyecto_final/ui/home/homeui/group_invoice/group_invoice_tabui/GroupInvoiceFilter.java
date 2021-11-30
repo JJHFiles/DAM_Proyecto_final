@@ -255,7 +255,6 @@ public class GroupInvoiceFilter extends AppCompatActivity implements View.OnClic
     }
 
     private void addCalendar(Calendar calendar, TextInputEditText tiet) {
-        //TODO cambiar idioma de los textos
         MaterialDatePicker materialDatePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(R.string.select_date)
                 .build();

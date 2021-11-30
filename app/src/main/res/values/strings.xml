@@ -54,7 +54,7 @@
     <string name="edit">Editar</string>
     <string name="select_date">Selecciona una fecha</string>
     <string name="cleanButton">Limpiar</string>
-    <!-- TODO: los siguientes Strings afectan a GroupInvoiceTabListFragment y su XML, sin aplicar-->
+
     <string name="tab_Graphics">Gráficas</string>
     <string name="tab_Invoice_list">Listado</string>
     <string name="tab_ManualAdd">Añadir de forma manual</string>

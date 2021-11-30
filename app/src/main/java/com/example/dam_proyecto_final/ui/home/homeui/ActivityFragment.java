@@ -76,7 +76,6 @@ public class ActivityFragment extends Fragment {
     public void getActivityByEmail(String email, String userPass) {
 
         webApiRequest = new WebApiRequest(context);
-        // TODO editar peticion para que se ajuste al nuevo activity model
         webApiRequest.getActivityByEmail(email, userPass, new WebApiRequest.WebApiRequestJsonObjectArrayListener() {
             @Override
             public void onSuccess(JsonResponseModel response, List<?> data) {

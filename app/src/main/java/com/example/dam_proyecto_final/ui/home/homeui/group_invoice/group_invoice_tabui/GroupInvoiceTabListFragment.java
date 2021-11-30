@@ -169,8 +169,6 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
                     btOCR.setVisibility(View.INVISIBLE);
                 }
 
-//          TODO: que la actividad se torne en escala grises
-
                 break;
 
             case R.id.btManual:
@@ -184,7 +182,6 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
                 break;
 
             case R.id.btOCR:
-                //TODO: lectura factura por OCR
                 Intent intentScan = new Intent(context, InvoiceOCRAddActivity.class);
                 intentScan.putExtra("groupModel", groupModel);
                 intentScan.putExtra("userEmail", userEmail);

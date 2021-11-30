@@ -67,8 +67,6 @@ public class GroupInvoiceTabChartFragment extends Fragment implements View.OnCli
         // Required empty public constructor
     }
 
-
-    // TODO realizar la llamada al fragment mediante newInstance y no con Bundle/Constructor
     public static GroupInvoiceTabChartFragment newInstance(ArrayList<InvoiceModel> invoices, int typeChart) {
         GroupInvoiceTabChartFragment fragment = new GroupInvoiceTabChartFragment();
         Bundle args = new Bundle();

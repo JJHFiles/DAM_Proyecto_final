@@ -24,6 +24,7 @@
 - Roles check
 - Strings.XML from classes and XMLs checked
 - Hardcoded texts
+- TODO checked and removed
 
 ### Security
 - SQL Inyection fixed for all backend scripts
