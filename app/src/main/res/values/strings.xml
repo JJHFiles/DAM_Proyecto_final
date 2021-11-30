@@ -183,6 +183,9 @@
     <string name="warning_dialog_deletegroup_positive">Sí, quiero borrar el grupo</string>
     <string name="warning_delete_group_done">Grupo eliminado correctamente</string>
     <string name="warning_deletegroup_error">Ha habido un error al eliminar el grupo</string>
+    <string name="exit_group">Salir del grupo</string>
+    <string name="warning_exit_group">Has salido del grupo correctamente</string>
+    <string name="warning_exitgroup_error">Se ha producido un error al intentar salir del grupo</string>
 
 
     <!-- getString(R.string.warning_form_not_full)
