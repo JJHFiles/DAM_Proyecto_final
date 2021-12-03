@@ -68,7 +68,7 @@
     <string name="tab_Init">Inicio de facturación: </string>
     <string name="tab_End">Fin de facturación: </string>
     <string name="tab_Electricity">Electricidad</string>
-    <string name="tab_Gas">Electricidad</string>
+    <string name="tab_Gas">Gas</string>
     <string name="tab_Water">Agua</string>
     <string name="tab_Telephone">Telefonía</string>
     <string name="tab_CarRenting">Renting de coche</string>
@@ -126,7 +126,7 @@
     <string name="warning_member_max">No se pueden añadir más de 10 miembros</string>
     <string name="warning_group_created">Grupo creado correctamente</string>
     <string name="warning_registry_email_exists">El usuario ya existe prueba a introducir otro correo electrónico</string>
-    <string name="warning_generic_error">Se ha producido un error :</string>
+    <string name="warning_generic_error">Se ha producido un error </string>
     <string name="hello">Hola</string>
     <string name="input_text">Texto</string>
     <string name="input_date">Fecha</string>
@@ -136,7 +136,7 @@
     <string name="invoice_added">Añadida factura</string>
     <string name="no_activity">Sin Actividad</string>
     <string name="no_group_changes">Aún no ha habido cambios en tus grupos. Lo verás aquí cuando haya modficaciones.</string>
-    <string name="save_changes">Guardar cambios</string>
+    <string name="save_changes">Guardar</string>
     <string name="invoice_model">Tipo de factura</string>
     <string name="date_model">Tipo de dato a representar en gráficas</string>
     <string name="date_period">Guardar cambios</string>
@@ -161,7 +161,7 @@
         <string name="allow_character_email">ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789@._-</string>-->
 
     <string name="group_updated">Grupo actualizado correctamente</string>
-    <string name="edit_group_title">Editar grupo </string>
+    <string name="edit_group_title">Editar grupo</string>
     <string name="leave_group">Saliendo de grupo</string>
     <string name="no_view_data">No hay datos que representar</string>
     <string name="consumption">Consumo</string>

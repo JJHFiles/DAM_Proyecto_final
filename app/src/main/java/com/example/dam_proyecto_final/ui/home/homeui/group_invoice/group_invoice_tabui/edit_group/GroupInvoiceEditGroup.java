@@ -85,7 +85,7 @@ public class GroupInvoiceEditGroup extends AppCompatActivity implements View.OnC
         }
 
         //Editamos la barra superior con nombre y botón back
-        getSupportActionBar().setTitle(getString(R.string.edit_group_title) + groupName);
+        getSupportActionBar().setTitle(getString(R.string.edit_group_title) + " " + groupName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         membersLis = new ArrayList<MemberModel>(); // Miembros que se listan en la GUI. Los introducidos manualmente (nuevos o Add) y los que ya estaban en el grupo (Old).
