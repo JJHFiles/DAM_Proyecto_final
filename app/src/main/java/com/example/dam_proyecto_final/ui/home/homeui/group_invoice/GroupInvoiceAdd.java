@@ -83,7 +83,7 @@ public class GroupInvoiceAdd extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_invoice_add);
-        setTitle(getString(R.string.userNoDB));
+        setTitle(getString(R.string.add_invoice));
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         webApiRequest = new WebApiRequest(getApplicationContext());
