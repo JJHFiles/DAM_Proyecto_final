@@ -142,10 +142,10 @@ public class GroupInvoiceTabListFragment extends Fragment implements View.OnClic
 
 
             ilm.add(new InvoiceListModel());
-            ilm.get(x).setType(getString(R.string.tab_invoice) + arrIM.get(x).getType());
+            ilm.get(x).setType(getString(R.string.tab_invoice) + " " + arrIM.get(x).getType());
             ilm.get(x).setAmount(arrIM.get(x).getAmount() + " " + groupModel.getCurrency());
             ilm.get(x).setDate(arrIM.get(x).getDate());
-            ilm.get(x).setConsumption(arrIM.get(x).getConsumption() + measure);
+            ilm.get(x).setConsumption((int)arrIM.get(x).getConsumption() + " " + measure);
             ilm.get(x).setCode(x);
         }
 

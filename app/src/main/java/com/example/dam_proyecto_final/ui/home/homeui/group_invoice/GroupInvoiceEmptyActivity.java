@@ -15,11 +15,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.dam_proyecto_final.model.JsonResponseModel;
 import com.example.dam_proyecto_final.ui.home.HomeActivity;
 import com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui.InvoiceOCRAddActivity;
 import com.example.dam_proyecto_final.ui.home.homeui.group_invoice.group_invoice_tabui.edit_group.GroupInvoiceEditGroup;
 import com.example.dam_proyecto_final.model.GroupModel;
 import com.example.dam_proyecto_final.R;
+import com.example.dam_proyecto_final.web_api.WebApiRequest;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.Objects;
@@ -136,7 +138,28 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
         } else if (item.getItemId() == android.R.id.home){
             onBackPressed();
             return true;
+        } else if (item.getItemId() == R.id.mnu_GIHAExitGroup){
+            WebApiRequest webApiRequest = new WebApiRequest(getApplicationContext());
+            webApiRequest.exitGroup(userEmail, userPass, groupModel.getId(), groupModel.getName(), new WebApiRequest.WebApiRequestJsonResponseListener() {
+                @Override
+                public void onSuccess(JsonResponseModel response) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.warning_exit_group), Toast.LENGTH_LONG).show();
+
+                    //Volvemos al login activity
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onError(JsonResponseModel response) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.warning_exitgroup_error), Toast.LENGTH_LONG).show();
+
+                }
+            });
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -155,6 +178,9 @@ public class GroupInvoiceEmptyActivity extends AppCompatActivity implements View
             MenuItem item = menu.findItem(R.id.mnu_GIHAEditGroup);
             item.setVisible(false);
             ibAdd.setVisibility(View.INVISIBLE);
+        } else {
+            MenuItem item = menu.findItem(R.id.mnu_GIHAExitGroup);
+            item.setVisible(false);
         }
     }
 

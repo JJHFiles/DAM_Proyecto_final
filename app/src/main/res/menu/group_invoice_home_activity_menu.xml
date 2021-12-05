@@ -4,4 +4,6 @@
         android:title="@string/filter" />
     <item android:id="@+id/mnu_GIHAEditGroup"
         android:title="@string/edit" />
+    <item android:id="@+id/mnu_GIHAExitGroup"
+    android:title="@string/exit_group" />
 </menu>

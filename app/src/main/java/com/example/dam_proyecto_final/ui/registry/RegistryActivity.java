@@ -33,7 +33,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
     private int step = 0; //0->name, 1->email, 2->pass first, 3->pass second
 //    String charactersLimits;
 
-    private String userName = getString(R.string.userNoDB), userEmail = getString(R.string.userNoDB), userPass = "";
+    private String userName = "", userEmail = "", userPass = "";
 
     private WebApiRequest webApiRequest;
 
@@ -58,8 +58,6 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
 
         //WebApiRequest
         webApiRequest = new WebApiRequest(this);
-
-//        charactersLimits = getString(R.string.allow_character);
     }
 
 
@@ -85,8 +83,6 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                             txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
                             txInEdTx.setText("");
                             txInLaHint.setHint(getResources().getString(R.string.email));
-//                            charactersLimits = getString(R.string.allow_character_email);
-
 
                             step = 1; // se avanza al paso siguiente
                         } else {
@@ -139,6 +135,11 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                         } else {
                             Toast.makeText(this, R.string.pass_NotEquals, Toast.LENGTH_LONG).show();
                             Log.d("DEBUGME",getString(R.string.pass_NotEquals));
+                            txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_passFirst));
+                            txInEdTx.setText("");
+                            txInLaHint.setHint(getResources().getString(R.string.edtInput_pass));
+                            txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            step = 2;
 
                         }
                         break; //fin de -> case 3:
@@ -154,7 +155,13 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
             public void onSuccess(int id, String message) {
                 if (id == 222) {
                     Log.d("DEBUGME", "user " + userEmail + " exist, mensa: " + message);
-                 //   Toast.makeText(getApplicationContext(), getString(R.string.warning_registry_email_exists), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.warning_registry_email_exists), Toast.LENGTH_LONG).show();
+
+                    txtvQuestion.setText(getResources().getString(R.string.txtvQuestion_email));
+                    txInEdTx.setText("");
+                    txInLaHint.setHint(getResources().getString(R.string.email));
+                    txInEdTx.setInputType(InputType.TYPE_CLASS_TEXT);
+                    step = 1;
 
                 } else if (id == 223) {
                     Log.d("DEBUGME", "User not exist, received: " + id);
@@ -190,7 +197,7 @@ public class RegistryActivity extends AppCompatActivity implements View.OnClickL
                     signIn();
                 } else if (id < 0) {
                     Log.d("DEBUGME", "loginactivity onSucess: " + id + " " + message);
-                  //  Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error) + id, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.warning_generic_error), Toast.LENGTH_LONG).show();
                 }
             }
 
