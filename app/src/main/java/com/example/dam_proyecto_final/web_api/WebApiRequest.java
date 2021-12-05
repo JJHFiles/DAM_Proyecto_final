@@ -109,7 +109,7 @@ public class WebApiRequest {
                     id = json.getInt("id");
                     message = json.getString("message");
                 } catch (JSONException e) {
-                    webapirequestjsonobjectlistener.onError(-2, "userInsert JSONException: Error al generar el objeto JSON");
+                    webapirequestjsonobjectlistener.onError(-2, "userInsert JSONException: Error generating JSON  Object");
                 }
 
                 webapirequestjsonobjectlistener.onSuccess(id, message);
@@ -161,7 +161,7 @@ public class WebApiRequest {
                     message = json.getString("message");
 
                 } catch (JSONException e) {
-                    webapirequestjsonobjectlistener.onError(-2, "userGetEmail JSONException: Error al generar el objeto JSON");
+                    webapirequestjsonobjectlistener.onError(-2, "userGetEmail JSONException: Error generating JSON  Object");
                 }
 
                 webapirequestjsonobjectlistener.onSuccess(id, message);
@@ -212,7 +212,7 @@ public class WebApiRequest {
                         webapirequestjsonresponselistener.onError(jsonResponseModel);
                     }
                 } catch (JSONException e) {
-                    webapirequestjsonresponselistener.onError(new JsonResponseModel(-2, "validateUser JSONException: Error al generar el objeto JSON"));
+                    webapirequestjsonresponselistener.onError(new JsonResponseModel(-2, "validateUser JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -265,7 +265,7 @@ public class WebApiRequest {
 
 
                 } catch (JSONException e) {
-                    webApiRequestJsonObjectListener_getName.onError(-2, "getNameByEmail JSONException: Error al generar el objeto JSON");
+                    webApiRequestJsonObjectListener_getName.onError(-2, "getNameByEmail JSONException: Error generating JSON  Object");
                 }
 
 
@@ -314,7 +314,7 @@ public class WebApiRequest {
                     message = json.getString("message");
 
                 } catch (JSONException e) {
-                    webapirequestjsonobjectlistener.onError(-2, "userInsertG JSONException: Error al generar el objeto JSON");
+                    webapirequestjsonobjectlistener.onError(-2, "userInsertG JSONException: Error generating JSON  Object");
                 }
 
                 webapirequestjsonobjectlistener.onSuccess(id, message);
@@ -393,7 +393,7 @@ public class WebApiRequest {
                     }
 
                 } catch (JSONException e) {
-                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getGroupsByEmail JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getGroupsByEmail JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -471,7 +471,7 @@ public class WebApiRequest {
                     }
 
                 } catch (JSONException e) {
-                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getGroupsByEmail JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getGroupsByEmail JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -526,7 +526,7 @@ public class WebApiRequest {
                         webApiRequestJsonResponseListener.onError(jsonResponseModel);
                     }
                 } catch (JSONException e) {
-                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "getIfEmailExist JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "getIfEmailExist JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -580,7 +580,7 @@ public class WebApiRequest {
                         webApiRequestJsonResponseListener.onError(jsonResponseModel);
                     }
                 } catch (JSONException e) {
-                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "addGroup JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "addGroup JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -684,7 +684,7 @@ public class WebApiRequest {
                     }
 
                 } catch (JSONException e) {
-                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getInvoiceByGroup JSONException: Error al generar el objeto JSON" + e.getMessage()));
+                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getInvoiceByGroup JSONException: Error generating JSON  Object" + e.getMessage()));
                 }
 
             }
@@ -732,7 +732,7 @@ public class WebApiRequest {
                     message = json.getString("message");
 
                 } catch (JSONException e) {
-                    webapirequestjsonobjectlistener.onError(-2, "isInvoiceByGroup JSONException: Error al generar el objeto JSON");
+                    webapirequestjsonobjectlistener.onError(-2, "isInvoiceByGroup JSONException: Error generating JSON  Object");
                 }
 
                 webapirequestjsonobjectlistener.onSuccess(id, message);
@@ -779,7 +779,7 @@ public class WebApiRequest {
                     id = json.getInt("id");
                     message = json.getString("message");
                 } catch (JSONException e) {
-                    webapirequestjsonobjectlistener.onError(-2, "insertInvoice JSONException: Error al generar el objeto JSON");
+                    webapirequestjsonobjectlistener.onError(-2, "insertInvoice JSONException: Error generating JSON  Object");
                 }
 
                 webapirequestjsonobjectlistener.onSuccess(id, message);
@@ -878,7 +878,7 @@ public class WebApiRequest {
                     }
 
                 } catch (JSONException e) {
-                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getGroupAndShared JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonObjectArrayListener.onError(new JsonResponseModel(-2, "getGroupAndShared JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -940,7 +940,7 @@ public class WebApiRequest {
                         webapirequestjsonresponselistener.onError(jsonResponseModel);
                     }
                 } catch (JSONException e) {
-                    webapirequestjsonresponselistener.onError(new JsonResponseModel(-2, "updateGroup JSONException: Error al generar el objeto JSON"));
+                    webapirequestjsonresponselistener.onError(new JsonResponseModel(-2, "updateGroup JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -1029,7 +1029,7 @@ public class WebApiRequest {
                     }
                 } catch (JSONException e) {
                     Log.d("DEBUGME", e.getMessage());
-                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "updatePassword JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "updatePassword JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -1083,7 +1083,7 @@ public class WebApiRequest {
                     }
                 } catch (JSONException e) {
                     Log.d("DEBUGME", e.getMessage());
-                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "invoiceDelete JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "invoiceDelete JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -1143,7 +1143,7 @@ public class WebApiRequest {
                     }
                 } catch (JSONException e) {
                     Log.d("DEBUGME", e.getMessage());
-                    webApiRequestJsonResponseStringListener.onError(new JsonResponseModel(-2, "getFileInvoice JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonResponseStringListener.onError(new JsonResponseModel(-2, "getFileInvoice JSONException: Error generating JSON  Object"));
                 }
 
             }
@@ -1196,7 +1196,7 @@ public class WebApiRequest {
                     }
                 } catch (JSONException e) {
                     Log.d("DEBUGME", e.getMessage());
-                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "deleteGroup JSONException: Error al generar el objeto JSON"));
+                    webApiRequestJsonResponseListener.onError(new JsonResponseModel(-2, "deleteGroup JSONException: Error generating JSON  Object"));
                 }
 
             }
