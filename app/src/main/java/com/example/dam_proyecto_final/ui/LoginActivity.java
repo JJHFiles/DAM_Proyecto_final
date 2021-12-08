@@ -231,10 +231,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onError(JsonResponseModel response) {
                 if (response.getId() == -210) {
                     Log.d("DEBUGME", "loginActivity, User or password failed: " + response.getId());
-                   // Toast.makeText(context, "User or password failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.login_failure), Toast.LENGTH_LONG).show();
                 } else {
                     Log.d("DEBUGME", "loginActivity: " + response.getId());
-                  //  Toast.makeText(context, "Error" + response.getId(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.login_failure), Toast.LENGTH_LONG).show();
                 }
             }
         });
